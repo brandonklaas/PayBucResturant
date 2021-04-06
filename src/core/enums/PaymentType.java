@@ -9,15 +9,15 @@ package core.enums;
  *
  * @author Brandon
  */
-public enum TableStatus {
-    OPEN(0, "PENDING"),
-    RESERVED(1, "RESERVED"),
-    OCCUPIED(2, "OCCUPIED");
+public enum PaymentType {
+    CASH(0, "CASH"),
+    CARD(1, "CARD"),
+    VOUCHER(2, "VOUCHER");
     
     final int value;
     final String label;
 
-    TableStatus(int value, String label){
+    PaymentType(int value, String label){
         this.label = label;
         this.value = value;
     }
@@ -32,8 +32,8 @@ public enum TableStatus {
         return value;
     }
 
-    public static TableStatus fromString(final String str) {
-        for (TableStatus e : TableStatus.values()) {
+    public static PaymentType fromString(final String str) {
+        for (PaymentType e : PaymentType.values()) {
             if (e.toString().equalsIgnoreCase(str)) {
                 return e;
             }
@@ -41,8 +41,8 @@ public enum TableStatus {
         return null;
     }
 
-    public static TableStatus fromId(final int id) {
-        for (TableStatus e : TableStatus.values()) {
+    public static PaymentType fromId(final int id) {
+        for (PaymentType e : PaymentType.values()) {
             if (e.value == id) {
                 return e;
             }

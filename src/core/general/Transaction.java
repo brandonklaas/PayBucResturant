@@ -18,21 +18,12 @@ public class Transaction {
     private int tableID;
     private int orderID;
     private int orderNumber;
-    private String Type;
-    private int    TypeID;
-    private String Payment;
+    private int TypeID;
     private double Price;
-    private 
+    private double Tip;
+    private String Payment;
     private Date date;
-
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String Title) {
-        this.Title = Title;
-    }
-
+ 
     public int getSite() {
         return site;
     }
@@ -49,14 +40,6 @@ public class Transaction {
         this.id = id;
     }
 
-    public String getType() {
-        return Type;
-    }
-
-    public void setType(String Type) {
-        this.Type = Type;
-    }
-
     public int getTypeID() {
         return TypeID;
     }
@@ -64,9 +47,7 @@ public class Transaction {
     public void setTypeID(int TypeID) {
         this.TypeID = TypeID;
     }
-
-    
-
+ 
     public String getPayment() {
         return Payment;
     }
@@ -83,30 +64,6 @@ public class Transaction {
         this.Price = Price;
     }
 
-    public String getEmployee() {
-        return Employee;
-    }
-
-    public void setEmployee(String Employee) {
-        this.Employee = Employee;
-    }
-
-    public String getCustomerName() {
-        return CustomerName;
-    }
-
-    public void setCustomerName(String CustomerName) {
-        this.CustomerName = CustomerName;
-    }
-
-    public String getCustomerNumber() {
-        return CustomerNumber;
-    }
-
-    public void setCustomerNumber(String CustomerNumber) {
-        this.CustomerNumber = CustomerNumber;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -114,6 +71,47 @@ public class Transaction {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public int getEmployeeID() {
+        return employeeID;
+    }
+
+    public void setEmployeeID(int employeeID) {
+        this.employeeID = employeeID;
+    }
+
+    public int getTableID() {
+        return tableID;
+    }
+
+    public void setTableID(int tableID) {
+        this.tableID = tableID;
+    }
+
+    public int getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
+    }
+
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(int orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public double getTip() {
+        return Tip;
+    }
+
+    public void setTip(double Tip) {
+        this.Tip = Tip;
+    }
+    
     
     
 }
