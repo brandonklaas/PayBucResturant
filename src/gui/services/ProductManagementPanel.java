@@ -46,6 +46,7 @@ public class ProductManagementPanel extends javax.swing.JPanel {
         tableModel.addColumn("Price");
         
         array = database.getProducts();
+        System.out.println(array.size());
         if(array.size() > 0){
             for(Product product : array){
                 tableModel.addRow(new Object[]{product.getName(), product.getDescription(), product.getPrice()});

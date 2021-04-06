@@ -10,7 +10,6 @@ import core.general.Employee;
 import core.general.Service;
 import core.general.Transaction;
 import core.utilities.Session;
-import gui.services.DashboardPanel;
 import gui.services.TransactionsManagementPanel;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,8 +24,7 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
 
     private Session session;
     private Dialogue diag;
-    private TransactionsManagementPanel panel = null;
-    private DashboardPanel dash = null;
+    private TransactionsManagementPanel panel;
     private DatabaseAccessObject database;
     private Transaction selectedTransaction;
     private DefaultComboBoxModel serviceModel;
@@ -48,18 +46,6 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
         updateBtn.setVisible(false);
     }
 
-    public ServiceTransactionDialogue(String name, String number, DashboardPanel dash, Session session) {
-        this.session = session;
-        this.dash = dash;
-        this.database = session.getDatabase();
-        initComponents();
-        setDefaults();
-        clearPanels();
-        customerNameTf.setText(name);
-        customerCell.setText(number);
-        updateBtn.setVisible(false);
-    }
-    
     public ServiceTransactionDialogue(Session session, TransactionsManagementPanel panel, Transaction selectedService) {
         this.session = session;
         this.database = session.getDatabase();
@@ -356,11 +342,6 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
         cancelBtn.setBorderPainted(false);
         cancelBtn.setContentAreaFilled(false);
         cancelBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel-pressed.png"))); // NOI18N
-        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtnActionPerformed(evt);
-            }
-        });
         buttonsPanel.add(cancelBtn);
 
         add(buttonsPanel, java.awt.BorderLayout.PAGE_END);
@@ -388,8 +369,7 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
             if (database.update(transaction)) {
 
                 diag.dispose();
-                    panel.refreshTable();
-                
+                panel.refreshTable();
                 new OkayDialogue(null, true, "Transaction updated successfully");
 
             } else {
@@ -421,11 +401,7 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
                 if (database.insert(transaction)) {
 
                     diag.dispose();
-                    if (panel != null) {
-                        panel.refreshTable();
-                    } else {
-                        dash.payed();
-                    }
+                    panel.refreshTable();
                     new OkayDialogue(null, true, "Transaction save successfully");
 
                 } else {
@@ -447,11 +423,6 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
             priceTf.setText(servicesArray.get(serviceCB.getSelectedIndex()-1).getPrice()+"");
         }
     }//GEN-LAST:event_serviceCBActionPerformed
-
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        // TODO add your handling code here:
-        diag.dispose();
-    }//GEN-LAST:event_cancelBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -13,9 +13,7 @@ public class Product {
     private int id;
     private String name;
     private String description;
-    private Table table;
     private Double price;
-    private boolean prepared = false;
     private boolean taxable;
     
     public Product(String name, String desc, Double price, boolean taxable){
@@ -23,14 +21,6 @@ public class Product {
         this.description = desc;
         this.price = price;
         this.taxable = taxable;
-    }
-    
-    public Product(String name, String desc, Double price, boolean taxable, Table table) {
-        this.name = name;
-        this.description = desc;
-        this.price = price;
-        this.taxable = taxable;
-        this.table = table;
     }
     
     public Product(){
@@ -44,22 +34,6 @@ public class Product {
         this.id = id;
     }
 
-    public Table getTable() {
-        return table;
-    }
-
-    public void setTable(Table table) {
-        this.table = table;
-    }
-
-    public boolean isPrepared() {
-        return prepared;
-    }
-
-    public void setPrepared(boolean prepared) {
-        this.prepared = prepared;
-    }
-    
     public String getName() {
         return name;
     }

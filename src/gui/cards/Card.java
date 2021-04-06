@@ -55,7 +55,7 @@ public class Card extends javax.swing.JPanel {
         amount.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         amount.setForeground(new java.awt.Color(255, 255, 255));
         amount.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        amount.setText("  R 0.00");
+        amount.setText("  R9000.00");
         jPanel2.add(amount, java.awt.BorderLayout.CENTER);
 
         add(jPanel2, java.awt.BorderLayout.CENTER);

@@ -5,10 +5,7 @@
  */
 package gui.dialoguePanels;
 
-import core.general.Person;
 import core.utilities.Session;
-import gui.services.DashboardPanel;
-import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 
 /**
@@ -19,15 +16,12 @@ public class ClientsDialogue extends javax.swing.JPanel {
 
     private Session session;
     private Dialogue diag;
-    private DashboardPanel panel;
-    
     
     /**
      * Creates new form TransactionDialogue
      */
-    public ClientsDialogue(Session session, DashboardPanel panel) {
+    public ClientsDialogue(Session session) {
         this.session = session;
-        this.panel = panel;
         initComponents();
         setDefaults();
     }
@@ -52,13 +46,18 @@ public class ClientsDialogue extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
+        priceTf = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        firstname = new javax.swing.JTextField();
-        cell = new javax.swing.JTextField();
-        surname = new javax.swing.JTextField();
+        service = new javax.swing.JTextField();
+        descriptionTf = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        service1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         buttonsPanel = new javax.swing.JPanel();
         saveBtn = new javax.swing.JButton();
@@ -73,6 +72,12 @@ public class ClientsDialogue extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(null);
 
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Address :");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(40, 230, 100, 20);
+
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Client Name :");
@@ -85,18 +90,33 @@ public class ClientsDialogue extends javax.swing.JPanel {
         jLabel1.setText("Clients");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(18, 16, 290, 16);
+        jPanel1.add(priceTf);
+        priceTf.setBounds(150, 180, 270, 24);
 
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Client Cell :");
         jPanel1.add(jLabel5);
         jLabel5.setBounds(40, 150, 100, 16);
-        jPanel1.add(firstname);
-        firstname.setBounds(150, 60, 270, 24);
-        jPanel1.add(cell);
-        cell.setBounds(150, 140, 270, 24);
-        jPanel1.add(surname);
-        surname.setBounds(150, 100, 270, 24);
+        jPanel1.add(service);
+        service.setBounds(150, 60, 270, 24);
+        jPanel1.add(descriptionTf);
+        descriptionTf.setBounds(150, 140, 270, 24);
+
+        jLabel10.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel10.setText("PayBuc Account :");
+        jPanel1.add(jLabel10);
+        jLabel10.setBounds(40, 190, 100, 16);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(150, 230, 270, 83);
+        jPanel1.add(service1);
+        service1.setBounds(150, 100, 270, 24);
 
         jLabel6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(0, 0, 0));
@@ -114,11 +134,6 @@ public class ClientsDialogue extends javax.swing.JPanel {
         saveBtn.setBorderPainted(false);
         saveBtn.setContentAreaFilled(false);
         saveBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save-pressed.png"))); // NOI18N
-        saveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveBtnActionPerformed(evt);
-            }
-        });
         buttonsPanel.add(saveBtn);
 
         cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
@@ -126,41 +141,30 @@ public class ClientsDialogue extends javax.swing.JPanel {
         cancelBtn.setBorderPainted(false);
         cancelBtn.setContentAreaFilled(false);
         cancelBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel-pressed.png"))); // NOI18N
-        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtnActionPerformed(evt);
-            }
-        });
         buttonsPanel.add(cancelBtn);
 
         add(buttonsPanel, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        // TODO add your handling code here:
-        diag.dispose();
-    }//GEN-LAST:event_cancelBtnActionPerformed
-
-    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-        // TODO add your handling code here:
-        panel.addToWaitList(new Person(firstname.getText(), surname.getText(), cell.getText()));
-        diag.dispose();
-    }//GEN-LAST:event_saveBtnActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JTextField cell;
-    private javax.swing.JTextField firstname;
+    private javax.swing.JTextField descriptionTf;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextField priceTf;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JTextField surname;
+    private javax.swing.JTextField service;
+    private javax.swing.JTextField service1;
     // End of variables declaration//GEN-END:variables
 
 }

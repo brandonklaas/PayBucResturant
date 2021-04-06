@@ -50,13 +50,11 @@ public class SettingsManagement extends javax.swing.JPanel {
             branchesCB.setSelectedItem("<None>");
             payBucAccountTf.setText(settings.getPayBucAccount());
             taxTf.setText(settings.getTax());
-            employeeTip.setSelected(settings.getTipService());
             filterByBranchCB.setSelectedItem(settings.getFilterBranches());
         } else {
             branchesCB.setSelectedItem(settings.getDefaultBranch());
             payBucAccountTf.setText(settings.getPayBucAccount());
             taxTf.setText(settings.getTax());
-            employeeTip.setSelected(settings.getTipService());
             filterByBranchCB.setSelectedItem(settings.getFilterBranches());
         }
     }
@@ -88,11 +86,11 @@ public class SettingsManagement extends javax.swing.JPanel {
             }
             
         } else {
-            Object[] tmp = new Object[]{"<None>"};
-            filteredBranchesModel = new DefaultComboBoxModel(tmp);
-            filterByBranchCB.setModel(filteredBranchesModel);
-            filterByBranchCB.repaint();
-            filterByBranchCB.validate();
+            Object[] tmp = new Object[]{"Show All"};
+            branchesModel = new DefaultComboBoxModel(tmp);
+            branchesCB.setModel(branchesModel);
+            branchesCB.repaint();
+            branchesCB.validate();
         }
     }
 
@@ -130,7 +128,6 @@ public class SettingsManagement extends javax.swing.JPanel {
         payBucAccountTf.setEnabled(state);
         taxTf.setEnabled(state);
         filterByBranchCB.setEnabled(state);
-        employeeTip.setEnabled(state);
     }
 
     /**
@@ -151,8 +148,6 @@ public class SettingsManagement extends javax.swing.JPanel {
         taxTf = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         filterByBranchCB = new javax.swing.JComboBox<>();
-        jLabel9 = new javax.swing.JLabel();
-        employeeTip = new javax.swing.JCheckBox();
         buttonsPanel = new javax.swing.JPanel();
         saveBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
@@ -196,19 +191,11 @@ public class SettingsManagement extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Filter By Branch :");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(20, 180, 100, 16);
+        jLabel8.setBounds(20, 140, 100, 16);
 
         filterByBranchCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(filterByBranchCB);
-        filterByBranchCB.setBounds(130, 170, 270, 26);
-
-        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("Employee Tip :");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(20, 140, 100, 16);
-        jPanel1.add(employeeTip);
-        employeeTip.setBounds(130, 130, 270, 24);
+        filterByBranchCB.setBounds(130, 130, 270, 26);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -247,7 +234,6 @@ public class SettingsManagement extends javax.swing.JPanel {
         settings.setBayBucAccount(payBucAccountTf.getText());
         settings.setDefaultBranch(branchesCB.getSelectedItem().toString());
         settings.setTax(taxTf.getText());
-        settings.setTipService(employeeTip.isSelected());
         settings.setFilterBranches(filterByBranchCB.getSelectedItem().toString());
         settings.saveSettings();
         
@@ -269,13 +255,11 @@ public class SettingsManagement extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> branchesCB;
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton editBtn;
-    private javax.swing.JCheckBox employeeTip;
     private javax.swing.JComboBox<String> filterByBranchCB;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField payBucAccountTf;
     private javax.swing.JButton saveBtn;

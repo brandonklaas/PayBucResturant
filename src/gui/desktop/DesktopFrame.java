@@ -5,11 +5,8 @@
  */
 package gui.desktop;
 
-import com.mysql.cj.conf.PropertyKey;
-import core.general.Account;
 import core.utilities.ComponentResizer;
 import core.utilities.Session;
-import gui.dialoguePanels.YesNoDialogue;
 import gui.services.AccountsManagementPanel;
 import gui.services.BranchManagementPanel;
 import gui.services.DashboardPanel; 
@@ -20,6 +17,7 @@ import gui.services.ServiceManagementPanel;
 import gui.services.SettingsManagementPanel;
 import gui.services.TransactionsManagementPanel;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -40,20 +38,16 @@ public class DesktopFrame extends javax.swing.JFrame {
     private AccountsManagementPanel accountPanel;
     private BranchManagementPanel branchPanel;
     
+    private Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private boolean fullscreen = false;
-    private Session session;
-    private Dimension dim;
-    private Account selectedAccount;
+    private Session session = new Session();
     
     /**
      * Creates new form DesktopFrame
      */
-    public DesktopFrame(Dimension dim, Session session) {
-        
+    public DesktopFrame() {
         initComponents();
-        this.dim = dim;
-        this.session = session;
-        this.selectedAccount = session.getLoggedInUser();
+        
         this.setIconImage(new ImageIcon(getClass().getResource("/icons/round-logo.png")).getImage());
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         
@@ -72,9 +66,9 @@ public class DesktopFrame extends javax.swing.JFrame {
         
         setDefaults();
         setResizableAndMove();
-        
-    } 
-
+         
+    }
+    
     public void setResizableAndMove(){
         ComponentResizer cr = new ComponentResizer();
         cr.registerComponent(this);
@@ -84,8 +78,10 @@ public class DesktopFrame extends javax.swing.JFrame {
     }
     
     public void setDefaults(){
-        centerPanel.add(dashboardPanel);
-        dashboardBtn.setSelected(true);
+        
+        centerPanel.add(servicePanel);
+        servicesBtn.setSelected(true);
+        
         
         ButtonGroup bg = new ButtonGroup();
         bg.add(dashboardBtn);
@@ -97,19 +93,6 @@ public class DesktopFrame extends javax.swing.JFrame {
         bg.add(AccountsBtn);
         bg.add(occupationsBtn);
         bg.add(branchBtn);
-        
-        userNameLbl.setText(selectedAccount.getUsername());
-        
-        AccountsBtn.setVisible(selectedAccount.isAccounts());
-        transactionsBtn.setVisible(selectedAccount.isTransactions());
-        servicesBtn.setVisible(selectedAccount.isServices());
-        productsBtn.setVisible(selectedAccount.isProducts());
-        employeesBtn.setVisible(selectedAccount.isEmployees());
-        settingsBtn.setVisible(selectedAccount.isSettings());
-        
-        branchBtn.setVisible((selectedAccount.isAdmin()) ? true : false);
-        occupationsBtn.setVisible((selectedAccount.isAdmin()) ? true : false);
-        
     }
 
     /**
@@ -134,13 +117,8 @@ public class DesktopFrame extends javax.swing.JFrame {
         branchBtn = new javax.swing.JToggleButton();
         left = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        userNameLbl = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        exitBtn = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        minimizeBtn = new javax.swing.JButton();
-        resizeBtn = new javax.swing.JButton();
-        closeBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         centerPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -273,63 +251,27 @@ public class DesktopFrame extends javax.swing.JFrame {
         jPanel3.setPreferredSize(new java.awt.Dimension(745, 45));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 5, 7));
 
-        userNameLbl.setFont(new java.awt.Font("Segoe UI Semibold", 0, 14)); // NOI18N
-        userNameLbl.setForeground(new java.awt.Color(153, 153, 153));
-        userNameLbl.setText("Brandon Klaas");
-        jPanel3.add(userNameLbl);
-
-        jLabel4.setText(" ");
-        jPanel3.add(jLabel4);
-
-        exitBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout.png"))); // NOI18N
-        exitBtn.setBorder(null);
-        exitBtn.setBorderPainted(false);
-        exitBtn.setContentAreaFilled(false);
-        exitBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logout-pressed.png"))); // NOI18N
-        exitBtn.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/size.png"))); // NOI18N
+        jButton1.setBorder(null);
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitBtnActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jPanel3.add(exitBtn);
+        jPanel3.add(jButton1);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(204, 204, 204));
-        jLabel2.setText("   |   ");
-        jPanel3.add(jLabel2);
-
-        minimizeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/minimize.png"))); // NOI18N
-        minimizeBtn.setBorder(null);
-        minimizeBtn.setBorderPainted(false);
-        minimizeBtn.setContentAreaFilled(false);
-        minimizeBtn.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/close.png"))); // NOI18N
+        jButton2.setBorder(null);
+        jButton2.setBorderPainted(false);
+        jButton2.setContentAreaFilled(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                minimizeBtnActionPerformed(evt);
+                jButton2ActionPerformed(evt);
             }
         });
-        jPanel3.add(minimizeBtn);
-
-        resizeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/size.png"))); // NOI18N
-        resizeBtn.setBorder(null);
-        resizeBtn.setBorderPainted(false);
-        resizeBtn.setContentAreaFilled(false);
-        resizeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resizeBtnActionPerformed(evt);
-            }
-        });
-        jPanel3.add(resizeBtn);
-
-        closeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/close.png"))); // NOI18N
-        closeBtn.setBorder(null);
-        closeBtn.setBorderPainted(false);
-        closeBtn.setContentAreaFilled(false);
-        closeBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeBtnActionPerformed(evt);
-            }
-        });
-        jPanel3.add(closeBtn);
+        jPanel3.add(jButton2);
 
         left.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
@@ -346,7 +288,6 @@ public class DesktopFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(!(centerPanel.getComponent(0) instanceof DashboardPanel)){
             centerPanel.removeAll();
-            dashboardPanel.refreshCards();
             centerPanel.add(dashboardPanel);
             centerPanel.repaint();
             centerPanel.validate();
@@ -405,16 +346,12 @@ public class DesktopFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_transactionsBtnActionPerformed
 
-    private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new YesNoDialogue(this, true, "      Are you sure you'd <p> like to close the program?     ", "Exit");
-    }//GEN-LAST:event_closeBtnActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
-    public void closeDatabase(){
-        session.getDatabase().close();
-    }
-    
-    private void resizeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resizeBtnActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         if (fullscreen) {
             fullscreen = false;
@@ -424,7 +361,7 @@ public class DesktopFrame extends javax.swing.JFrame {
             fullscreen = true;
             setExtendedState(JFrame.MAXIMIZED_BOTH);
         }
-    }//GEN-LAST:event_resizeBtnActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void occupationsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_occupationsBtnActionPerformed
         // TODO add your handling code here:
@@ -456,38 +393,57 @@ public class DesktopFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_branchBtnActionPerformed
 
-    private void minimizeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_minimizeBtnActionPerformed
-        // TODO add your handling code here:
-        this.setExtendedState(JFrame.ICONIFIED);
-    }//GEN-LAST:event_minimizeBtnActionPerformed
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(DesktopFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(DesktopFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(DesktopFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(DesktopFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-    private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
-        // TODO add your handling code here:
-        new YesNoDialogue(this, true, "Are you sure you'd like to log out?", "LogOut");
-    }//GEN-LAST:event_exitBtnActionPerformed
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new DesktopFrame().setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton AccountsBtn;
     private javax.swing.JToggleButton branchBtn;
     private javax.swing.JPanel centerPanel;
-    private javax.swing.JButton closeBtn;
     private javax.swing.JToggleButton dashboardBtn;
     private javax.swing.JToggleButton employeesBtn;
-    private javax.swing.JButton exitBtn;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel left;
     private javax.swing.JPanel main;
-    private javax.swing.JButton minimizeBtn;
     private javax.swing.JToggleButton occupationsBtn;
     private javax.swing.JToggleButton productsBtn;
-    private javax.swing.JButton resizeBtn;
     private javax.swing.JToggleButton servicesBtn;
     private javax.swing.JToggleButton settingsBtn;
     private javax.swing.JToggleButton transactionsBtn;
-    private javax.swing.JLabel userNameLbl;
     // End of variables declaration//GEN-END:variables
-
 }

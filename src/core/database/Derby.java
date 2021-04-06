@@ -58,13 +58,13 @@ public class Derby {
     
     public static final String UPDATE_SERVICES     = "UPDATE Services  SET Name = ?,  Description = ?, Price = ?, Taxable = ? WHERE id = ?";
     
-    public static final String UPDATE_TRANSACTIONS = "UPDATE Transactions SET Site = ? , Title = ?, Type = ?,  TypeID = ?,  Payment = ?,  Price = ?,  Employee = ?, TableName = ?,Tip = ?, OrderID = ?,  Date = ? WHERE id = ?";
+    public static final String UPDATE_TRANSACTIONS = "UPDATE Transactions SET Site = ? , Title = ?, Type = ?,  TypeID = ?,  Payment = ?,  Price = ?, Employee = ?, CustomerName = ?, CustomerNumber = ?, Date = ? WHERE id = ?";
                 
     public static final String UPDATE_EMPLOYEE     = "UPDATE Employees SET EmployeeNo = ?,  Occupation = ?,  MedicalAid = ?, TaxNo = ?, IDNumber = ?, Firstname = ?, Surname = ?, Email = ?, CellNo = ?, Address = ?, Race = ?, Gender = ? WHERE id = ?";
     
     public static final String UPDATE_PRODUCT      = "UPDATE Products SET Name = ?, Description = ?, Price = ?, Tax = ? WHERE id = ?";
         
-    public static final String UPDATE_ACCOUNT      = "UPDATE Accounts SET Username = ?,  Password = ?,  Admin = ?, Guest = ?, Transactions = ?, DeleteTransaction = ?, Services = ?, Products = ?, Employees = ?, Settings = ?, Accounts = ? WHERE id = ?";
+    public static final String UPDATE_ACCOUNT      = "UPDATE Accounts SET Username = ?,  Password = ?,  Admin = ?, Guest = ?, Transactions = ?, Services = ?, Products = ?, Employees = ?, Settings = ?, Accounts = ? WHERE id = ?";
     
     public static final String UPDATE_OCCUPATION     = "UPDATE Occupation SET Title = ?, Responsibilities = ? WHERE id = ?";
     
@@ -74,13 +74,13 @@ public class Derby {
     
     public static final String INSERT_SERVICES     = "INSERT INTO Services (Name,  Description, Price, Taxable) VALUES (?,?,?,?)";
     
-    public static final String INSERT_TRANSACTIONS = "INSERT INTO Transactions (Site , Title, Type,  TypeID,  Payment,  Price, Employee, TableName, Tip, OrderID , Date) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_TRANSACTIONS = "INSERT INTO Transactions (Site , Title, Type,  TypeID,  Payment,  Price, Employee, CustomerName, CustomerNumber, Date) VALUES (?,?,?,?,?,?,?,?,?,?)";
                 
     public static final String INSERT_EMPLOYEE     = "INSERT INTO Employees (EmployeeNo,  Occupation,  MedicalAid, TaxNo, IDNumber, Firstname,   Surname,  Email, CellNo, Address, Race, Gender) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     
     public static final String INSERT_PRODUCT      = "INSERT INTO Products (Name,  Description,  Price,  Tax) VALUES (?,?,?,?)";
     
-    public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, DeleteTransaction, Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,?,?,?,?,?,?,?)";
     
     public static final String INSERT_OCCUPATION   = "INSERT INTO Occupation (Title,  Responsibilities) VALUES (?,?)";
     
@@ -92,15 +92,15 @@ public class Derby {
     
     public static final String CREATE_SERVICES     = "CREATE TABLE Services (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Name varchar(255),  Description varchar(255), Price decimal(18,2),   Taxable int)";
     
-    public static final String CREATE_TRANSACTIONS = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderID int, Site int, Title varchar(255), Type varchar(100),  TypeID int,  Payment varchar(255),  Price decimal(18,2) , "
-                                                    + " Tip decimal(18,2), Employee varchar(255), TableName varchar(255), Date Date,  FOREIGN KEY (Site) REFERENCES Site(id))";
+    public static final String CREATE_TRANSACTIONS = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Site int, Title varchar(255), Type varchar(100),  TypeID int,  Payment varchar(255),  Price decimal(18,2), "
+                                                    + "Employee varchar(255), CustomerName varchar(255),   CustomerNumber varchar(255),  Date Date,  FOREIGN KEY (Site) REFERENCES Site(id))";
                 
     public static final String CREATE_EMPLOYEE     = "CREATE TABLE Employees (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, EmployeeNo varchar(100),  Occupation varchar(255),  MedicalAid varchar(255), TaxNo varchar(255), "
                                                     + "IDNumber varchar(255), Firstname varchar(255),   Surname varchar(255),  Email varchar(255), CellNo varchar(255), Address varchar(255), Race int, Gender varchar(255) )";
     
     public static final String CREATE_PRODUCT      = "CREATE TABLE Products (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Name varchar(255),  Description varchar(255),  Price decimal(18,2),  Tax int)";
     
-    public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, DeleteTransaction int, Services int, Products int,"
+    public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, Services int, Products int,"
                                                     + "Employees int, Settings int, Accounts int)";
      
     public static final String CREATE_OCCUPATION   = "CREATE TABLE Occupation (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Title varchar(255),  Responsibilities varchar(255))";

@@ -5,6 +5,7 @@
  */
 package gui.dialoguePanels;
 
+import core.utilities.Session;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -58,12 +59,6 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof BranchDialogue) {
             ((BranchDialogue) panel).setDialogue(this);
-            
-        } else if (panel instanceof ClientsDialogue) {
-            ((ClientsDialogue) panel).setDialogue(this);
-            
-        } else if (panel instanceof FilterDialogue) {
-            ((FilterDialogue) panel).setDialogue(this);
         }
 
         jLabel1.setText(title);
@@ -72,12 +67,7 @@ public class Dialogue extends javax.swing.JDialog {
         centerPanel.repaint();
         centerPanel.validate();
         
-        if (panel instanceof ClientsDialogue || panel instanceof FilterDialogue) {
-            this.setSize(670, 380);
-        } else {
-            this.setSize(700, 680);
-        }
-        
+        this.setSize(700, 680);
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         this.setVisible(true);
         

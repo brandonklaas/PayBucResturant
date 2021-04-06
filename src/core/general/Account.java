@@ -17,7 +17,6 @@ public class Account {
     private boolean guest;
     
     private boolean transactions;
-    private boolean deleteTransactions;
     private boolean services;
     private boolean employees;
     private boolean settings;
@@ -74,14 +73,6 @@ public class Account {
         this.transactions = transactions;
     }
 
-    public boolean isDeleteTransactions() {
-        return deleteTransactions;
-    }
-
-    public void setDeleteTransactions(boolean deleteTransactions) {
-        this.deleteTransactions = deleteTransactions;
-    }
-    
     public boolean isServices() {
         return services;
     }

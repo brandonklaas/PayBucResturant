@@ -13,16 +13,15 @@ import java.util.Date;
  */
 public class Transaction {
     private int id;
-    private int orderID;
     private int site;
     private String Title;
     private String Type;
     private int    TypeID;
     private String Payment;
     private double Price;
-    private double Tip;
     private String Employee;
-    private String TableName;
+    private String CustomerName;
+    private String CustomerNumber;
     private Date date;
 
     public String getTitle() {
@@ -65,13 +64,7 @@ public class Transaction {
         this.TypeID = TypeID;
     }
 
-    public double getTip() {
-        return Tip;
-    }
-
-    public void setTip(double Tip) {
-        this.Tip = Tip;
-    }
+    
 
     public String getPayment() {
         return Payment;
@@ -97,12 +90,20 @@ public class Transaction {
         this.Employee = Employee;
     }
 
-    public String getTableName() {
-        return TableName;
+    public String getCustomerName() {
+        return CustomerName;
     }
 
-    public void setTableName(String TableName) {
-        this.TableName = TableName;
+    public void setCustomerName(String CustomerName) {
+        this.CustomerName = CustomerName;
+    }
+
+    public String getCustomerNumber() {
+        return CustomerNumber;
+    }
+
+    public void setCustomerNumber(String CustomerNumber) {
+        this.CustomerNumber = CustomerNumber;
     }
 
     public Date getDate() {
@@ -112,15 +113,6 @@ public class Transaction {
     public void setDate(Date date) {
         this.date = date;
     }
-
-    public int getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
-    
     
     
 }

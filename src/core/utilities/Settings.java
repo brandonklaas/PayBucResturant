@@ -38,8 +38,7 @@ public class Settings {
 
                 properties.setProperty("DefaultBranch"          , "<None>");
                 properties.setProperty("PayBucAccount"          , "");
-                properties.setProperty("Tax"                    , "15");
-                properties.setProperty("TipService"             , "true");
+                properties.setProperty("Tax"                    , "");
                 properties.setProperty("FilterBranches"         , "<Show All>");
 
                 // save properties to project root folder
@@ -86,10 +85,6 @@ public class Settings {
     public String getDefaultBranch(){
         return properties.getProperty("DefaultBranch");
     }
-    
-    public boolean getTipService(){
-        return Boolean.parseBoolean(properties.getProperty("TipService"));
-    }
 
     public String getPayBucAccount(){
         return properties.getProperty("PayBucAccount");
@@ -106,10 +101,6 @@ public class Settings {
     // ================ SETTER METHODS ========================
     public void setDefaultBranch(String value){
         properties.setProperty("DefaultBranch", value);
-    }
-    
-    public void setTipService(boolean value){
-        properties.setProperty("TipService", value+"");
     }
     
     public void setBayBucAccount(String value){

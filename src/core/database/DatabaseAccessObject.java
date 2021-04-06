@@ -22,7 +22,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +30,6 @@ import java.util.logging.Logger;
  */
 public class DatabaseAccessObject {
     private Connection connection;
-    private DatabaseConnection dbConnection;
     private boolean offline;
     private Session session;
     
@@ -40,12 +38,10 @@ public class DatabaseAccessObject {
         this.session = session;
         setQueries();
         if (Files.exists(new File("database").toPath()) == false && offline == true) {
-            dbConnection =new DatabaseConnection(offline);
-            connection = dbConnection.getConnection();
+            connection = new DatabaseConnection(offline).getConnection();
             createTables();
         } else {
-            dbConnection =new DatabaseConnection(offline);
-            connection = dbConnection.getConnection();
+            connection = new DatabaseConnection(offline).getConnection();
         }
         
         checkTables();
@@ -78,11 +74,7 @@ public class DatabaseAccessObject {
         }
         
     }
-    
-    public void close() {
-        dbConnection.closeConnection();
-    }
-    
+
     public void setQueries() {
         if(offline){
             SELECT_EMPLOYEE_BY_OCCUPATION = Derby.SELECT_EMPLOYEE_BY_OCCUPATION;
@@ -219,43 +211,6 @@ public class DatabaseAccessObject {
         }
     }
     
-    
-    public Account getAccount(String Username, String password) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(SELECT_ACCOUNT_BY_NAME);
-            pstmt.setString(1, Username);
-            pstmt.setString(2, password);
-            
-            pstmt.executeQuery();
-            ResultSet rs = pstmt.getResultSet();
-            
-            Account account = null;
-            
-            if (rs.next()) {
-                account = new Account();
-                account.setId(rs.getInt("id"));
-                account.setUsername(rs.getString("Username"));
-                account.setPassword(rs.getString("Password"));
-
-                account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
-                account.setGuest((rs.getInt("Guest") == 1) ? true : false);
-                account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
-                account.setTransactions((rs.getInt("DeleteTransaction") == 1) ? true : false);
-                account.setServices((rs.getInt("Services") == 1) ? true : false);
-                account.setProducts((rs.getInt("Products") == 1) ? true : false);
-                account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
-                account.setSettings((rs.getInt("Settings") == 1) ? true : false);
-                account.setAccounts((rs.getInt("Accounts") == 1) ? true : false);
-            }
-            
-            return account;
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-    
     public ArrayList<Product> getProducts() {
         try {
             ArrayList<Product> array = new ArrayList<>();
@@ -324,7 +279,6 @@ public class DatabaseAccessObject {
                 account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
                 account.setGuest((rs.getInt("Guest") == 1) ? true : false);
                 account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
-                account.setTransactions((rs.getInt("DeleteTransaction") == 1) ? true : false);
                 account.setServices((rs.getInt("Services") == 1) ? true : false);
                 account.setProducts((rs.getInt("Products") == 1) ? true : false);
                 account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
@@ -401,92 +355,6 @@ public class DatabaseAccessObject {
         }
     }
     
-    public double getTransactionSum(int branch, Date day) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(SUM_TRANSACTIONS_FROM_BRANCH);
-            pstmt.setInt(1, branch);
-            pstmt.setDate(2, new java.sql.Date(day.getTime()));
-            pstmt.executeQuery();
-            ResultSet rs = pstmt.getResultSet();
-
-            if (rs.next()) {
-                return rs.getDouble("TransactionSales");
-            } else {
-                return 0;
-            }
-
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
-        }
-    }
-    
-    public double getTransactionDailySum(String type, int Branch, Date day) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(SUM_DAILY_SALES);
-            pstmt.setString(1, type);
-            pstmt.setInt(2, Branch);
-            pstmt.setDate(3, new java.sql.Date(day.getTime()));
-            pstmt.execute();
-
-            ResultSet rs = pstmt.getResultSet();
-            if (rs.next()) {
-
-                return rs.getDouble("TransactionSales");
-            } else {
-                return 0;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
-        }
-    }
-    
-    public double getTransactionCardSum(int branch, Date day) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(SUM_DAILY_CARD_SALES);
-            pstmt.setString(1, "Card");
-            pstmt.setInt(2, branch);
-            pstmt.setDate(3, new java.sql.Date(day.getTime()));
-            pstmt.executeQuery();
-            ResultSet rs = pstmt.getResultSet();
-
-            if (rs.next()) {
-                return rs.getDouble("TransactionSales");
-            } else {
-                return 0;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
-        }
-    }
-
-    public double getTransactionCashSum(int branch, Date day) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(SUM_DAILY_CARD_SALES);
-            pstmt.setString(1, "Cash");
-            pstmt.setInt(2, branch);
-            pstmt.setDate(3, new java.sql.Date(day.getTime()));
-            pstmt.executeQuery();
-            ResultSet rs = pstmt.getResultSet();
-
-            if (rs.next()) {
-                return rs.getDouble("TransactionSales");
-            } else {
-                return 0;
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            return 0;
-        }
-    }
-
-
     public ArrayList<Employee> getEmployees() {
         try {
             ArrayList<Employee> array = new ArrayList<>();
@@ -531,7 +399,6 @@ public class DatabaseAccessObject {
 
                     Transaction transaction = new Transaction();
                     transaction.setId(rs.getInt("id"));
-                    transaction.setOrderID(rs.getInt("OrderID"));
                     transaction.setSite(rs.getInt("Site"));
                     transaction.setTitle(rs.getString("Title"));
                     transaction.setType(rs.getString("Type"));
@@ -539,8 +406,8 @@ public class DatabaseAccessObject {
                     transaction.setPayment(rs.getString("Payment"));
                     transaction.setPrice(rs.getDouble("Price"));
                     transaction.setEmployee(rs.getString("Employee"));
-                    transaction.setTableName(rs.getString("TableName"));
-                    transaction.setTip(rs.getDouble("Tip"));
+                    transaction.setCustomerName(rs.getString("CustomerName"));
+                    transaction.setCustomerNumber(rs.getString("CustomerNumber"));
                     transaction.setDate(rs.getDate("Date"));
                     array.add(transaction);
                 }
@@ -551,7 +418,7 @@ public class DatabaseAccessObject {
                 
                 ArrayList<Transaction> array = new ArrayList<>();
                 PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_BRANCH);
-                pstmt.setInt(1, (session.getBranch() != null) ? session.getBranch().getId() : 999);
+                pstmt.setInt(1, session.getBranch().getId());
                 
                 pstmt.executeQuery();
                 ResultSet rs = pstmt.getResultSet();
@@ -559,7 +426,6 @@ public class DatabaseAccessObject {
 
                     Transaction transaction = new Transaction();
                     transaction.setId(rs.getInt("id"));
-                    transaction.setOrderID(rs.getInt("OrderID"));
                     transaction.setSite(rs.getInt("Site"));
                     transaction.setTitle(rs.getString("Title"));
                     transaction.setType(rs.getString("Type"));
@@ -567,8 +433,8 @@ public class DatabaseAccessObject {
                     transaction.setPayment(rs.getString("Payment"));
                     transaction.setPrice(rs.getDouble("Price"));
                     transaction.setEmployee(rs.getString("Employee"));
-                    transaction.setTableName(rs.getString("TableName"));
-                    transaction.setTip(rs.getDouble("Tip"));
+                    transaction.setCustomerName(rs.getString("CustomerName"));
+                    transaction.setCustomerNumber(rs.getString("CustomerNumber"));
                     transaction.setDate(rs.getDate("Date"));
                     array.add(transaction);
                 }
@@ -583,149 +449,6 @@ public class DatabaseAccessObject {
         }
     }
 
-    public ArrayList<Transaction> getFilteredTransactions(Date from, Date to, boolean all, boolean card, boolean cash) {
-        try {
-            if (session.getSettings().getFilterBranches().equals("<Show All>")) {
-                ArrayList<Transaction> array = new ArrayList<>();
-                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE);
-                
-                pstmt.setDate(1, new java.sql.Date(from.getTime()));
-                pstmt.setDate(2, new java.sql.Date(to.getTime()));
-
-                pstmt.executeQuery();
-                ResultSet rs = pstmt.getResultSet();
-                while (rs.next()) {
-                    if (all) {
-                        Transaction transaction = new Transaction();
-                        transaction.setId(rs.getInt("id"));
-                        transaction.setOrderID(rs.getInt("OrderID"));
-                        transaction.setSite(rs.getInt("Site"));
-                        transaction.setTitle(rs.getString("Title"));
-                        transaction.setType(rs.getString("Type"));
-                        transaction.setTypeID(rs.getInt("TypeID"));
-                        transaction.setPayment(rs.getString("Payment"));
-                        transaction.setPrice(rs.getDouble("Price"));
-                        transaction.setEmployee(rs.getString("Employee"));
-                        transaction.setTableName(rs.getString("TableName"));
-                        transaction.setTip(rs.getDouble("Tip"));
-                        transaction.setDate(rs.getDate("Date"));
-                        array.add(transaction);
-
-                    } else if (card) {
-                        if (rs.getString("Payment").equals("Card")) {
-                            Transaction transaction = new Transaction();
-                            transaction.setId(rs.getInt("id"));
-                            transaction.setOrderID(rs.getInt("OrderID"));
-                            transaction.setSite(rs.getInt("Site"));
-                            transaction.setTitle(rs.getString("Title"));
-                            transaction.setType(rs.getString("Type"));
-                            transaction.setTypeID(rs.getInt("TypeID"));
-                            transaction.setPayment(rs.getString("Payment"));
-                            transaction.setPrice(rs.getDouble("Price"));
-                            transaction.setEmployee(rs.getString("Employee"));
-                            transaction.setTableName(rs.getString("TableName"));
-                            transaction.setTip(rs.getDouble("Tip"));
-                            transaction.setDate(rs.getDate("Date"));
-                            array.add(transaction);
-                        }
-
-                    } else if (cash) {
-                        if (rs.getString("Payment").equals("Cash")) {
-                            Transaction transaction = new Transaction();
-                            transaction.setId(rs.getInt("id"));
-                            transaction.setOrderID(rs.getInt("OrderID"));
-                            transaction.setSite(rs.getInt("Site"));
-                            transaction.setTitle(rs.getString("Title"));
-                            transaction.setType(rs.getString("Type"));
-                            transaction.setTypeID(rs.getInt("TypeID"));
-                            transaction.setPayment(rs.getString("Payment"));
-                            transaction.setPrice(rs.getDouble("Price"));
-                            transaction.setEmployee(rs.getString("Employee"));
-                            transaction.setTableName(rs.getString("TableName"));
-                            transaction.setTip(rs.getDouble("Tip"));
-                            transaction.setDate(rs.getDate("Date"));
-                            array.add(transaction);
-                        }
-                    }
-
-                }
-
-                return array;
-
-            } else {
-                ArrayList<Transaction> array = new ArrayList<>();
-                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE_SITE);
-                pstmt.setInt(1, session.getBranch().getId());
-                pstmt.setDate(2, new java.sql.Date(from.getTime()));
-                pstmt.setDate(3, new java.sql.Date(to.getTime()));
-
-                pstmt.executeQuery();
-                ResultSet rs = pstmt.getResultSet();
-                while (rs.next()) {
-                    if (all) {
-                        Transaction transaction = new Transaction();
-                        transaction.setId(rs.getInt("id"));
-                        transaction.setOrderID(rs.getInt("OrderID"));
-                        transaction.setSite(rs.getInt("Site"));
-                        transaction.setTitle(rs.getString("Title"));
-                        transaction.setType(rs.getString("Type"));
-                        transaction.setTypeID(rs.getInt("TypeID"));
-                        transaction.setPayment(rs.getString("Payment"));
-                        transaction.setPrice(rs.getDouble("Price"));
-                        transaction.setEmployee(rs.getString("Employee"));
-                        transaction.setTableName(rs.getString("TableName"));
-                        transaction.setTip(rs.getDouble("Tip"));
-                        transaction.setDate(rs.getDate("Date"));
-                        array.add(transaction);
-
-                    } else if (card) {
-                        if (rs.getString("Payment").equals("Card")) {
-                            Transaction transaction = new Transaction();
-                            transaction.setId(rs.getInt("id"));
-                            transaction.setOrderID(rs.getInt("OrderID"));
-                            transaction.setSite(rs.getInt("Site"));
-                            transaction.setTitle(rs.getString("Title"));
-                            transaction.setType(rs.getString("Type"));
-                            transaction.setTypeID(rs.getInt("TypeID"));
-                            transaction.setPayment(rs.getString("Payment"));
-                            transaction.setPrice(rs.getDouble("Price"));
-                            transaction.setEmployee(rs.getString("Employee"));
-                            transaction.setTableName(rs.getString("TableName"));
-                            transaction.setTip(rs.getDouble("Tip"));
-                            transaction.setDate(rs.getDate("Date"));
-                            array.add(transaction);
-                        }
-
-                    } else if (cash) {
-                        if (rs.getString("Payment").equals("Cash")) {
-                            Transaction transaction = new Transaction();
-                            transaction.setId(rs.getInt("id"));
-                            transaction.setOrderID(rs.getInt("OrderID"));
-                            transaction.setSite(rs.getInt("Site"));
-                            transaction.setTitle(rs.getString("Title"));
-                            transaction.setType(rs.getString("Type"));
-                            transaction.setTypeID(rs.getInt("TypeID"));
-                            transaction.setPayment(rs.getString("Payment"));
-                            transaction.setPrice(rs.getDouble("Price"));
-                            transaction.setEmployee(rs.getString("Employee"));
-                            transaction.setTableName(rs.getString("TableName"));
-                            transaction.setTip(rs.getDouble("Tip"));
-                            transaction.setDate(rs.getDate("Date"));
-                            array.add(transaction);
-                        }
-                    }
-                }
-
-                return array;
-            }
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
-    
     public ArrayList<Occupation> getOccupations() {
         try {
             ArrayList<Occupation> array = new ArrayList<>();
@@ -760,12 +483,11 @@ public class DatabaseAccessObject {
                 pstmt.setInt(3, (((Account) object).isAdmin()) ? 1 : 0);
                 pstmt.setInt(4, (((Account) object).isGuest()) ? 1 : 0);
                 pstmt.setInt(5, (((Account) object).isTransactions()) ? 1 : 0);
-                pstmt.setInt(6, (((Account) object).isDeleteTransactions()) ? 1 : 0);
-                pstmt.setInt(7, (((Account) object).isServices()) ? 1 : 0);
-                pstmt.setInt(8, (((Account) object).isProducts()) ? 1 : 0);
-                pstmt.setInt(9, (((Account) object).isEmployees()) ? 1 : 0);
-                pstmt.setInt(10, (((Account) object).isSettings()) ? 1 : 0);
-                pstmt.setInt(11, (((Account) object).isAccounts()) ? 1 : 0);
+                pstmt.setInt(6, (((Account) object).isServices()) ? 1 : 0);
+                pstmt.setInt(7, (((Account) object).isProducts()) ? 1 : 0);
+                pstmt.setInt(8, (((Account) object).isEmployees()) ? 1 : 0);
+                pstmt.setInt(9, (((Account) object).isSettings()) ? 1 : 0);
+                pstmt.setInt(10, (((Account) object).isAccounts()) ? 1 : 0);
                 pstmt.executeUpdate(); 
 
             } else if (object instanceof Branch) {
@@ -797,17 +519,16 @@ public class DatabaseAccessObject {
             } else if (object instanceof Transaction) {
 
                 PreparedStatement pstmt = connection.prepareStatement(INSERT_TRANSACTIONS);
-                pstmt.setInt(1, (((Transaction) object).getSite())); 
+                pstmt.setInt(1, (((Transaction) object).getSite()));
                 pstmt.setString(2, ((Transaction) object).getTitle());
                 pstmt.setString(3, ((Transaction) object).getType());
                 pstmt.setInt(4, ((Transaction) object).getTypeID());
                 pstmt.setString(5, ((Transaction) object).getPayment());
                 pstmt.setDouble(6, ((Transaction) object).getPrice());
                 pstmt.setString(7, ((Transaction) object).getEmployee());
-                pstmt.setString(8, ((Transaction) object).getTableName());
-                pstmt.setDouble(9, ((Transaction) object).getTip());
-                pstmt.setInt(10, ((Transaction) object).getOrderID());
-                pstmt.setDate(11, new java.sql.Date(((Transaction) object).getDate().getTime()));
+                pstmt.setString(8, ((Transaction) object).getCustomerName());
+                pstmt.setString(9, ((Transaction) object).getCustomerNumber());
+                pstmt.setDate(10, new java.sql.Date(((Transaction) object).getDate().getTime()));
                 pstmt.executeUpdate(); 
 
             } else if (object instanceof Employee) {
@@ -852,13 +573,12 @@ public class DatabaseAccessObject {
                 pstmt.setInt(3, (((Account) object).isAdmin()) ? 1 : 0);
                 pstmt.setInt(4, (((Account) object).isGuest()) ? 1 : 0);
                 pstmt.setInt(5, (((Account) object).isTransactions()) ? 1 : 0);
-                pstmt.setInt(6, (((Account) object).isDeleteTransactions()) ? 1 : 0);
-                pstmt.setInt(7, (((Account) object).isServices()) ? 1 : 0);
-                pstmt.setInt(8, (((Account) object).isProducts()) ? 1 : 0);
-                pstmt.setInt(9, (((Account) object).isEmployees()) ? 1 : 0);
-                pstmt.setInt(10, (((Account) object).isSettings()) ? 1 : 0);
-                pstmt.setInt(11, (((Account) object).isAccounts()) ? 1 : 0);
-                pstmt.setInt(12, ((Account) object).getId());
+                pstmt.setInt(6, (((Account) object).isServices()) ? 1 : 0);
+                pstmt.setInt(7, (((Account) object).isProducts()) ? 1 : 0);
+                pstmt.setInt(8, (((Account) object).isEmployees()) ? 1 : 0);
+                pstmt.setInt(9, (((Account) object).isSettings()) ? 1 : 0);
+                pstmt.setInt(10, (((Account) object).isAccounts()) ? 1 : 0);
+                pstmt.setInt(11, ((Account) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Branch) {
@@ -900,11 +620,10 @@ public class DatabaseAccessObject {
                 pstmt.setString(5, ((Transaction) object).getPayment());
                 pstmt.setDouble(6, ((Transaction) object).getPrice());
                 pstmt.setString(7, ((Transaction) object).getEmployee());
-                pstmt.setString(8, ((Transaction) object).getTableName());
-                pstmt.setDouble(9, ((Transaction) object).getTip());
-                pstmt.setInt(10, ((Transaction) object).getOrderID());
-                pstmt.setDate(11, new java.sql.Date(((Transaction) object).getDate().getTime()));
-                pstmt.setInt(12, ((Transaction) object).getId());
+                pstmt.setString(8, ((Transaction) object).getCustomerName());
+                pstmt.setString(9, ((Transaction) object).getCustomerNumber());
+                pstmt.setDate(10, new java.sql.Date(((Transaction) object).getDate().getTime()));
+                pstmt.setInt(11, ((Transaction) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Employee) {
@@ -994,27 +713,12 @@ public class DatabaseAccessObject {
 
     }
     
-    
     private String SELECT_EMPLOYEE_BY_OCCUPATION = null;
     
-    private String SUM_TRANSACTIONS_FROM_BRANCH = "SELECT SUM(Price) AS \"TransactionSales\" FROM Transactions WHERE Site = ? AND Date = ?";
-    
-    private String SUM_DAILY_SALES = "SELECT SUM(Price) AS \"TransactionSales\" FROM Transactions WHERE Type = ? AND Site = ? AND Date = ?";
-    
-    private String SUM_DAILY_CARD_SALES = "SELECT SUM(Price) AS \"TransactionSales\" FROM Transactions WHERE Payment = ? AND Site = ? AND Date = ?";
-    
-    
-    
-    private String SELECT_TRANSACTIONS_BY_DATE_SITE = "SELECT * FROM Transactions WHERE Site = ? AND Date BETWEEN ? AND ?";
-    
-    private String SELECT_TRANSACTIONS_BY_DATE = "SELECT * FROM Transactions WHERE Date BETWEEN ? AND ?";
-    
-    
+            
     
     private String SELECT_SITE_BY_NAME = "SELECT * FROM Site WHERE Name = ?";
-       
-    private String SELECT_ACCOUNT_BY_NAME = "SELECT * FROM Accounts WHERE Username = ? AND Password = ?";
-    
+            
     private String SELECT_TRANSACTIONS_BY_BRANCH = null;
     
     private String SELECT_OCCUPATION   = null;
@@ -1093,5 +797,4 @@ public class DatabaseAccessObject {
     private String CREATE_PRODUCT      = null;
     
     private String CREATE_ACCOUNT      = null;
-
 }

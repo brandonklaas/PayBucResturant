@@ -266,11 +266,6 @@ public class EmployeesDialogue extends javax.swing.JPanel {
         cancelBtn.setBorderPainted(false);
         cancelBtn.setContentAreaFilled(false);
         cancelBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel-pressed.png"))); // NOI18N
-        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtnActionPerformed(evt);
-            }
-        });
         buttonsPanel.add(cancelBtn);
 
         add(buttonsPanel, java.awt.BorderLayout.PAGE_END);
@@ -328,15 +323,8 @@ public class EmployeesDialogue extends javax.swing.JPanel {
             } else {
                 new OkayDialogue(null, true, "Failed to save Employee");
             }
-        } else {
-            new OkayDialogue(null, true, "Fill in all fields, fill in 'N\\A' for fields not applicable");
         }
     }//GEN-LAST:event_saveBtnActionPerformed
-
-    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        // TODO add your handling code here:
-        diag.dispose();
-    }//GEN-LAST:event_cancelBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

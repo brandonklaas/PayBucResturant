@@ -62,7 +62,7 @@ public class MySQL {
     
     public static final String UPDATE_PRODUCT      = "UPDATE Products SET Name = ?, Description = ?, Price = ?, TaxNo = ? WHERE id = ?;";
         
-    public static final String UPDATE_ACCOUNT      = "UPDATE Accounts SET Username = ?,  Password = ?,  Admin = ?, Guest = ?, Transactions = ?, DeleteTransaction = ?, Services = ?, Products = ?, Employees = ?, Settings = ?, Accounts = ? WHERE id = ?;";
+    public static final String UPDATE_ACCOUNT      = "UPDATE Accounts SET Username = ?,  Password = ?,  Admin = ?, Guest = ?, Transactions = ?, Services = ?, Products = ?, Employees = ?, Settings = ?, Accounts = ? WHERE id = ?;";
     
     public static final String UPDATE_OCCUPATION     = "UPDATE Occupation SET Title = ?, Resposibilities = ? WHERE id = ?";
     
@@ -78,7 +78,7 @@ public class MySQL {
     
     public static final String INSERT_PRODUCT      = "INSERT INTO Products (Name,  Description,  Price,  TaxNo) VALUES (?,?,?,?);";
     
-    public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, DeleteTransaction , Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,??,?,?,?,?,?,?);";
+    public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,??,?,?,?,?,?);";
     
     public static final String INSERT_OCCUPATION     = "INSERT INTO Occupation (Title,  Resposibilities) VALUES (?,?)";
     
@@ -98,7 +98,7 @@ public class MySQL {
     
     public static final String CREATE_PRODUCT      = "CREATE TABLE Products (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Name varchar(255),  Description varchar(255),  Price decimal(18,2),  Tax int);";
     
-    public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, DeleteTransaction int, Services int, Products int,"
+    public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, Services int, Products int,"
                                                     + "Employees int, Settings int, Accounts int)";
     
     public static final String CREATE_OCCUPATION   = "CREATE TABLE Occupation (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Title varchar(255),  Resposibilities varchar(255))";

@@ -6,19 +6,12 @@
 package gui.services;
 
 import core.database.DatabaseAccessObject;
+import core.general.Service;
 import core.general.Transaction;
-import core.pdf.TransactionReportPDF;
 import core.utilities.Session;
 import gui.dialoguePanels.Dialogue;
-import gui.dialoguePanels.FilterDialogue;
-import gui.dialoguePanels.OkayDialogue;
 import gui.dialoguePanels.ProductsTransactionDialogue;
 import gui.dialoguePanels.ServiceTransactionDialogue;
-import gui.dialoguePanels.YesNoDialogue;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -29,17 +22,11 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TransactionsManagementPanel extends javax.swing.JPanel {
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
-    private static DecimalFormat df2 = new DecimalFormat("0.00");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private Session session;
     private DefaultTableModel tableModel;
     private DatabaseAccessObject database;
     private ArrayList<Transaction> array;
-    
-    
-    private String filtrationStr = null;
-    
-    private boolean showAll = true;
     
     /**
      * Creates new form Services
@@ -50,11 +37,6 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         
         initComponents();
         refreshTable();
-        setDefaults();
-    }
-    
-    public void setDefaults(){
-        deleteBtn.setVisible(session.getLoggedInUser().isDeleteTransactions());
     }
 
     /**
@@ -68,14 +50,9 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
         main = new javax.swing.JPanel();
         bottomButtonsPanel = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        filterBtn = new javax.swing.JButton();
-        reportBtn = new javax.swing.JButton();
-        productBtn1 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        deleteBtn = new javax.swing.JButton();
-        productBtn = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         serviceBtn = new javax.swing.JButton();
+        productBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         transactionsTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -90,77 +67,14 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
         bottomButtonsPanel.setBackground(new java.awt.Color(227, 227, 227));
         bottomButtonsPanel.setPreferredSize(new java.awt.Dimension(1058, 60));
-        bottomButtonsPanel.setLayout(new java.awt.GridLayout(1, 2));
+        bottomButtonsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 10));
 
-        jPanel5.setBackground(new java.awt.Color(227, 227, 227));
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 20, 10));
-
-        filterBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/filter.png"))); // NOI18N
-        filterBtn.setBorder(null);
-        filterBtn.setBorderPainted(false);
-        filterBtn.setContentAreaFilled(false);
-        filterBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/filter-pressed.png"))); // NOI18N
-        filterBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                filterBtnActionPerformed(evt);
-            }
-        });
-        jPanel5.add(filterBtn);
-
-        reportBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/report.png"))); // NOI18N
-        reportBtn.setBorder(null);
-        reportBtn.setBorderPainted(false);
-        reportBtn.setContentAreaFilled(false);
-        reportBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/report-pressed.png"))); // NOI18N
-        reportBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reportBtnActionPerformed(evt);
-            }
-        });
-        jPanel5.add(reportBtn);
-
-        productBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/all.png"))); // NOI18N
-        productBtn1.setBorder(null);
-        productBtn1.setBorderPainted(false);
-        productBtn1.setContentAreaFilled(false);
-        productBtn1.setPreferredSize(new java.awt.Dimension(130, 35));
-        productBtn1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/all-pressed.png"))); // NOI18N
-        productBtn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productBtn1ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(productBtn1);
-
-        bottomButtonsPanel.add(jPanel5);
-
-        jPanel4.setBackground(new java.awt.Color(227, 227, 227));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 10));
-
-        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
-        deleteBtn.setBorder(null);
-        deleteBtn.setBorderPainted(false);
-        deleteBtn.setContentAreaFilled(false);
-        deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
-        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBtnActionPerformed(evt);
-            }
-        });
-        jPanel4.add(deleteBtn);
-
-        productBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product-sale.png"))); // NOI18N
-        productBtn.setBorder(null);
-        productBtn.setBorderPainted(false);
-        productBtn.setContentAreaFilled(false);
-        productBtn.setPreferredSize(new java.awt.Dimension(130, 35));
-        productBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product-sale-pressed.png"))); // NOI18N
-        productBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productBtnActionPerformed(evt);
-            }
-        });
-        jPanel4.add(productBtn);
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        jButton2.setBorder(null);
+        jButton2.setBorderPainted(false);
+        jButton2.setContentAreaFilled(false);
+        jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
+        bottomButtonsPanel.add(jButton2);
 
         serviceBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/service-sale.png"))); // NOI18N
         serviceBtn.setBorder(null);
@@ -173,9 +87,20 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
                 serviceBtnActionPerformed(evt);
             }
         });
-        jPanel4.add(serviceBtn);
+        bottomButtonsPanel.add(serviceBtn);
 
-        bottomButtonsPanel.add(jPanel4);
+        productBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product-sale.png"))); // NOI18N
+        productBtn.setBorder(null);
+        productBtn.setBorderPainted(false);
+        productBtn.setContentAreaFilled(false);
+        productBtn.setPreferredSize(new java.awt.Dimension(130, 35));
+        productBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product-sale-pressed.png"))); // NOI18N
+        productBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productBtnActionPerformed(evt);
+            }
+        });
+        bottomButtonsPanel.add(productBtn);
 
         main.add(bottomButtonsPanel, java.awt.BorderLayout.PAGE_END);
 
@@ -241,7 +166,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(907, Short.MAX_VALUE))
+                .addContainerGap(815, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,74 +188,8 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
     private void productBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productBtnActionPerformed
         // TODO add your handling code here:
-        new Dialogue(null, true, new ProductsTransactionDialogue(session, this), "Product Transaction Management");
+        new Dialogue(null, true, new ProductsTransactionDialogue(session), "Product Transaction Management");
     }//GEN-LAST:event_productBtnActionPerformed
-
-    private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
-        // TODO add your handling code here:
-        new Dialogue(null, true, new FilterDialogue(session, this), "Filter");
-    }//GEN-LAST:event_filterBtnActionPerformed
-
-    private void reportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBtnActionPerformed
-        // TODO add your handling code here:
-        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, array, session, showAll);
-
-        if (Desktop.isDesktopSupported()) {
-            try {
-                File myFile = new File(reportPDF.getPath());
-                Desktop.getDesktop().open(myFile);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }//GEN-LAST:event_reportBtnActionPerformed
-
-    private void productBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productBtn1ActionPerformed
-        // TODO add your handling code here:
-        refreshTable();
-    }//GEN-LAST:event_productBtn1ActionPerformed
-
-    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        // TODO add your handling code here:
-        if(transactionsTable.getSelectedRow() > -1) {
-            new YesNoDialogue(null, true, "Are you sure you'd like to delete this Transaction", "Delete", this);
-        } else {
-            new OkayDialogue(null, true, "Select Transaction to Delete");
-        }
-    }//GEN-LAST:event_deleteBtnActionPerformed
-
-    
-    public void delete() {
-        database.delete(array.get(transactionsTable.getSelectedRow()));
-        if (showAll) {
-            refreshTable();
-            new OkayDialogue(null, true, "Transaction Successfuly Deleted");
-        } else {
-            array.remove(transactionsTable.getSelectedRow());
-
-            tableModel = new DefaultTableModel();
-            tableModel.addColumn("Date");
-            tableModel.addColumn("Title");
-            tableModel.addColumn("Type");
-            tableModel.addColumn("Payment");
-            tableModel.addColumn("Customer");
-            tableModel.addColumn("Customer Cell");
-            tableModel.addColumn("Employee");
-            tableModel.addColumn("Price");
-
-            if (array.size() > 0) {
-                for (Transaction transaction : array) {
-                    tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                        transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), df2.format(transaction.getPrice())});
-                }
-            }
-
-            transactionsTable.setModel(tableModel);
-            transactionsTable.repaint();
-            transactionsTable.validate();
-            new OkayDialogue(null, true, "Transaction Successfuly Deleted");
-        }
-    }
 
     public void refreshTable() {
         tableModel = new DefaultTableModel();
@@ -348,64 +207,26 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         if (array.size() > 0) {
             for (Transaction transaction : array) {
                 tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), df2.format(transaction.getPrice())});
+                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), transaction.getPrice()});
             }
         }
 
         transactionsTable.setModel(tableModel);
         transactionsTable.repaint();
         transactionsTable.validate();
-        
-        showAll = true;
     }
-    
-    public void refreshFilteredTable(ArrayList<Transaction> array, String filtrationStr) {
-        this.filtrationStr = filtrationStr;
-        
-        tableModel = new DefaultTableModel();
-        tableModel.addColumn("Date");
-        tableModel.addColumn("Title");
-        tableModel.addColumn("Type");
-        tableModel.addColumn("Payment");
-        tableModel.addColumn("Customer");
-        tableModel.addColumn("Customer Cell");
-        tableModel.addColumn("Employee");
-        tableModel.addColumn("Price");
-
-        this.array = array;
-        
-        if (array.size() > 0) {
-            for (Transaction transaction : array) {
-                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), df2.format(transaction.getPrice())});
-            }
-        }
-
-        transactionsTable.setModel(tableModel);
-        transactionsTable.repaint();
-        transactionsTable.validate();
-        
-        showAll = false;
-    }
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomButtonsPanel;
-    private javax.swing.JButton deleteBtn;
-    private javax.swing.JButton filterBtn;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel main;
     private javax.swing.JButton productBtn;
-    private javax.swing.JButton productBtn1;
-    private javax.swing.JButton reportBtn;
     private javax.swing.JButton serviceBtn;
     private javax.swing.JTable transactionsTable;
     // End of variables declaration//GEN-END:variables
-
 }

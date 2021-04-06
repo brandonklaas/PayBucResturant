@@ -59,7 +59,6 @@ public class AccountDialogue extends javax.swing.JPanel {
         generalUser.setSelected(selectedAccount.isGuest());
         
         transactions.setSelected(selectedAccount.isTransactions());
-        deleteTransaction.setSelected(selectedAccount.isDeleteTransactions());
         services.setSelected(selectedAccount.isServices());
         employees.setSelected(selectedAccount.isEmployees());
         settings.setSelected(selectedAccount.isSettings());
@@ -122,7 +121,6 @@ public class AccountDialogue extends javax.swing.JPanel {
         employees = new javax.swing.JCheckBox();
         settings = new javax.swing.JCheckBox();
         products = new javax.swing.JCheckBox();
-        deleteTransaction = new javax.swing.JCheckBox();
         buttonsPanel = new javax.swing.JPanel();
         saveBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
@@ -179,11 +177,6 @@ public class AccountDialogue extends javax.swing.JPanel {
         generalUser.setBounds(310, 190, 120, 28);
 
         admin.setText("Administrator");
-        admin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminActionPerformed(evt);
-            }
-        });
         jPanel1.add(admin);
         admin.setBounds(170, 190, 120, 28);
 
@@ -217,10 +210,6 @@ public class AccountDialogue extends javax.swing.JPanel {
         products.setText("Products");
         jPanel1.add(products);
         products.setBounds(50, 480, 150, 24);
-
-        deleteTransaction.setText("Is User allowed to delete Transactions");
-        jPanel1.add(deleteTransaction);
-        deleteTransaction.setBounds(310, 320, 280, 24);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -276,7 +265,6 @@ public class AccountDialogue extends javax.swing.JPanel {
             account.setAdmin(admin.isSelected());
             account.setGuest(generalUser.isSelected());
             account.setTransactions(transactions.isSelected());
-            account.setDeleteTransactions(deleteTransaction.isSelected());
             account.setServices(services.isSelected());
             account.setEmployees(employees.isSelected());
             account.setSettings(settings.isSelected());
@@ -307,13 +295,11 @@ public class AccountDialogue extends javax.swing.JPanel {
             account.setAdmin(admin.isSelected());
             account.setGuest(generalUser.isSelected());
             account.setTransactions(transactions.isSelected());
-            account.setDeleteTransactions(deleteTransaction.isSelected());
             account.setServices(services.isSelected());
             account.setEmployees(employees.isSelected());
             account.setSettings(settings.isSelected());
             account.setProducts(products.isSelected());
             account.setAccounts(accounts.isSelected());
-            account.setId(selectedAccount.getId());
             
 
             if (database.update(account)) {
@@ -334,18 +320,6 @@ public class AccountDialogue extends javax.swing.JPanel {
         this.diag.dispose();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
-    private void adminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminActionPerformed
-        // TODO add your handling code here:
-        if(admin.isSelected()){
-            transactions.setSelected(true);
-            employees.setSelected(true);
-            settings.setSelected(true);
-            accounts.setSelected(true);
-            services.setSelected(true);
-            products.setSelected(true); 
-        }
-    }//GEN-LAST:event_adminActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox accounts;
@@ -353,7 +327,6 @@ public class AccountDialogue extends javax.swing.JPanel {
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JPasswordField confirmPass;
-    private javax.swing.JCheckBox deleteTransaction;
     private javax.swing.JCheckBox employees;
     private javax.swing.JRadioButton generalUser;
     private javax.swing.JLabel jLabel1;

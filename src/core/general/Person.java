@@ -22,16 +22,6 @@ public class Person {
     private Race   race;
     private Gender gender;
     
-    public Person(){
-        
-    }
-    
-    public Person(String firstname, String lastname, String cellNo){
-        setFirstname(firstname);
-        setLastname(lastname);
-        setCellNo(cellNo);
-    }
-    
     public String getFirstname() {
         return firstname;
     }
