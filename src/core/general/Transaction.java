@@ -14,14 +14,15 @@ import java.util.Date;
 public class Transaction {
     private int id;
     private int site;
-    private String Title;
+    private int employeeID;
+    private int tableID;
+    private int orderID;
+    private int orderNumber;
     private String Type;
     private int    TypeID;
     private String Payment;
     private double Price;
-    private String Employee;
-    private String CustomerName;
-    private String CustomerNumber;
+    private 
     private Date date;
 
     public String getTitle() {
