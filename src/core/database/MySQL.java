@@ -76,7 +76,7 @@ public class MySQL {
                 
     public static final String INSERT_EMPLOYEE     = "INSERT INTO Employees (EmployeeNo,  Occupation,  MedicalAid,TaxNo, IDNumber, Firstname,   Surname,  Email, CellNo, Address, Race, Gender) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
     
-    public static final String INSERT_PRODUCT      = "INSERT INTO Products (Name,  Description,  Price,  TaxNo) VALUES (?,?,?,?);";
+    public static final String INSERT_PRODUCT      = "INSERT INTO Products (Name,  Description, ImagePath, Price,  TaxNo) VALUES (?,?,?,?,?);";
     
     public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,??,?,?,?,?,?);";
     
@@ -96,7 +96,7 @@ public class MySQL {
     public static final String CREATE_EMPLOYEE     = "CREATE TABLE Employees (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, EmployeeNo varchar(100),  Occupation varchar(255),  MedicalAid varchar(255), TaxNo varchar(255), "
                                                     + "IDNumber varchar(255), Firstname varchar(255),   Surname varchar(255),  Email varchar(255), CellNo varchar(255), Address varchar(255), Race int, Gender int );";
     
-    public static final String CREATE_PRODUCT      = "CREATE TABLE Products (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Name varchar(255),  Description varchar(255),  Price decimal(18,2),  Tax int);";
+    public static final String CREATE_PRODUCT      = "CREATE TABLE Products (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Name varchar(255),  Description varchar(255), ImagePath varchar(255) , Price decimal(18,2),  Tax int);";
     
     public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, Services int, Products int,"
                                                     + "Employees int, Settings int, Accounts int)";

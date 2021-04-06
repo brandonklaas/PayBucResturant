@@ -5,6 +5,7 @@
  */
 package core.general;
 
+import core.enums.PaymentType;
 import java.util.Date;
 
 /**
@@ -18,10 +19,9 @@ public class Transaction {
     private int tableID;
     private int orderID;
     private int orderNumber;
-    private int TypeID;
     private double Price;
     private double Tip;
-    private String Payment;
+    private PaymentType Payment;
     private Date date;
  
     public int getSite() {
@@ -47,14 +47,15 @@ public class Transaction {
     public void setTypeID(int TypeID) {
         this.TypeID = TypeID;
     }
- 
-    public String getPayment() {
+
+    public PaymentType getPayment() {
         return Payment;
     }
 
-    public void setPayment(String Payment) {
+    public void setPayment(PaymentType Payment) {
         this.Payment = Payment;
     }
+  
 
     public double getPrice() {
         return Price;

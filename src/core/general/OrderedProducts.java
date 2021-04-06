@@ -17,6 +17,7 @@ public class OrderedProducts {
     private String productDescription;
     private Double productPrice;
     private int productStatus;
+    private String notes;
     private boolean taxable;
 
     public int getId() {
@@ -43,6 +44,14 @@ public class OrderedProducts {
         this.orderNumber = orderNumber;
     }
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+    
     public int getProductID() {
         return productID;
     }

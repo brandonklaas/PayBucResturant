@@ -6,11 +6,11 @@
 package core.general;
 
 /**
- *
  * @author Brandon
  */
 public class Product {
     private int id;
+    private String imagePath;
     private String name;
     private String description;
     private Double price;
@@ -40,6 +40,14 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public String getDescription() {

@@ -15,7 +15,7 @@ public class Order {
     private int orderNumber;
     private int tableID;
     private int employeeID;
-    private ArrayList<Product> products;
+    private ArrayList<OrderedProducts> products;
 
     public int getId() {
         return id;
@@ -49,14 +49,12 @@ public class Order {
         this.employeeID = employeeID;
     }
 
-    public ArrayList<Product> getProducts() {
+    public ArrayList<OrderedProducts> getProducts() {
         return products;
     }
 
-    public void setProducts(ArrayList<Product> products) {
+    public void setProducts(ArrayList<OrderedProducts> products) {
         this.products = products;
-    }
-    
-    
+    } 
     
 }
