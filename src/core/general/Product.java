@@ -23,6 +23,14 @@ public class Product {
         this.taxable = taxable;
     }
     
+    public Product(String name, String desc, Double price, boolean taxable, String path){
+        this.name = name;
+        this.description = desc;
+        this.price = price;
+        this.imagePath = path;
+        this.taxable = taxable;
+    }
+    
     public Product(){
     }
 

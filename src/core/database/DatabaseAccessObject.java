@@ -21,6 +21,7 @@ import core.utilities.Session;
 import java.io.File;
 import java.nio.file.Files;
 import java.sql.Connection; 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -532,15 +533,14 @@ public class DatabaseAccessObject {
 
                 PreparedStatement pstmt = connection.prepareStatement(INSERT_TRANSACTIONS);
                 pstmt.setInt(1, (((Transaction) object).getSite()));
-                pstmt.setString(2, ((Transaction) object).getTitle());
-                pstmt.setString(3, ((Transaction) object).getType());
-                pstmt.setInt(4, ((Transaction) object).getTypeID());
-                pstmt.setString(5, ((Transaction) object).getPayment());
+                pstmt.setInt(2, ((Transaction) object).getEmployeeID());
+                pstmt.setInt(3, ((Transaction) object).getTableID());
+                pstmt.setInt(4, ((Transaction) object).getOrderID());
+                pstmt.setInt(5, ((Transaction) object).getOrderNumber());
                 pstmt.setDouble(6, ((Transaction) object).getPrice());
-                pstmt.setString(7, ((Transaction) object).getEmployee());
-                pstmt.setString(8, ((Transaction) object).getCustomerName());
-                pstmt.setString(9, ((Transaction) object).getCustomerNumber());
-                pstmt.setDate(10, new java.sql.Date(((Transaction) object).getDate().getTime()));
+                pstmt.setDouble(7, ((Transaction) object).getTip());
+                pstmt.setInt(8, ((Transaction) object).getPayment().getID());
+                pstmt.setDate(9, new java.sql.Date(((Transaction) object).getDate().getTime())); 
                 pstmt.executeUpdate(); 
 
             } else if (object instanceof Employee) {
@@ -668,9 +668,10 @@ public class DatabaseAccessObject {
                 pstmt.setInt(4, ((Transaction) object).getOrderID());
                 pstmt.setInt(5, ((Transaction) object).getOrderNumber());
                 pstmt.setDouble(6, ((Transaction) object).getPrice()); 
-                pstmt.setDouble(7, ((Transaction) object).getTip()); 
+                pstmt.setDouble(7, ((Transaction) object).getTip());
                 pstmt.setInt(8, ((Transaction) object).getPayment().getID());
-                pstmt.setInt(9, ((Transaction) object).getId());
+                pstmt.setDate(9, new Date(((Transaction) object).getDate().getTime()));
+                pstmt.setInt(10, ((Transaction) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Employee) {

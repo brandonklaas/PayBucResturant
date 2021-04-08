@@ -65,13 +65,13 @@ public class Derby {
     
     public static final String DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM = "DELETE FROM OrderedProducts WHERE OrderNumber = ?";
     
-    
+
         
     public static final String UPDATE_SITE         = "UPDATE Site SET Name = ? , Address = ? , BranchNo = ? WHERE id = ?";
     
     public static final String UPDATE_SERVICES     = "UPDATE Services  SET Name = ?,  Description = ?, Price = ?, Taxable = ? WHERE id = ?";
     
-    public static final String UPDATE_TRANSACTIONS = "UPDATE Transactions SET Site = ?, EmployeeID = ?, TableID = ?, OrderID = ?, OrderNumber = ?, Price = ? , Tip = ? , PaymentType = ? WHERE id = ?";
+    public static final String UPDATE_TRANSACTIONS = "UPDATE Transactions SET Site = ?, EmployeeID = ?, TableID = ?, OrderID = ?, OrderNumber = ?, Price = ? , Tip = ? , PaymentType = ?, Date = ? WHERE id = ?";
                 
     public static final String UPDATE_EMPLOYEE     = "UPDATE Employees SET EmployeeNo = ?,  Occupation = ?,  MedicalAid = ?, TaxNo = ?, IDNumber = ?, Firstname = ?, Surname = ?, Email = ?, CellNo = ?, Address = ?, Race = ?, Gender = ? WHERE id = ?";
     
@@ -91,7 +91,7 @@ public class Derby {
     
     public static final String INSERT_SERVICES     = "INSERT INTO Services (Name,  Description, Price, Taxable) VALUES (?,?,?,?)";
     
-    public static final String INSERT_TRANSACTIONS = "INSERT INTO Transactions (Site ,EmployeeID, TableID, OrderID, OrderNumber, Price , Tip , PaymentType) VALUES (?,?,?,?,?,?,?,?)";
+    public static final String INSERT_TRANSACTIONS = "INSERT INTO Transactions (Site ,EmployeeID, TableID, OrderID, OrderNumber, Price , Tip , PaymentType, Date) VALUES (?,?,?,?,?,?,?,?,?)";
                 
     public static final String INSERT_EMPLOYEE     = "INSERT INTO Employees (EmployeeNo,  Occupation,  MedicalAid, TaxNo, IDNumber, Firstname,   Surname,  Email, CellNo, Address, Race, Gender) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     
@@ -114,7 +114,7 @@ public class Derby {
     
     public static final String CREATE_SERVICES     = "CREATE TABLE Services (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Name varchar(255),  Description varchar(255), Price decimal(18,2),   Taxable int)";
     
-    public static final String CREATE_TRANSACTIONS = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Site int, EmployeeID int, TableID int, OrderID int, OrderNumber int, Price decimal(18,2), Tip decimal(18,2), PaymentType int"
+    public static final String CREATE_TRANSACTIONS = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Site int, EmployeeID int, TableID int, OrderID int, OrderNumber int, Price decimal(18,2), Tip decimal(18,2), PaymentType int, Date Date"
             + ",  FOREIGN KEY (Site) REFERENCES Site(id), FOREIGN KEY (EmployeeID) REFERENCES Employee(id), FOREIGN KEY (TableID) REFERENCES Table(id), FOREIGN KEY (OrderID) REFERENCES Order(id))";
                 
      

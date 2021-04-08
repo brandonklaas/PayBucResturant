@@ -12,6 +12,12 @@ import core.utilities.Session;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.ProductsTransactionDialogue;
 import gui.dialoguePanels.ServiceTransactionDialogue;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -22,6 +28,25 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TransactionsManagementPanel extends javax.swing.JPanel {
 
+    
+    /** Stroke size. it is recommended to set it to 1 for better view */
+    protected int strokeSize = 1;
+    /** Color of shadow */
+    protected Color shadowColor = Color.black;
+    /** Sets if it drops shadow */
+    protected boolean shady = true;
+    /** Sets if it has an High Quality view */
+    protected boolean highQuality = true;
+    /** Double values for Horizontal and Vertical radius of corner arcs */
+    protected Dimension arcs = new Dimension(20, 20);
+    /** Distance between shadow border and opaque panel border */
+    protected int shadowGap = 5;
+    /** The offset of shadow.  */
+    protected int shadowOffset = 4;
+    /** The transparency value of shadow. ( 0 - 255) */
+    protected int shadowAlpha = 150;
+    
+    
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private Session session;
     private DefaultTableModel tableModel;
@@ -36,7 +61,57 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         this.database = session.getDatabase();
         
         initComponents();
-        refreshTable();
+//        refreshTable();
+    }
+    
+    public TransactionsManagementPanel( ) { 
+        
+        initComponents();
+//        refreshTable();
+    }
+    
+    
+    
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        int width = getWidth();
+        int height = getHeight();
+        int shadowGap = this.shadowGap;
+        Color shadowColorA = new Color(shadowColor.getRed(),
+                shadowColor.getGreen(), shadowColor.getBlue(), shadowAlpha);
+        Graphics2D graphics = (Graphics2D) g;
+
+        //Sets antialiasing if HQ.
+        if (highQuality) {
+            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+
+        //Draws shadow borders if any.
+        if (shady) {
+            graphics.setColor(shadowColorA);
+            graphics.fillRoundRect(
+                    shadowOffset,// X position
+                    shadowOffset,// Y position
+                    width - strokeSize - shadowOffset, // width
+                    height - strokeSize - shadowOffset, // height
+                    arcs.width, arcs.height);// arc Dimension
+        } else {
+            shadowGap = 1;
+        }
+
+        //Draws the rounded opaque panel with borders.
+        graphics.setColor(getBackground());
+        graphics.fillRoundRect(0, 0, width - shadowGap,
+                height - shadowGap, arcs.width, arcs.height);
+        graphics.setColor(getForeground());
+        graphics.setStroke(new BasicStroke(strokeSize));
+        graphics.drawRoundRect(0, 0, width - shadowGap,
+                height - shadowGap, arcs.width, arcs.height);
+
+        //Sets strokes to default, is better.
+        graphics.setStroke(new BasicStroke());
     }
 
     /**
@@ -60,12 +135,13 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1058, 720));
         setLayout(new java.awt.BorderLayout());
 
         main.setLayout(new java.awt.BorderLayout());
 
-        bottomButtonsPanel.setBackground(new java.awt.Color(227, 227, 227));
+        bottomButtonsPanel.setBackground(new java.awt.Color(255, 255, 255));
         bottomButtonsPanel.setPreferredSize(new java.awt.Dimension(1058, 60));
         bottomButtonsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 10));
 
@@ -120,7 +196,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(20, 589));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -136,7 +212,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
         main.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        jPanel2.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(20, 589));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -152,7 +228,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
         main.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(959, 50));
 
         jLabel1.setFont(new java.awt.Font("Poppins Light", 0, 18)); // NOI18N
@@ -190,31 +266,31 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         new Dialogue(null, true, new ProductsTransactionDialogue(session), "Product Transaction Management");
     }//GEN-LAST:event_productBtnActionPerformed
-
-    public void refreshTable() {
-        tableModel = new DefaultTableModel();
-        tableModel.addColumn("Date");
-        tableModel.addColumn("Title");
-        tableModel.addColumn("Type");
-        tableModel.addColumn("Payment");
-        tableModel.addColumn("Customer");
-        tableModel.addColumn("Customer Cell");
-        tableModel.addColumn("Employee");
-        tableModel.addColumn("Price");
-
-        array = database.getTransactions(); 
-        
-        if (array.size() > 0) {
-            for (Transaction transaction : array) {
-                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), transaction.getPrice()});
-            }
-        }
-
-        transactionsTable.setModel(tableModel);
-        transactionsTable.repaint();
-        transactionsTable.validate();
-    }
+//
+//    public void refreshTable() {
+//        tableModel = new DefaultTableModel();
+//        tableModel.addColumn("Date");
+//        tableModel.addColumn("Title");
+//        tableModel.addColumn("Type");
+//        tableModel.addColumn("Payment");
+//        tableModel.addColumn("Customer");
+//        tableModel.addColumn("Customer Cell");
+//        tableModel.addColumn("Employee");
+//        tableModel.addColumn("Price");
+//
+//        array = database.getTransactions(); 
+//        
+//        if (array.size() > 0) {
+//            for (Transaction transaction : array) {
+//                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
+//                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), transaction.getPrice()});
+//            }
+//        }
+//
+//        transactionsTable.setModel(tableModel);
+//        transactionsTable.repaint();
+//        transactionsTable.validate();
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomButtonsPanel;

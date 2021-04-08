@@ -40,13 +40,6 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getTypeID() {
-        return TypeID;
-    }
-
-    public void setTypeID(int TypeID) {
-        this.TypeID = TypeID;
-    }
 
     public PaymentType getPayment() {
         return Payment;
