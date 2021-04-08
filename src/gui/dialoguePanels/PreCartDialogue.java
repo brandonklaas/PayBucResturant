@@ -9,9 +9,10 @@ import core.utilities.Session;
 import javax.swing.ButtonGroup;
 
 /**
+ *
  * @author brand
  */
-public class ClientsDialogue extends javax.swing.JPanel {
+public class PreCartDialogue extends javax.swing.JPanel {
 
     private Session session;
     private Dialogue diag;
@@ -19,7 +20,7 @@ public class ClientsDialogue extends javax.swing.JPanel {
     /**
      * Creates new form TransactionDialogue
      */
-    public ClientsDialogue(Session session) {
+    public PreCartDialogue(Session session) {
         this.session = session;
         initComponents();
         setDefaults();
@@ -45,19 +46,16 @@ public class ClientsDialogue extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
-        priceTf = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        service = new javax.swing.JTextField();
-        descriptionTf = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        service1 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        jTable1 = new javax.swing.JTable();
         buttonsPanel = new javax.swing.JPanel();
         saveBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
@@ -70,58 +68,58 @@ public class ClientsDialogue extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(null);
-
-        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel9.setText("Address :");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(40, 230, 100, 20);
-
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel4.setText("Client Name :");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(40, 70, 100, 16);
         jPanel1.add(jSeparator1);
-        jSeparator1.setBounds(20, 40, 600, 10);
+        jSeparator1.setBounds(20, 40, 680, 10);
 
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Clients");
+        jLabel1.setText("Order Information");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(18, 16, 290, 16);
-        jPanel1.add(priceTf);
-        priceTf.setBounds(150, 180, 270, 24);
+        jLabel1.setBounds(20, 20, 290, 16);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("00000000000");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(170, 60, 150, 16);
+
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Order Number :");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(30, 60, 120, 16);
+
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel4.setText("Order Date :");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(30, 90, 120, 16);
 
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel5.setText("Client Cell :");
+        jLabel5.setText("00000000000");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(40, 150, 100, 16);
-        jPanel1.add(service);
-        service.setBounds(150, 60, 270, 24);
-        jPanel1.add(descriptionTf);
-        descriptionTf.setBounds(150, 140, 270, 24);
+        jLabel5.setBounds(170, 90, 150, 16);
+        jPanel1.add(jSeparator2);
+        jSeparator2.setBounds(20, 170, 680, 10);
 
-        jLabel10.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel10.setText("PayBuc Account :");
+        jLabel10.setText("Order Data");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(40, 190, 100, 16);
+        jLabel10.setBounds(20, 150, 290, 16);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(150, 230, 270, 83);
-        jPanel1.add(service1);
-        service1.setBounds(150, 100, 270, 24);
-
-        jLabel6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel6.setText("Client Surname :");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(40, 110, 100, 16);
+        jScrollPane1.setBounds(30, 190, 660, 240);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -149,21 +147,18 @@ public class ClientsDialogue extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JTextField descriptionTf;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField priceTf;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JTextField service;
-    private javax.swing.JTextField service1;
     // End of variables declaration//GEN-END:variables
 
 }
