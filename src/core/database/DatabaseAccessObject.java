@@ -8,6 +8,7 @@ package core.database;
 import core.enums.Gender;
 import core.enums.PaymentType;
 import core.enums.ProductStatus;
+import core.enums.ProductType;
 import core.general.Account;
 import core.general.Employee;
 import core.general.Product;
@@ -242,6 +243,7 @@ public class DatabaseAccessObject {
                 product.setDescription(rs.getString("Description"));
                 product.setPrice(rs.getDouble("Price"));
                 product.setTaxable((rs.getInt("Tax") == 1) ? true : false);
+                product.setType(ProductType.fromId(rs.getInt("Type")));
                 array.add(product);
             }
             

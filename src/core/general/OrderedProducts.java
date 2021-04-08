@@ -5,6 +5,8 @@
  */
 package core.general;
 
+import core.enums.ProductType;
+
 /**
  *
  * @author Brandon
@@ -17,6 +19,10 @@ public class OrderedProducts {
     private String productDescription;
     private Double productPrice;
     private int productStatus;
+    private ProductType type;
+    private int side;
+    private int optional;
+    private int drink;
     private String notes;
     private boolean taxable;
 
@@ -27,6 +33,42 @@ public class OrderedProducts {
     public void setId(int id) {
         this.id = id;
     }
+
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
+    }
+
+    public int getSide() {
+        return side;
+    }
+
+    public void setSide(int side) {
+        this.side = side;
+    }
+
+    public int getOptional() {
+        return optional;
+    }
+
+    public void setOptional(int optional) {
+        this.optional = optional;
+    }
+
+    public int getDrink() {
+        return drink;
+    }
+
+    public void setDrink(int drink) {
+        this.drink = drink;
+    }
+    
+    
+    
+    
 
     public int getProductStatus() {
         return productStatus;

@@ -41,6 +41,19 @@ public class OkayDialogue extends javax.swing.JDialog {
         this.setVisible(true);
     }
     
+    public OkayDialogue(JFrame parent, boolean modal, String title, Dimension dime) {
+        super(parent, modal);
+        
+        initComponents();
+        
+        
+        message.setText("<html>"+title+"</html>");
+        
+        this.setSize(250, 180);
+        this.setLocation(dime.width / 2 - this.getSize().width / 2, dime.height / 2 - this.getSize().height / 2);
+        this.setVisible(true);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

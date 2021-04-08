@@ -59,6 +59,9 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof BranchDialogue) {
             ((BranchDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof PreCartDialogue) {
+            ((PreCartDialogue) panel).setDialogue(this);
         }
 
         jLabel1.setText(title);
@@ -67,7 +70,7 @@ public class Dialogue extends javax.swing.JDialog {
         centerPanel.repaint();
         centerPanel.validate();
         
-        this.setSize(700, 680);
+        this.setSize(750, 680);
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         this.setVisible(true);
         

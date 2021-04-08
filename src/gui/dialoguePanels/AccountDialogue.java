@@ -6,12 +6,9 @@
 package gui.dialoguePanels;
 
 import core.database.DatabaseAccessObject;
-import core.general.Account;
-import core.general.Product;
+import core.general.Account; 
 import core.utilities.Session;
 import gui.services.AccountsManagementPanel;
-import gui.services.ProductManagementPanel;
-import java.util.jar.Pack200;
 import javax.swing.ButtonGroup;
 
 

@@ -5,13 +5,16 @@
  */
 package gui.desktop;
 
-import core.general.Order;
-import core.general.OrderedProducts;
+import core.general.Order; 
 import core.general.Product;
 import gui.cards.FoodCard; 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.RootPaneContainer; 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -26,14 +29,21 @@ public class ModernUI extends javax.swing.JFrame {
     private ArrayList<Product> products = new ArrayList<>();
     private static DecimalFormat df2 = new DecimalFormat("#.00");
     
+    private static final int ALPHA = 175; // how much see-thru. 0 to 255
+    private static final Color GP_BG = new Color(0, 0, 0, ALPHA);
+    private JPanel glassPane;
+    
+    
     /**
      * Creates new form ModernUI
      */
     public ModernUI() {
         initComponents();
         defaults();
+        createGlassPanel();
+        
     }
-    
+     
     public void defaults() {
         
         tableModel = new DefaultTableModel();
@@ -70,8 +80,31 @@ public class ModernUI extends javax.swing.JFrame {
             column.setMaxWidth(width);
             column.setPreferredWidth(width);
         }
-    }
+    } 
+    
+    public void createGlassPanel() {
+        // create our glass pane
+        glassPane = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                // magic to make it dark without side-effects
+                g.setColor(getBackground());
+                g.fillRect(0, 0, getWidth(), getHeight());
+                super.paintComponent(g);
+            }
+        };
+        // more magic below
+        glassPane.setOpaque(false);
+        glassPane.setBackground(GP_BG);
 
+        // get the rootpane container, here the JFrame, that holds the JButton
+        RootPaneContainer win = (RootPaneContainer) this; 
+        win.setGlassPane(glassPane);  // set the glass pan
+    }
+    
+    public void dim(boolean dim){
+        glassPane.setVisible(dim); 
+    }
     
     public void addToOrder(Product product, int quantity){
         
@@ -382,7 +415,6 @@ public class ModernUI extends javax.swing.JFrame {
         payBillBtn.setBorder(null);
         payBillBtn.setBorderPainted(false);
         payBillBtn.setContentAreaFilled(false);
-        payBillBtn.setPreferredSize(new java.awt.Dimension(233, 50));
         payBillBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payBill-pressed.png"))); // NOI18N
         jPanel1.add(payBillBtn);
 
@@ -411,6 +443,7 @@ public class ModernUI extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("Receipt");
+        jLabel3.setPreferredSize(new java.awt.Dimension(90, 29));
         jPanel2.add(jLabel3);
 
         centerRightPanel.add(jPanel2, java.awt.BorderLayout.PAGE_START);
@@ -442,14 +475,14 @@ public class ModernUI extends javax.swing.JFrame {
         mainPanel.add(rightPanel, java.awt.BorderLayout.LINE_END);
 
         centerPanel.setBackground(new java.awt.Color(247, 249, 249));
-        centerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(20, 20, 20, 20, new java.awt.Color(247, 249, 249)));
+        centerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(15, 20, 20, 20, new java.awt.Color(247, 249, 249)));
         centerPanel.setMaximumSize(new java.awt.Dimension(1920, 2147483647));
         centerPanel.setPreferredSize(new java.awt.Dimension(1920, 185));
         centerPanel.setLayout(new java.awt.BorderLayout());
 
         bottomButtons.setBackground(new java.awt.Color(255, 255, 255));
         bottomButtons.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
-        bottomButtons.setPreferredSize(new java.awt.Dimension(1516, 70));
+        bottomButtons.setPreferredSize(new java.awt.Dimension(1516, 50));
 
         javax.swing.GroupLayout bottomButtonsLayout = new javax.swing.GroupLayout(bottomButtons);
         bottomButtons.setLayout(bottomButtonsLayout);
@@ -459,7 +492,7 @@ public class ModernUI extends javax.swing.JFrame {
         );
         bottomButtonsLayout.setVerticalGroup(
             bottomButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 69, Short.MAX_VALUE)
+            .addGap(0, 49, Short.MAX_VALUE)
         );
 
         centerPanel.add(bottomButtons, java.awt.BorderLayout.PAGE_END);
@@ -487,9 +520,10 @@ public class ModernUI extends javax.swing.JFrame {
         centerPanel.add(quickOrderPanel, java.awt.BorderLayout.CENTER);
 
         QuickPanelHeader.setBackground(new java.awt.Color(247, 249, 249));
-        QuickPanelHeader.setPreferredSize(new java.awt.Dimension(1516, 25));
+        QuickPanelHeader.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        QuickPanelHeader.setPreferredSize(new java.awt.Dimension(1516, 40));
 
-        quickHeaderLbl.setFont(new java.awt.Font("Poppins Light", 0, 22)); // NOI18N
+        quickHeaderLbl.setFont(new java.awt.Font("Poppins Light", 0, 20)); // NOI18N
         quickHeaderLbl.setForeground(new java.awt.Color(102, 102, 102));
         quickHeaderLbl.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         quickHeaderLbl.setText("Quick Food Dashboard");

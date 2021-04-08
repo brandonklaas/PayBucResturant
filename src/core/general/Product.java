@@ -5,6 +5,8 @@
  */
 package core.general;
 
+import core.enums.ProductType;
+
 /**
  * @author Brandon
  */
@@ -13,6 +15,7 @@ public class Product {
     private String imagePath;
     private String name;
     private String description;
+    private ProductType type;
     private Double price;
     private boolean taxable;
     
@@ -31,9 +34,37 @@ public class Product {
         this.taxable = taxable;
     }
     
+    
+    public Product(String name, String desc, Double price, boolean taxable, String path, ProductType type){
+        this.name = name;
+        this.description = desc;
+        this.price = price;
+        this.imagePath = path;
+        this.taxable = taxable;
+        this.type = type;
+    }
+    
+    public Product(int id, String name, String desc, Double price, boolean taxable, String path, ProductType type){
+        this.name = name;
+        this.description = desc;
+        this.price = price;
+        this.imagePath = path;
+        this.taxable = taxable;
+        this.type = type;
+        this.id = id;
+    }
+    
     public Product(){
     }
 
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
+    } 
+    
     public int getId() {
         return id;
     }

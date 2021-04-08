@@ -27,8 +27,6 @@ public class ClientsDialogue extends javax.swing.JPanel {
     
     private void setDefaults() {
     }
-
-    
     
     void setDialogue(Dialogue dialogue) {
         diag = dialogue;

@@ -7,6 +7,9 @@ package gui.cards;
 
 import core.general.Product;
 import gui.desktop.ModernUI;
+import gui.dialoguePanels.Dialogue;
+import gui.dialoguePanels.OkayDialogue;
+import gui.dialoguePanels.PreCartDialogue;
 
 /**
  *
@@ -62,7 +65,7 @@ public class FoodCard extends javax.swing.JPanel {
         productName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         productName.setText("jLabel1");
         productName.setOpaque(true);
-        productName.setPreferredSize(new java.awt.Dimension(41, 20));
+        productName.setPreferredSize(new java.awt.Dimension(41, 30));
         add(productName, java.awt.BorderLayout.PAGE_START);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -73,7 +76,6 @@ public class FoodCard extends javax.swing.JPanel {
         minusBtn.setBorder(null);
         minusBtn.setBorderPainted(false);
         minusBtn.setContentAreaFilled(false);
-        minusBtn.setPreferredSize(new java.awt.Dimension(45, 45));
         minusBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/minus-pressed.png"))); // NOI18N
         minusBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,6 +88,11 @@ public class FoodCard extends javax.swing.JPanel {
         qtyLbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         qtyLbl.setText("0");
         qtyLbl.setPreferredSize(new java.awt.Dimension(45, 45));
+        qtyLbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                qtyLblMouseClicked(evt);
+            }
+        });
         jPanel1.add(qtyLbl);
 
         addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus.png"))); // NOI18N
@@ -137,13 +144,25 @@ public class FoodCard extends javax.swing.JPanel {
     private void cartBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cartBtnActionPerformed
         // TODO add your handling code here:
         if(quantity > 0){
-            desktop.addToOrder(product, quantity);
+            desktop.dim(true);
+            new Dialogue(desktop, true, new PreCartDialogue(desktop, product, quantity), "Pre Cart Dialogue");
+            desktop.dim(false);
+            
             quantity = 0;
             qtyLbl.setText(quantity + "");
+        } else {
+            desktop.dim(true);
+            new OkayDialogue(desktop, true, "Add Number of Products to order", desktop.getSize());
+            desktop.dim(false);
         }
         
-        
     }//GEN-LAST:event_cartBtnActionPerformed
+
+    private void qtyLblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_qtyLblMouseClicked
+        // TODO add your handling code here:
+        quantity = 0;
+        qtyLbl.setText( quantity +"");
+    }//GEN-LAST:event_qtyLblMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
