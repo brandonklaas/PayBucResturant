@@ -10,6 +10,7 @@ import gui.desktop.ModernUI;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OkayDialogue;
 import gui.dialoguePanels.PreCartDialogue;
+import sun.security.pkcs11.wrapper.Functions;
 
 /**
  *
@@ -19,7 +20,7 @@ public class FoodCard extends javax.swing.JPanel {
 
     private int quantity = 0;
     private Product product;
-    private ModernUI desktop;
+    private ModernUI desktop; 
     
     /**
      * Creates new form FoodCard
@@ -145,7 +146,7 @@ public class FoodCard extends javax.swing.JPanel {
         // TODO add your handling code here:
         if(quantity > 0){
             desktop.dim(true);
-            new Dialogue(desktop, true, new PreCartDialogue(desktop, product, quantity), "Pre Cart Dialogue");
+            new Dialogue( desktop, true, new PreCartDialogue(desktop, product, quantity), "Pre Cart Dialogue");
             desktop.dim(false);
             
             quantity = 0;

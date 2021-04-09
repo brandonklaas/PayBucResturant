@@ -6,6 +6,7 @@
 package gui.desktop;
 
 import core.general.Order; 
+import core.general.OrderedProducts;
 import core.general.Product;
 import gui.cards.FoodCard; 
 import java.awt.Color;
@@ -26,7 +27,7 @@ public class ModernUI extends javax.swing.JFrame {
 
     private Order currentOrder;
     private DefaultTableModel tableModel = new DefaultTableModel();
-    private ArrayList<Product> products = new ArrayList<>();
+    private ArrayList<OrderedProducts> products = new ArrayList<>();
     private static DecimalFormat df2 = new DecimalFormat("#.00");
     
     private static final int ALPHA = 175; // how much see-thru. 0 to 255
@@ -106,23 +107,24 @@ public class ModernUI extends javax.swing.JFrame {
         glassPane.setVisible(dim); 
     }
     
-    public void addToOrder(Product product, int quantity){
+    public void addToOrder(ArrayList<OrderedProducts> product){
         
-        tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getName(), quantity, (quantity*product.getPrice()) });
+        tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.get(0).getProductName(), product.size(),
+                             df2.format(product.size()*product.get(0).getProductPrice()) });
         
-        for(int i = 0; i < quantity; i++){
-            products.add(product);
+        for(OrderedProducts prod : product){
+            products.add(prod);
         }
+        
         calculateTotal();
         
     }
     
     public void calculateTotal(){
-        double tempTotal = 0.0;
-        System.out.println("arraylist size : " + products.size());
+        double tempTotal = 0.0; 
         
         for(int i = 0; i < products.size(); i++){
-            tempTotal = tempTotal + products.get(i).getPrice();
+            tempTotal = tempTotal + products.get(i).getProductPrice();
         }
         
         subTotal.setText("R "+ df2.format(tempTotal));

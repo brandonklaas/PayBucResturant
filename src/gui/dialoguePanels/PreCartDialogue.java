@@ -26,6 +26,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
     private ArrayList<OrderedProducts> products = new ArrayList<>();
     private ArrayList<Product> searchedProducts = new ArrayList<>();
     private DefaultTableModel tableModel = new DefaultTableModel(); 
+    private ModernUI desktop;
 //    private ComboBoxModel optionalModel;
 //    private ComboBoxModel sidesModel;
 //    private ComboBoxModel drinksModel;
@@ -39,8 +40,9 @@ public class PreCartDialogue extends javax.swing.JPanel {
         setDefaults();
     }
 
-    public PreCartDialogue(ModernUI desktop, Product product, int quantity) { 
+    public PreCartDialogue( ModernUI desktop, Product product, int quantity) { 
         this.session = session;
+        this.desktop = desktop;
         initComponents();
         setDefaults();
         createOrderedProducts(product, quantity); 
@@ -110,7 +112,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
 
         drinkCB.addItem("<Select Drink>");
         sideCB.addItem("<Select Side>");
-        optionsCB.addItem("<Select Optional>");
+        optionsCB.addItem("<Select Option>");
 
         for (Product product : searchedProducts) {
             switch (product.getType()) {
@@ -125,10 +127,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
                     break;
             }
         }
-        
     }
-
-    
     
     void setDialogue(Dialogue dialogue) {
         diag = dialogue;
@@ -168,6 +167,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
         buttonsPanel = new javax.swing.JPanel();
         saveBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -192,6 +192,11 @@ public class PreCartDialogue extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        preCartTable.setFillsViewportHeight(true);
+        preCartTable.setRowHeight(20);
+        preCartTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
+        preCartTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
+        preCartTable.setShowVerticalLines(false);
         preCartTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 preCartTableMouseClicked(evt);
@@ -340,6 +345,11 @@ public class PreCartDialogue extends javax.swing.JPanel {
         saveBtn.setBorderPainted(false);
         saveBtn.setContentAreaFilled(false);
         saveBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save-pressed.png"))); // NOI18N
+        saveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveBtnActionPerformed(evt);
+            }
+        });
         buttonsPanel.add(saveBtn);
 
         updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update.png"))); // NOI18N
@@ -353,6 +363,18 @@ public class PreCartDialogue extends javax.swing.JPanel {
             }
         });
         buttonsPanel.add(updateBtn);
+
+        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        deleteBtn.setBorder(null);
+        deleteBtn.setBorderPainted(false);
+        deleteBtn.setContentAreaFilled(false);
+        deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
+        buttonsPanel.add(deleteBtn);
 
         cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
         cancelBtn.setBorder(null);
@@ -380,6 +402,12 @@ public class PreCartDialogue extends javax.swing.JPanel {
             productNameTF.setText(products.get(preCartTable.getSelectedRow()).getProductName());
             productDescTF.setText(products.get(preCartTable.getSelectedRow()).getProductDescription());
             notesTf.setText(products.get(preCartTable.getSelectedRow()).getNotes());
+            drinkCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getDrink() > -1) ? 
+                                     getProductName(products.get(preCartTable.getSelectedRow()).getDrink()) : "<Select Drink>");
+            sideCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getSide()> -1) ? 
+                                     getProductName(products.get(preCartTable.getSelectedRow()).getSide()) : "<Select Side>");
+            optionsCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getOptional() > -1) ?
+                                      getProductName(products.get(preCartTable.getSelectedRow()).getOptional()) : "<Select Option>");
         }
     }//GEN-LAST:event_preCartTableMouseClicked
 
@@ -394,16 +422,21 @@ public class PreCartDialogue extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_updateBtnActionPerformed
 
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
+        // TODO add your handling code here:
+        desktop.addToOrder(products);
+        diag.dispose();
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
     public int getProductID(String productName){
-        System.out.println("Product Name to be saved : " + productName);
-        for(Product product : searchedProducts){
-            System.out.println("Current name : " + product.getName());
-            if(product.getName().equals(productName)){
-                System.out.println("Found");
-                return product.getId();
-            } else {
-                System.out.println("Not Found");
-                return -1;
+        
+        for(int i = 0; i < searchedProducts.size(); i++){
+            if(searchedProducts.get(i).getName().equals(productName)){
+                return searchedProducts.get(i).getId();
             }
         }
         return -1;
@@ -413,9 +446,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
         for(Product product : searchedProducts){
             if(product.getId() == productID){
                 return product.getName();
-            } else {
-                return "<None>";
-            }
+            } 
         }
         return "<None>";
     }
@@ -423,6 +454,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton deleteBtn;
     private javax.swing.JComboBox<String> drinkCB;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
