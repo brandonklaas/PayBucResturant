@@ -64,6 +64,9 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof OrderDialogue) {
             ((OrderDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof TablesDialogue) {
+            ((TablesDialogue) panel).setDialogue(this);
         }
 
         jLabel1.setText(title);
@@ -115,6 +118,9 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof OrderDialogue) {
             ((OrderDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof TablesDialogue) {
+            ((TablesDialogue) panel).setDialogue(this);
         }
 
         jLabel1.setText(title);

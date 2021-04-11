@@ -13,7 +13,7 @@ import core.enums.ProductType;
  */
 public class OrderedProducts {
     private int id;
-    private int orderNumber;
+    private String orderNumber;
     private int productID;
     private String productName;
     private String productDescription;
@@ -66,11 +66,11 @@ public class OrderedProducts {
         this.productStatus = productStatus;
     }
 
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 

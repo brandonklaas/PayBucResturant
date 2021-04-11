@@ -8,14 +8,11 @@ package gui.services;
 import core.database.DatabaseAccessObject;
 import core.enums.ProductStatus;
 import core.general.Employee;
-import core.general.Occupation;
 import core.general.Order;
 import core.general.OrderedProducts;
 import core.general.Product;
 import core.general.Table;
-import core.utilities.Session;
-import gui.dialoguePanels.Dialogue;
-import gui.dialoguePanels.OccupationDialogue;
+import core.utilities.Session; 
 import gui.dialoguePanels.OkayDialogue;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -50,10 +47,11 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     
     public void searchDatabase() {
         array = database.getOrderedProducts();
-        searchedOrders = database.getOrders();
+        searchedOrders    = database.getOrders();
+        System.out.println("Orders = "+searchedOrders.size());
         searchedEmployees = database.getEmployees();
-        searchedTables = database.getTables();
-        searchedProducts = database.getProducts();
+        searchedTables    = database.getTables();
+        searchedProducts  = database.getProducts();
     }
     
     public void refreshTable(){
@@ -68,14 +66,16 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         tableModel.addColumn("Status");
         
         if(array.size() > 0){
+            System.out.println("ARRAY SIZE = "+array.size());
             for(OrderedProducts orderedProducts : array){
                 tableModel.addRow(new Object[]{orderedProducts.getOrderNumber(),
-                                               getTableName(getOrder(orderedProducts.getOrderNumber()).getTableID()),
+//                                               getTableName(getOrder(orderedProducts.getOrderNumber()).getTableID()),
+                                                ""+getOrder(orderedProducts.getOrderNumber()).getTableID(),
                                                orderedProducts.getProductName(),
                                                orderedProducts.getNotes(),
                                                getProductName(orderedProducts.getSide()),
-                                               getProductName(orderedProducts.getOptional()),
-                                               getEmployeeName(getOrder(orderedProducts.getOrderNumber()).getEmployeeID()),
+                                               getProductName(orderedProducts.getOptional()), ""+getOrder(orderedProducts.getOrderNumber()).getEmployeeID(),
+//                                               getEmployeeName(getOrder(orderedProducts.getOrderNumber()).getEmployeeID()),
                                                ProductStatus.fromId(orderedProducts.getProductStatus())
                                                });
             }
@@ -106,15 +106,14 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1058, 720));
         setLayout(new java.awt.BorderLayout());
 
         main.setLayout(new java.awt.BorderLayout());
 
-        bottomButtonsPanel.setBackground(new java.awt.Color(227, 227, 227));
-        bottomButtonsPanel.setPreferredSize(new java.awt.Dimension(1058, 60));
+        bottomButtonsPanel.setBackground(new java.awt.Color(247, 249, 249));
+        bottomButtonsPanel.setPreferredSize(new java.awt.Dimension(1058, 50));
         bottomButtonsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 10));
 
         deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
@@ -172,7 +171,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel1.setBackground(new java.awt.Color(247, 249, 249));
         jPanel1.setPreferredSize(new java.awt.Dimension(20, 589));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -183,12 +182,12 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 650, Short.MAX_VALUE)
         );
 
         main.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        jPanel2.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel2.setBackground(new java.awt.Color(247, 249, 249));
         jPanel2.setPreferredSize(new java.awt.Dimension(20, 589));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -199,32 +198,23 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 650, Short.MAX_VALUE)
         );
 
         main.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.setBackground(new java.awt.Color(227, 227, 227));
-        jPanel3.setPreferredSize(new java.awt.Dimension(959, 50));
-
-        jLabel1.setFont(new java.awt.Font("Poppins Light", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Occupations");
+        jPanel3.setBackground(new java.awt.Color(247, 249, 249));
+        jPanel3.setPreferredSize(new java.awt.Dimension(959, 20));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(815, Short.MAX_VALUE))
+            .addGap(0, 1058, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 17, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 20, Short.MAX_VALUE)
         );
 
         main.add(jPanel3, java.awt.BorderLayout.PAGE_START);
@@ -234,7 +224,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
-        new Dialogue(null, true, new OccupationDialogue(session, this), "Occupation Management");
+//        new Dialogue(null, true, new OccupationDialogue(session, this), "Occupation Management");
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
@@ -254,15 +244,15 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         // TODO add your handling code here:
         if(occupationTable.getSelectedRow() > -1){
-            new Dialogue(null, true, new OccupationDialogue(session, this, array.get(occupationTable.getSelectedRow())), "Occupation Management");
+//            new Dialogue(null, true, new OccupationDialogue(session, this, array.get(occupationTable.getSelectedRow())), "Occupation Management");
         }
         
     }//GEN-LAST:event_editBtnActionPerformed
 
     
-    public Order getOrder(int orderNumber){
+    public Order getOrder(String orderNumber){
         for(Order order : searchedOrders){
-            if(order.getOrderNumber() == orderNumber){
+            if(order.getOrderNumber().equals(orderNumber)){
                 return order;
             } 
         }
@@ -301,7 +291,6 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     private javax.swing.JPanel bottomButtonsPanel;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton editBtn;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

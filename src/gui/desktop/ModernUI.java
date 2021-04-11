@@ -14,15 +14,10 @@ import core.utilities.Session;
 import gui.cards.FoodCard; 
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OrderDialogue;
-import gui.dialoguePanels.PreCartDialogue;
-import gui.services.AccountsManagementPanel;
-import gui.services.BranchManagementPanel;
-import gui.services.DashboardPanel;
 import gui.services.EmployeesManagementPanel;
-import gui.services.OccupationsManagementPanel;
+import gui.services.OrdersManagementPanel;
 import gui.services.ProductManagementPanel;
 import gui.services.ServiceManagementPanel;
-import gui.services.SettingsManagementPanel;
 import gui.services.TablesManagementPanel;
 import gui.services.TransactionsManagementPanel;
 import java.awt.Color;
@@ -57,6 +52,7 @@ public class ModernUI extends javax.swing.JFrame {
     private TransactionsManagementPanel transactionsPanel;
     private EmployeesManagementPanel employeesPanel;
     private TablesManagementPanel tablesPanel; 
+    private OrdersManagementPanel ordersPanel; 
     
     private ArrayList<Product> searchedProducts;
     private ArrayList<OrderedProducts> orderedProducts = new ArrayList<>();
@@ -78,6 +74,9 @@ public class ModernUI extends javax.swing.JFrame {
         transactionsPanel = new TransactionsManagementPanel(session);
         employeesPanel = new EmployeesManagementPanel(session); 
         tablesPanel = new TablesManagementPanel(session);
+        ordersPanel = new OrdersManagementPanel(session);
+        
+        foodBtnActionPerformed(null);
     }
     
     public void fillProductDash(ProductType type){
@@ -413,6 +412,11 @@ public class ModernUI extends javax.swing.JFrame {
         ordersBtn.setPreferredSize(new java.awt.Dimension(110, 120));
         ordersBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/orders-pressed.png"))); // NOI18N
         ordersBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/orders-pressed.png"))); // NOI18N
+        ordersBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ordersBtnActionPerformed(evt);
+            }
+        });
         MainLeftPanel.add(ordersBtn);
 
         tableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tables.png"))); // NOI18N
@@ -795,6 +799,19 @@ public class ModernUI extends javax.swing.JFrame {
             dim(false);
         }
     }//GEN-LAST:event_addToTableBtnActionPerformed
+
+    private void ordersBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordersBtnActionPerformed
+        // TODO add your handling code here:
+        if(centerPanel.getComponent(1) instanceof OrdersManagementPanel == false){
+            quickHeaderLbl.setText("Order Management");
+            centerPanel.remove(1);
+            centerPanel.add(ordersPanel, 1);
+            ordersPanel.refreshTable();
+            rightPanel.setVisible(true);
+            centerPanel.validate();
+            centerPanel.repaint();
+        } 
+    }//GEN-LAST:event_ordersBtnActionPerformed
 
     /**
      * @param args the command line arguments

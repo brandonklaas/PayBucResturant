@@ -139,7 +139,7 @@ public class DatabaseAccessObject {
             INSERT_ACCOUNT      = Derby.INSERT_ACCOUNT;
             INSERT_TABLE        = Derby.INSERT_TABLE;
             INSERT_ORDER        = Derby.INSERT_ORDER;
-            INSERT_ORDERED_PRODUCTS = Derby.CREATE_ORDERED_PRODUCTS;
+            INSERT_ORDERED_PRODUCTS = Derby.INSERT_ORDERED_PRODUCT;
             
             CREATE_OCCUPATION   = Derby.CREATE_OCCUPATION;
             CREATE_BRANCH       = Derby.CREATE_BRANCH;
@@ -282,14 +282,14 @@ public class DatabaseAccessObject {
             while (rs.next()) {
                 OrderedProducts ordered = new OrderedProducts();
                 ordered.setId(rs.getInt("id"));
-                ordered.setOrderNumber(rs.getInt("OrderNumber"));
+                ordered.setOrderNumber(rs.getString("OrderNumber"));
                 ordered.setProductID(rs.getInt("ProductID"));
                 ordered.setProductName(rs.getString("ProductName"));
                 ordered.setProductDescription(rs.getString("ProductDescription")); 
                 ordered.setProductPrice(rs.getDouble("ProductPrice")); 
                 ordered.setProductStatus(rs.getInt("Status")); 
                 ordered.setNotes(rs.getString("Notes")); 
-                ordered.setTaxable((rs.getInt("Tax") == 1) ? true : false);
+                ordered.setTaxable((rs.getInt("taxable") == 1) ? true : false);
                 ordered.setProductDescription(rs.getString("ProductDescription"));  
                 ordered.setType(ProductType.fromId(rs.getInt("Type")));
                 ordered.setOptional(rs.getInt("Optional")); 
@@ -319,14 +319,14 @@ public class DatabaseAccessObject {
             while (rs.next()) {
                 OrderedProducts ordered = new OrderedProducts();
                 ordered.setId(rs.getInt("id"));
-                ordered.setOrderNumber(rs.getInt("OrderNumber"));
+                ordered.setOrderNumber(rs.getString("OrderNumber"));
                 ordered.setProductID(rs.getInt("ProductID"));
                 ordered.setProductName(rs.getString("ProductName"));
                 ordered.setProductDescription(rs.getString("ProductDescription")); 
                 ordered.setProductPrice(rs.getDouble("ProductPrice")); 
                 ordered.setProductStatus(rs.getInt("Status")); 
                 ordered.setNotes(rs.getString("Notes")); 
-                ordered.setTaxable((rs.getInt("Tax") == 1) ? true : false);
+                ordered.setTaxable((rs.getInt("taxable") == 1) ? true : false);
                 ordered.setProductDescription(rs.getString("ProductDescription"));  
                 ordered.setType(ProductType.fromId(rs.getInt("Type")));
                 ordered.setOptional(rs.getInt("Optional")); 
@@ -718,14 +718,14 @@ public class DatabaseAccessObject {
             } else if (object instanceof Order) {
 
                 PreparedStatement pstmt = connection.prepareStatement(INSERT_ORDER);
-                pstmt.setInt(1, (((Order) object).getOrderNumber()));
+                pstmt.setString(1, (((Order) object).getOrderNumber()));
                 pstmt.setInt(2, ((Order) object).getTableID());
                 pstmt.setInt(3, ((Order) object).getEmployeeID()); 
-                pstmt.addBatch();
+                pstmt.executeUpdate();
                 
                 for(OrderedProducts product : ((Order) object).getProducts()) {
                     pstmt = connection.prepareStatement(INSERT_ORDERED_PRODUCTS);
-                    pstmt.setInt(1, (((Order) object).getOrderNumber()));
+                    pstmt.setString(1, product.getOrderNumber());
                     pstmt.setInt(2, product.getId());
                     pstmt.setString(3, product.getProductName());
                     pstmt.setString(4, product.getProductDescription());
@@ -735,13 +735,12 @@ public class DatabaseAccessObject {
                     pstmt.setBoolean(8, product.isTaxable());
                     pstmt.addBatch();
                 }
-                
                 pstmt.executeBatch();
 
             } else if (object instanceof OrderedProducts) {
 
                 PreparedStatement pstmt = connection.prepareStatement(INSERT_ORDERED_PRODUCTS);
-                pstmt.setInt(1, (((OrderedProducts) object).getOrderNumber()));
+                pstmt.setString(1, (((OrderedProducts) object).getOrderNumber()));
                 pstmt.setInt(2, ((OrderedProducts) object).getId());
                 pstmt.setString(3, ((OrderedProducts) object).getProductName());
                 pstmt.setString(4, ((OrderedProducts) object).getProductDescription());
@@ -861,7 +860,7 @@ public class DatabaseAccessObject {
             } else if (object instanceof Order) {
 
                 PreparedStatement pstmt = connection.prepareStatement(UPDATE_ORDER);
-                pstmt.setInt(1, (((Order) object).getOrderNumber()));
+                pstmt.setString(1, (((Order) object).getOrderNumber()));
                 pstmt.setInt(2, ((Order) object).getTableID());
                 pstmt.setInt(3, ((Order) object).getEmployeeID()); 
                 pstmt.setInt(4, ((Order) object).getId()); 
@@ -869,7 +868,7 @@ public class DatabaseAccessObject {
 
             } else if (object instanceof OrderedProducts) {
                 PreparedStatement pstmt = connection.prepareStatement(UPDATE_ORDERED_PRODUCTS);
-                pstmt.setInt(1, (((OrderedProducts) object).getOrderNumber()));
+                pstmt.setString(1, (((OrderedProducts) object).getOrderNumber()));
                 pstmt.setInt(2, ((OrderedProducts) object).getProductID());
                 pstmt.setString(3, ((OrderedProducts) object).getProductName());
                 pstmt.setString(4, ((OrderedProducts) object).getProductDescription()); 

@@ -372,6 +372,9 @@
                   <Image iconType="3" name="/icons/orders-pressed.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ordersBtnActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JToggleButton" name="tableBtn">
               <Properties>
