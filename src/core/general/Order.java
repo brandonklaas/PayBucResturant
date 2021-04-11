@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Order {
     private int id;
-    private int orderNumber;
+    private String orderNumber;
     private int tableID;
     private int employeeID;
     private ArrayList<OrderedProducts> products;
@@ -25,11 +25,11 @@ public class Order {
         this.id = id;
     }
 
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
     }
 

@@ -8,7 +8,6 @@ package core.utilities;
 import core.database.DatabaseAccessObject;
 import core.general.Account;
 import core.general.Branch;
-import gui.dialoguePanels.Dialogue;
 
 /**
  *

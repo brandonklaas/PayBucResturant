@@ -14,6 +14,14 @@ public class Occupation {
     private String    title;
     private String    responsibilities;
 
+    public Occupation(String title, String Responsibility){
+        this.title = title;
+        this.responsibilities = Responsibility;
+    }
+    
+    public Occupation(){ 
+    }
+    
     public int getId() {
         return id;
     }

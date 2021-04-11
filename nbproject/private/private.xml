@@ -4,12 +4,13 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/A:/Documents/PayBucResturant/src/core/general/Order.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/gui/desktop/LoginFrame.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/core/general/Transaction.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/core/enums/ProductStatus.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/core/general/Product.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/ProductDialogue.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/gui/desktop/ModernUI.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/gui/desktop/Loading.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/gui/cards/FoodCard.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/EmployeesDialogue.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/PreCartDialogue.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/OrderDialogue.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/core/general/OrderedProducts.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/core/database/DatabaseAccessObject.java</file>
         </group>

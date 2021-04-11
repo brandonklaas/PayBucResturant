@@ -54,15 +54,14 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1058, 720));
         setLayout(new java.awt.BorderLayout());
 
         main.setLayout(new java.awt.BorderLayout());
 
-        bottomButtonsPanel.setBackground(new java.awt.Color(227, 227, 227));
-        bottomButtonsPanel.setPreferredSize(new java.awt.Dimension(1058, 60));
+        bottomButtonsPanel.setBackground(new java.awt.Color(247, 249, 249));
+        bottomButtonsPanel.setPreferredSize(new java.awt.Dimension(1058, 50));
         bottomButtonsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 10));
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
@@ -119,7 +118,7 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel1.setBackground(new java.awt.Color(247, 249, 249));
         jPanel1.setPreferredSize(new java.awt.Dimension(20, 589));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -130,12 +129,12 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 650, Short.MAX_VALUE)
         );
 
         main.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
-        jPanel2.setBackground(new java.awt.Color(227, 227, 227));
+        jPanel2.setBackground(new java.awt.Color(247, 249, 249));
         jPanel2.setPreferredSize(new java.awt.Dimension(20, 589));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -146,32 +145,23 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 650, Short.MAX_VALUE)
         );
 
         main.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.setBackground(new java.awt.Color(227, 227, 227));
-        jPanel3.setPreferredSize(new java.awt.Dimension(959, 50));
-
-        jLabel1.setFont(new java.awt.Font("Poppins Light", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Employees");
+        jPanel3.setBackground(new java.awt.Color(247, 249, 249));
+        jPanel3.setPreferredSize(new java.awt.Dimension(959, 20));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(815, Short.MAX_VALUE))
+            .addGap(0, 1058, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 17, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 20, Short.MAX_VALUE)
         );
 
         main.add(jPanel3, java.awt.BorderLayout.PAGE_START);
@@ -236,7 +226,6 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
     private javax.swing.JButton editBtn;
     private javax.swing.JTable employeeTable;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

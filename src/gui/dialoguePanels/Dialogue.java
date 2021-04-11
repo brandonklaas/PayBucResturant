@@ -5,7 +5,6 @@
  */
 package gui.dialoguePanels;
 
-import core.utilities.Session;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -28,6 +27,57 @@ public class Dialogue extends javax.swing.JDialog {
         initComponents();
     }
 
+    public Dialogue(JFrame parent, boolean modal, JPanel panel, String title, String size) {
+        super(parent, modal);
+
+        initComponents();
+        
+        if (panel instanceof ProductDialogue) {
+            ((ProductDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof ServiceDialogue) {
+            ((ServiceDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof EmployeesDialogue) {
+            ((EmployeesDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof ServiceTransactionDialogue) {
+            ((ServiceTransactionDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof ProductsTransactionDialogue) {
+            ((ProductsTransactionDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof ClientsDialogue) {
+            ((ClientsDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof OccupationDialogue) {
+            ((OccupationDialogue) panel).setDialogue(this);
+        
+        } else if (panel instanceof AccountDialogue) {
+            ((AccountDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof BranchDialogue) {
+            ((BranchDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof PreCartDialogue) {
+            ((PreCartDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof OrderDialogue) {
+            ((OrderDialogue) panel).setDialogue(this);
+        }
+
+        jLabel1.setText(title);
+
+        centerPanel.add(panel, BorderLayout.CENTER);
+        centerPanel.repaint();
+        centerPanel.validate();
+        
+        this.setSize(750, 880);
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        this.setVisible(true);
+        
+    }
+    
     public Dialogue(JFrame parent, boolean modal, JPanel panel, String title) {
         super(parent, modal);
 
@@ -62,6 +112,9 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof PreCartDialogue) {
             ((PreCartDialogue) panel).setDialogue(this);
+            
+        } else if (panel instanceof OrderDialogue) {
+            ((OrderDialogue) panel).setDialogue(this);
         }
 
         jLabel1.setText(title);

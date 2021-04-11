@@ -36,9 +36,13 @@ public class Derby {
     
     public static final String SELECT_OCCUPATION   = "SELECT * FROM Occupation";
     
-    public static final String SELECT_ORDER        = "SELECT * FROM Order";
+    public static final String SELECT_TABLES       = "SELECT * FROM TableData";
     
-    public static final String SELECT_ORDERED_PRODUCT_WHERE_ORDERNUM = "DELETE FROM OrderedProducts WHERE OrderNumber = ?";
+    public static final String SELECT_ORDER        = "SELECT * FROM OrderData";
+    
+    public static final String SELECT_ORDERED_PRODUCT_WHERE_ORDERNUM = "SELECT * FROM OrderedProducts WHERE OrderNumber = ?";
+    
+    public static final String SELECT_ORDERED_PRODUCTS = "SELECT * FROM OrderedProducts";
     
             
             
@@ -58,6 +62,8 @@ public class Derby {
     public static final String DELETE_ACCOUNT      = "DELETE FROM Accounts  WHERE id = ?";
     
     public static final String DELETE_OCCUPATION   = "DELETE FROM Occupation WHERE id = ?";
+    
+    public static final String DELETE_TABLE        = "DELETE FROM TableData WHERE id = ?";
     
     public static final String DELETE_ORDER        = "DELETE FROM Order WHERE id = ?";
     
@@ -81,6 +87,8 @@ public class Derby {
     
     public static final String UPDATE_OCCUPATION      = "UPDATE Occupation SET Title = ?, Responsibilities = ? WHERE id = ?";
     
+    public static final String UPDATE_TABLE      = "UPDATE TableData SET TableName = ?, TableStatus = ? WHERE id = ?";
+    
     public static final String UPDATE_ORDER           = "UPDATE Order SET OrderNumber = ?, TableID = ?, EmployeeID = ? WHERE id = ?";
 
     public static final String UPDATE_ORDERED_PRODUCT = "UPDATE OrderedProducts SET OrderNumber = ?, ProductID = ?, ProductName = ?, ProductDescription = ?, ProductPrice = ?, Status = ?, Notes = ?, taxable = ?, Type = ?, Side = ?, Optional = ?, Drink = ? WHERE id = ?";
@@ -101,6 +109,8 @@ public class Derby {
     
     public static final String INSERT_OCCUPATION   = "INSERT INTO Occupation (Title,  Responsibilities) VALUES (?,?)";
     
+    public static final String INSERT_TABLE   = "INSERT INTO TableData (TableName,  TableStatus) VALUES (?,?)";
+    
     public static final String INSERT_ORDER        = "INSERT INTO Order (OrderNumber,  TableID, EmployeeID) VALUES (?,?,?)";
     
     public static final String INSERT_ORDERED_PRODUCT = "INSERT INTO OrderedProducts (OrderNumber, ProductID, ProductName, ProductDescription, ProductPrice, Status, Notes, taxable, Type, Optional, Side, Drink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -115,7 +125,7 @@ public class Derby {
     public static final String CREATE_SERVICES     = "CREATE TABLE Services (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Name varchar(255),  Description varchar(255), Price decimal(18,2),   Taxable int)";
     
     public static final String CREATE_TRANSACTIONS = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Site int, EmployeeID int, TableID int, OrderID int, OrderNumber int, Price decimal(18,2), Tip decimal(18,2), PaymentType int, Date Date"
-            + ",  FOREIGN KEY (Site) REFERENCES Site(id), FOREIGN KEY (EmployeeID) REFERENCES Employee(id), FOREIGN KEY (TableID) REFERENCES Table(id), FOREIGN KEY (OrderID) REFERENCES Order(id))";
+            + ",  FOREIGN KEY (Site) REFERENCES Site(id), FOREIGN KEY (EmployeeID) REFERENCES Employees(id), FOREIGN KEY (TableID) REFERENCES TableData(id), FOREIGN KEY (OrderID) REFERENCES OrderData(id))";
                 
      
     
@@ -126,24 +136,16 @@ public class Derby {
     
     public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, Services int, Products int,"
                                                     + "Employees int, Settings int, Accounts int)";
-     
+    
+    public static final String CREATE_TABLE   = "CREATE TABLE TableData (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, TableName varchar(255),  TableStatus int)";
+    
     public static final String CREATE_OCCUPATION   = "CREATE TABLE Occupation (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Title varchar(255),  Responsibilities varchar(255))";
     
-    public static final String CREATE_ORDER   = "CREATE TABLE Occupation (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderNumber int,  TableID int, EmployeeID int)";
+    public static final String CREATE_ORDER   = "CREATE TABLE OrderData (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderNumber int,  TableID int, EmployeeID int, FOREIGN KEY (EmployeeID) REFERENCES Employees(id), FOREIGN KEY (TableID) REFERENCES TableData(id))";
     
-    
-    public static final String CREATE_ORDERED_PRODUCTS = "CREATE TABLES OrderedProducts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY,OrderNumber int, ProductID int, ProductName varchar(255), ProductDescription varchar(255), "
+    public static final String CREATE_ORDERED_PRODUCTS = "CREATE TABLE OrderedProducts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderNumber varchar(255), ProductID int, ProductName varchar(255), ProductDescription varchar(255), "
                                                        + "ProductPrice decimal(18,2), Status int, Notes varchar(255), taxable boolean, Type int, Side int, Optional int, Drink int)";
      
     
     
-    private int id;
-    private int orderNumber;
-    private int productID;
-    private String productName;
-    private String productDescription;
-    private Double productPrice;
-    private int productStatus;
-    private String notes;
-    private boolean taxable;
 }

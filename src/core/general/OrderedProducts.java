@@ -22,7 +22,6 @@ public class OrderedProducts {
     private ProductType type;
     private int side;
     private int optional;
-    private int drink;
     private String notes;
     private boolean taxable;
 
@@ -58,17 +57,6 @@ public class OrderedProducts {
         this.optional = optional;
     }
 
-    public int getDrink() {
-        return drink;
-    }
-
-    public void setDrink(int drink) {
-        this.drink = drink;
-    }
-    
-    
-    
-    
 
     public int getProductStatus() {
         return productStatus;

@@ -213,7 +213,6 @@ public class ServiceManagementPanel extends javax.swing.JPanel {
         tableModel.addColumn("Price");
 
         array = database.getServices();
-        System.out.println(array.size());
         if (array.size() > 0) {
             for (Service service : array) {
                 tableModel.addRow(new Object[]{service.getName(), service.getDescription(), service.getPrice()});

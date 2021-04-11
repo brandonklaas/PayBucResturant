@@ -5,6 +5,8 @@
  */
 package core.general;
 
+import core.enums.TableStatus;
+
 /**
  *
  * @author Brandon
@@ -12,7 +14,7 @@ package core.general;
 public class Table {
     private int id;
     private String tableName;
-    private int tableStatus;
+    private TableStatus tableStatus;
 
     public int getId() {
         return id;
@@ -30,13 +32,12 @@ public class Table {
         this.tableName = tableName;
     }
 
-    public int getTableStatus() {
+    public TableStatus getTableStatus() {
         return tableStatus;
     }
 
-    public void setTableStatus(int tableStatus) {
+    public void setTableStatus(TableStatus tableStatus) {
         this.tableStatus = tableStatus;
     }
-    
     
 }

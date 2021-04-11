@@ -5,14 +5,14 @@
  */
 package gui.dialoguePanels;
 
-import core.enums.ProductStatus;
-import core.enums.ProductType;
+
+import core.database.DatabaseAccessObject;
+import core.enums.ProductStatus; 
 import core.general.OrderedProducts;
 import core.general.Product;
 import core.utilities.Session;
 import gui.desktop.ModernUI;
-import java.util.ArrayList;
-import javax.swing.ComboBoxModel;
+import java.util.ArrayList; 
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,11 +22,15 @@ import javax.swing.table.DefaultTableModel;
 public class PreCartDialogue extends javax.swing.JPanel {
 
     private Session session;
+    private DatabaseAccessObject database;
+    
     private Dialogue diag;
     private ArrayList<OrderedProducts> products = new ArrayList<>();
     private ArrayList<Product> searchedProducts = new ArrayList<>();
     private DefaultTableModel tableModel = new DefaultTableModel(); 
     private ModernUI desktop;
+    
+    
 //    private ComboBoxModel optionalModel;
 //    private ComboBoxModel sidesModel;
 //    private ComboBoxModel drinksModel;
@@ -40,8 +44,9 @@ public class PreCartDialogue extends javax.swing.JPanel {
         setDefaults();
     }
 
-    public PreCartDialogue( ModernUI desktop, Product product, int quantity) { 
+    public PreCartDialogue( ModernUI desktop, Product product, int quantity, Session session) { 
         this.session = session;
+        this.database = session.getDatabase();
         this.desktop = desktop;
         initComponents();
         setDefaults();
@@ -57,15 +62,14 @@ public class PreCartDialogue extends javax.swing.JPanel {
             ordered.setProductPrice(product.getPrice()); 
             ordered.setTaxable(product.isTaxable());  
             
-            ordered.setProductStatus(ProductStatus.PENDING.getID());
-            ordered.setDrink(-1);
+            ordered.setProductStatus(ProductStatus.PENDING.getID()); 
             ordered.setOptional(-1);
             ordered.setSide(-1);
             ordered.setNotes("--"); 
             
             products.add(ordered);
             
-            tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getName(), "<None>","<None>","<None>", "<None>", product.getPrice() });
+            tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getName(), "<None>","<None>","<None>", product.getPrice() });
         }
     }
     
@@ -73,7 +77,6 @@ public class PreCartDialogue extends javax.swing.JPanel {
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Product");
         tableModel.addColumn("Side");
-        tableModel.addColumn("Drink");
         tableModel.addColumn("Optional");
         tableModel.addColumn("Notes");
         tableModel.addColumn("Price");
@@ -84,8 +87,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
     public void clearPanel(){
         productNameTF.setText("");
         productDescTF.setText("");
-        notesTf.setText("");
-        drinkCB.setSelectedIndex(-1);
+        notesTf.setText(""); 
         sideCB.setSelectedIndex(-1);
         optionsCB.setSelectedIndex(-1);
     }
@@ -94,7 +96,6 @@ public class PreCartDialogue extends javax.swing.JPanel {
         clearTable();
         for (OrderedProducts product : products) {
             tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getProductName(), (product.getSide() != -1) ? getProductName(product.getSide()) : "<None>",
-                 (product.getDrink() != -1) ? getProductName(product.getDrink()) : "<None>",
                 (product.getOptional() != -1) ? getProductName(product.getOptional()) : "<None>",
                 product.getNotes(), product.getProductPrice()});
         }
@@ -104,21 +105,13 @@ public class PreCartDialogue extends javax.swing.JPanel {
     private void setDefaults() {
         clearTable();
         
-        searchedProducts.add(new Product(1, "CocaCola", "Food", 95.50, false,"/icons/Food/w1.png", ProductType.DRINK));
-        searchedProducts.add(new Product(2,"Fanta", "Food", 95.50, false,"/icons/Food/w1.png", ProductType.DRINK));
-        searchedProducts.add(new Product(3,"Sprite", "Food", 95.50, false,"/icons/Food/w1.png", ProductType.DRINK));
-        searchedProducts.add(new Product(4,"Fries", "Food", 95.50, false, "/icons/Food/w1.png", ProductType.SIDE));
-        searchedProducts.add(new Product(5,"Roll", "Food", 95.50, false, "/icons/Food/w1.png", ProductType.OPTIONAL));
-
-        drinkCB.addItem("<Select Drink>");
+        searchedProducts = database.getProducts();
+        
         sideCB.addItem("<Select Side>");
         optionsCB.addItem("<Select Option>");
 
         for (Product product : searchedProducts) {
             switch (product.getType()) {
-                case DRINK:
-                    drinkCB.addItem(product.getName());
-                    break;
                 case SIDE:
                     sideCB.addItem(product.getName());
                     break;
@@ -150,14 +143,12 @@ public class PreCartDialogue extends javax.swing.JPanel {
         preCartTable = new javax.swing.JTable();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel11 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         productNameTF = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         productDescTF = new javax.swing.JTextPane();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        drinkCB = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         optionsCB = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
@@ -207,9 +198,6 @@ public class PreCartDialogue extends javax.swing.JPanel {
         jLabel11.setForeground(new java.awt.Color(0, 0, 0));
         jLabel11.setText("Order Data");
 
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("Drink / Beverage :");
-
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Product Desc  :");
 
@@ -245,53 +233,43 @@ public class PreCartDialogue extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(productNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(optionsCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(drinkCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(81, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(productNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(optionsCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,32 +282,25 @@ public class PreCartDialogue extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
                 .addComponent(jLabel11)
+                .addGap(4, 4, 4)
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(productNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(optionsCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel13)))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(productNameTF, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(drinkCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(optionsCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(9, 9, 9)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel14))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -401,9 +372,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
         if(preCartTable.getSelectedRow() > -1){
             productNameTF.setText(products.get(preCartTable.getSelectedRow()).getProductName());
             productDescTF.setText(products.get(preCartTable.getSelectedRow()).getProductDescription());
-            notesTf.setText(products.get(preCartTable.getSelectedRow()).getNotes());
-            drinkCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getDrink() > -1) ? 
-                                     getProductName(products.get(preCartTable.getSelectedRow()).getDrink()) : "<Select Drink>");
+            notesTf.setText(products.get(preCartTable.getSelectedRow()).getNotes()); 
             sideCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getSide()> -1) ? 
                                      getProductName(products.get(preCartTable.getSelectedRow()).getSide()) : "<Select Side>");
             optionsCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getOptional() > -1) ?
@@ -415,8 +384,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
         // TODO add your handling code here:
         if(preCartTable.getSelectedRow() > -1){ 
             products.get(preCartTable.getSelectedRow()).setNotes(notesTf.getText());
-            products.get(preCartTable.getSelectedRow()).setOptional((optionsCB.getSelectedIndex() > 0) ? getProductID(optionsCB.getSelectedItem().toString()) : -1);
-            products.get(preCartTable.getSelectedRow()).setDrink((drinkCB.getSelectedIndex() > 0) ? getProductID(drinkCB.getSelectedItem().toString()) : -1);
+            products.get(preCartTable.getSelectedRow()).setOptional((optionsCB.getSelectedIndex() > 0) ? getProductID(optionsCB.getSelectedItem().toString()) : -1); 
             products.get(preCartTable.getSelectedRow()).setSide((sideCB.getSelectedIndex() > 0) ? getProductID(sideCB.getSelectedItem().toString()) : -1);
             updateTable();
         }
@@ -455,13 +423,11 @@ public class PreCartDialogue extends javax.swing.JPanel {
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton deleteBtn;
-    private javax.swing.JComboBox<String> drinkCB;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

@@ -9,6 +9,7 @@ import core.enums.Gender;
 import core.enums.PaymentType;
 import core.enums.ProductStatus;
 import core.enums.ProductType;
+import core.enums.TableStatus;
 import core.general.Account;
 import core.general.Employee;
 import core.general.Product;
@@ -17,6 +18,7 @@ import core.general.Branch;
 import core.general.Occupation;
 import core.general.Order;
 import core.general.OrderedProducts;
+import core.general.Table;
 import core.general.Transaction; 
 import core.utilities.Session;
 import java.io.File;
@@ -60,9 +62,16 @@ public class DatabaseAccessObject {
             stmt.executeUpdate(CREATE_BRANCH);
             stmt.executeUpdate(CREATE_EMPLOYEE);
             stmt.executeUpdate(CREATE_PRODUCT);
-            stmt.executeUpdate(CREATE_TRANSACTIONS);
             stmt.executeUpdate(CREATE_ACCOUNT);
             stmt.executeUpdate(CREATE_OCCUPATION);
+            stmt.executeUpdate(CREATE_TABLE);
+            stmt.executeUpdate(CREATE_ORDER);
+            stmt.executeUpdate(CREATE_ORDERED_PRODUCTS);
+            stmt.executeUpdate(CREATE_TRANSACTIONS);
+            
+            insert(new Occupation("Waiter", ""));
+            insert(new Occupation("Cashier", ""));
+            insert(new Occupation("Manager", ""));
             
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,7 +102,9 @@ public class DatabaseAccessObject {
             SELECT_EMPLOYEE     = Derby.SELECT_EMPLOYEE;
             SELECT_PRODUCT      = Derby.SELECT_PRODUCT; 
             SELECT_ACCOUNT      = Derby.SELECT_ACCOUNT;
+            SELECT_TABLE        = Derby.SELECT_TABLES;
             SELECT_ORDER        = Derby.SELECT_ORDER;
+            SELECT_ORDERED_PRODUCT = Derby.SELECT_ORDERED_PRODUCTS;
             SELECT_ORDERED_PRODUCTS_WHERE_ORDERNUM = Derby.SELECT_ORDERED_PRODUCT_WHERE_ORDERNUM;
             
             DELETE_OCCUPATION   = Derby.DELETE_OCCUPATION;
@@ -103,6 +114,7 @@ public class DatabaseAccessObject {
             DELETE_EMPLOYEE     = Derby.DELETE_EMPLOYEE;
             DELETE_PRODUCT      = Derby.DELETE_PRODUCT; 
             DELETE_ACCOUNT      = Derby.DELETE_ACCOUNT;
+            DELETE_TABLE        = Derby.DELETE_TABLE;
             DELETE_ORDER        = Derby.DELETE_ORDER;
             DELETE_ORDERED_PRODUCTS = Derby.DELETE_ORDERED_PRODUCT;
             DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM = Derby.DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM;
@@ -114,6 +126,7 @@ public class DatabaseAccessObject {
             UPDATE_EMPLOYEE     = Derby.UPDATE_EMPLOYEE;
             UPDATE_PRODUCT      = Derby.UPDATE_PRODUCT;
             UPDATE_ACCOUNT      = Derby.UPDATE_ACCOUNT;
+            UPDATE_TABLE        = Derby.UPDATE_TABLE;
             UPDATE_ORDER        = Derby.UPDATE_ORDER;
             UPDATE_ORDERED_PRODUCTS = Derby.UPDATE_ORDERED_PRODUCT;
             
@@ -124,7 +137,8 @@ public class DatabaseAccessObject {
             INSERT_EMPLOYEE     = Derby.INSERT_EMPLOYEE;
             INSERT_PRODUCT      = Derby.INSERT_PRODUCT;
             INSERT_ACCOUNT      = Derby.INSERT_ACCOUNT;
-            INSERT_ORDER        = Derby.CREATE_ORDER;
+            INSERT_TABLE        = Derby.INSERT_TABLE;
+            INSERT_ORDER        = Derby.INSERT_ORDER;
             INSERT_ORDERED_PRODUCTS = Derby.CREATE_ORDERED_PRODUCTS;
             
             CREATE_OCCUPATION   = Derby.CREATE_OCCUPATION;
@@ -134,6 +148,7 @@ public class DatabaseAccessObject {
             CREATE_EMPLOYEE     = Derby.CREATE_EMPLOYEE;
             CREATE_PRODUCT      = Derby.CREATE_PRODUCT;
             CREATE_ACCOUNT      = Derby.CREATE_ACCOUNT;
+            CREATE_TABLE        = Derby.CREATE_TABLE;
             CREATE_ORDER        = Derby.CREATE_ORDER;
             CREATE_ORDERED_PRODUCTS = Derby.CREATE_ORDERED_PRODUCTS;
             
@@ -242,9 +257,108 @@ public class DatabaseAccessObject {
                 product.setName(rs.getString("Name"));
                 product.setDescription(rs.getString("Description"));
                 product.setPrice(rs.getDouble("Price"));
+                product.setImagePath(rs.getString("ImagePath"));
                 product.setTaxable((rs.getInt("Tax") == 1) ? true : false);
                 product.setType(ProductType.fromId(rs.getInt("Type")));
                 array.add(product);
+            }
+            
+            return array;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public ArrayList<OrderedProducts> getOrderedProducts() {
+        try {
+            ArrayList<OrderedProducts> array = new ArrayList<>();
+            Statement stmt = connection.createStatement();
+            
+            stmt.executeQuery(SELECT_ORDERED_PRODUCT);
+            ResultSet rs = stmt.getResultSet();
+            
+            while (rs.next()) {
+                OrderedProducts ordered = new OrderedProducts();
+                ordered.setId(rs.getInt("id"));
+                ordered.setOrderNumber(rs.getInt("OrderNumber"));
+                ordered.setProductID(rs.getInt("ProductID"));
+                ordered.setProductName(rs.getString("ProductName"));
+                ordered.setProductDescription(rs.getString("ProductDescription")); 
+                ordered.setProductPrice(rs.getDouble("ProductPrice")); 
+                ordered.setProductStatus(rs.getInt("Status")); 
+                ordered.setNotes(rs.getString("Notes")); 
+                ordered.setTaxable((rs.getInt("Tax") == 1) ? true : false);
+                ordered.setProductDescription(rs.getString("ProductDescription"));  
+                ordered.setType(ProductType.fromId(rs.getInt("Type")));
+                ordered.setOptional(rs.getInt("Optional")); 
+                ordered.setSide(rs.getInt("Side")); 
+                array.add(ordered);
+            }
+            
+            return array;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    
+    public ArrayList<OrderedProducts> getOrderedProducts(String OrderNumber) {
+        try {
+            ArrayList<OrderedProducts> array = new ArrayList<>();
+
+            PreparedStatement pstmt = connection.prepareStatement(SELECT_ORDERED_PRODUCTS_WHERE_ORDERNUM);
+            pstmt.setString(1, OrderNumber);
+
+            pstmt.executeQuery(); 
+            ResultSet rs = pstmt.getResultSet();
+
+            while (rs.next()) {
+                OrderedProducts ordered = new OrderedProducts();
+                ordered.setId(rs.getInt("id"));
+                ordered.setOrderNumber(rs.getInt("OrderNumber"));
+                ordered.setProductID(rs.getInt("ProductID"));
+                ordered.setProductName(rs.getString("ProductName"));
+                ordered.setProductDescription(rs.getString("ProductDescription")); 
+                ordered.setProductPrice(rs.getDouble("ProductPrice")); 
+                ordered.setProductStatus(rs.getInt("Status")); 
+                ordered.setNotes(rs.getString("Notes")); 
+                ordered.setTaxable((rs.getInt("Tax") == 1) ? true : false);
+                ordered.setProductDescription(rs.getString("ProductDescription"));  
+                ordered.setType(ProductType.fromId(rs.getInt("Type")));
+                ordered.setOptional(rs.getInt("Optional")); 
+                ordered.setSide(rs.getInt("Side")); 
+                array.add(ordered);
+            }
+            
+            return array;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public ArrayList<Order> getOrders() {
+        try {
+            ArrayList<Order> array = new ArrayList<>();
+            Statement stmt = connection.createStatement();
+            
+            stmt.executeQuery(SELECT_ORDER);
+            ResultSet rs = stmt.getResultSet();
+            
+            while (rs.next()) {
+                Order order = new Order();
+                order.setId(rs.getInt("id"));
+                order.setOrderNumber(rs.getString("OrderNumber"));
+                order.setTableID(rs.getInt("TableID"));
+                order.setEmployeeID(rs.getInt("EmployeeID"));
+                
+                order.setProducts(getOrderedProducts(order.getOrderNumber()));
+                array.add(order);
             }
             
             return array;
@@ -486,6 +600,29 @@ public class DatabaseAccessObject {
             return null;
         }
     }
+    
+    public ArrayList<Table> getTables() {
+        try {
+            ArrayList<Table> array = new ArrayList<>();
+            Statement stmt = connection.createStatement();
+
+            stmt.executeQuery(SELECT_TABLE);
+            ResultSet rs = stmt.getResultSet();
+            while (rs.next()) {
+                Table table = new Table();
+                table.setId(rs.getInt("id"));
+                table.setTableName(rs.getString("TableName"));
+                table.setTableStatus(TableStatus.fromId(rs.getInt("TableStatus")));
+                array.add(table);
+            }
+
+            return array;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
 
     public boolean insert(Object object) {
 
@@ -527,9 +664,11 @@ public class DatabaseAccessObject {
                 PreparedStatement pstmt = connection.prepareStatement(INSERT_PRODUCT);
                 pstmt.setString(1, (((Product) object).getName()));
                 pstmt.setString(2, ((Product) object).getDescription());
-                pstmt.setDouble(3, ((Product) object).getPrice());
-                pstmt.setInt(4, (((Product) object).isTaxable()) ? 1 : 0);
-                pstmt.executeUpdate(); 
+                pstmt.setString(3, ((Product) object).getImagePath());
+                pstmt.setDouble(4, ((Product) object).getPrice());
+                pstmt.setInt(5, (((Product) object).isTaxable()) ? 1 : 0);
+                pstmt.setInt(6, ((Product) object).getType().getID()); 
+                pstmt.executeUpdate();
 
             } else if (object instanceof Transaction) {
 
@@ -567,6 +706,13 @@ public class DatabaseAccessObject {
                 PreparedStatement pstmt = connection.prepareStatement(INSERT_OCCUPATION);
                 pstmt.setString(1, (((Occupation) object).getTitle()));
                 pstmt.setString(2, ((Occupation) object).getResponsibilities());
+                pstmt.executeUpdate(); 
+
+            }  else if (object instanceof Table) {
+
+                PreparedStatement pstmt = connection.prepareStatement(INSERT_TABLE);
+                pstmt.setString(1, (((Table) object).getTableName()));
+                pstmt.setInt(2, ((Table) object).getTableStatus().getID());
                 pstmt.executeUpdate(); 
 
             } else if (object instanceof Order) {
@@ -656,9 +802,11 @@ public class DatabaseAccessObject {
                 PreparedStatement pstmt = connection.prepareStatement(UPDATE_PRODUCT);
                 pstmt.setString(1, (((Product) object).getName()));
                 pstmt.setString(2, ((Product) object).getDescription());
-                pstmt.setDouble(3, ((Product) object).getPrice());
-                pstmt.setInt(4, (((Product) object).isTaxable()) ? 1 : 0);
-                pstmt.setInt(5, ((Product) object).getId());
+                pstmt.setString(3, ((Product) object).getImagePath());
+                pstmt.setDouble(4, ((Product) object).getPrice());
+                pstmt.setInt(5, (((Product) object).isTaxable()) ? 1 : 0);
+                pstmt.setInt(6, ((Product) object).getType().getID());
+                pstmt.setInt(7, ((Product) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Transaction) {
@@ -700,6 +848,14 @@ public class DatabaseAccessObject {
                 pstmt.setString(1, (((Occupation) object).getTitle()));
                 pstmt.setString(2, ((Occupation) object).getResponsibilities());
                 pstmt.setInt(3, ((Occupation) object).getId());
+                pstmt.executeUpdate();
+
+            } else if (object instanceof Table) {
+
+                PreparedStatement pstmt = connection.prepareStatement(UPDATE_TABLE);
+                pstmt.setString(1, (((Table) object).getTableName()));
+                pstmt.setInt(2, ((Table) object).getTableStatus().getID());
+                pstmt.setInt(3, ((Table) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Order) {
@@ -783,7 +939,7 @@ public class DatabaseAccessObject {
                 pstmt.addBatch();
                 
                 pstmt = connection.prepareStatement(DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM);
-                pstmt.setInt(1, ((Order) object).getOrderNumber());
+                pstmt.setString(1, ((Order) object).getOrderNumber());
                 pstmt.addBatch();
                 
                 pstmt.executeBatch();
@@ -824,7 +980,11 @@ public class DatabaseAccessObject {
     
     private String SELECT_ACCOUNT       = null;
     
+    private String SELECT_TABLE      = null;
+    
     private String SELECT_ORDER      = null;
+    
+    private String SELECT_ORDERED_PRODUCT = null;
     
     private String SELECT_ORDERED_PRODUCTS_WHERE_ORDERNUM = null;
     
@@ -843,9 +1003,12 @@ public class DatabaseAccessObject {
      
     private String DELETE_ACCOUNT       = null;
     
+    private String DELETE_TABLE      = null;
+    
     private String DELETE_ORDER      = null;
     
     private String DELETE_ORDERED_PRODUCTS      = null;
+    
     private String DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM = null;
     
     
@@ -863,6 +1026,8 @@ public class DatabaseAccessObject {
     private String UPDATE_PRODUCT      = null;
         
     private String UPDATE_ACCOUNT      = null;
+    
+    private String UPDATE_TABLE      = null;
     
     private String UPDATE_ORDER      = null;
     
@@ -884,6 +1049,8 @@ public class DatabaseAccessObject {
     
     private String INSERT_ACCOUNT      = null;
     
+    private String INSERT_TABLE      = null;
+    
     private String INSERT_ORDER      = null;
     
     private String INSERT_ORDERED_PRODUCTS      = null;
@@ -904,6 +1071,8 @@ public class DatabaseAccessObject {
     private String CREATE_PRODUCT      = null;
     
     private String CREATE_ACCOUNT      = null;
+    
+    private String CREATE_TABLE      = null;
     
     private String CREATE_ORDER      = null;
     
