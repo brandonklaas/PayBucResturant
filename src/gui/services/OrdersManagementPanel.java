@@ -46,9 +46,8 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     }
     
     public void searchDatabase() {
-        array = database.getOrderedProducts();
         searchedOrders    = database.getOrders();
-        System.out.println("Orders = "+searchedOrders.size());
+        array = database.getOrderedProducts();
         searchedEmployees = database.getEmployees();
         searchedTables    = database.getTables();
         searchedProducts  = database.getProducts();
@@ -66,16 +65,15 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         tableModel.addColumn("Status");
         
         if(array.size() > 0){
-            System.out.println("ARRAY SIZE = "+array.size());
             for(OrderedProducts orderedProducts : array){
                 tableModel.addRow(new Object[]{orderedProducts.getOrderNumber(),
-//                                               getTableName(getOrder(orderedProducts.getOrderNumber()).getTableID()),
-                                                ""+getOrder(orderedProducts.getOrderNumber()).getTableID(),
+//                                             getTableName(getOrder(orderedProducts.getOrderNumber()).getTableID()),
+                                               ""+getOrder(orderedProducts.getOrderNumber()).getTableID(),
                                                orderedProducts.getProductName(),
                                                orderedProducts.getNotes(),
                                                getProductName(orderedProducts.getSide()),
                                                getProductName(orderedProducts.getOptional()), ""+getOrder(orderedProducts.getOrderNumber()).getEmployeeID(),
-//                                               getEmployeeName(getOrder(orderedProducts.getOrderNumber()).getEmployeeID()),
+//                                             getEmployeeName(getOrder(orderedProducts.getOrderNumber()).getEmployeeID()),
                                                ProductStatus.fromId(orderedProducts.getProductStatus())
                                                });
             }

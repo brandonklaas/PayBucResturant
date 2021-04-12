@@ -92,7 +92,7 @@ public class Derby {
     
     public static final String UPDATE_TABLE      = "UPDATE TableData SET TableName = ?, TableStatus = ? WHERE id = ?";
     
-    public static final String UPDATE_ORDER           = "UPDATE Order SET OrderNumber = ?, TableID = ?, EmployeeID = ? WHERE id = ?";
+    public static final String UPDATE_ORDER           = "UPDATE OrderData SET OrderNumber = ?, TableID = ?, EmployeeID = ?, OrderStatus = ? WHERE id = ?";
 
     public static final String UPDATE_ORDERED_PRODUCT = "UPDATE OrderedProducts SET OrderNumber = ?, ProductID = ?, ProductName = ?, ProductDescription = ?, ProductPrice = ?, Status = ?, Notes = ?, taxable = ?, Type = ?, Side = ?, Optional = ?, Drink = ? WHERE id = ?";
     
@@ -115,7 +115,7 @@ public class Derby {
     
     public static final String INSERT_TABLE   = "INSERT INTO TableData (TableName,  TableStatus) VALUES (?,?)";
     
-    public static final String INSERT_ORDER        = "INSERT INTO OrderData (OrderNumber,  TableID, EmployeeID) VALUES (?,?,?)";
+    public static final String INSERT_ORDER        = "INSERT INTO OrderData (OrderNumber,  TableID, EmployeeID, OrderStatus) VALUES (?,?,?,?)";
     
     public static final String INSERT_ORDERED_PRODUCT = "INSERT INTO OrderedProducts (OrderNumber, ProductID, ProductName, ProductDescription, ProductPrice, Status, Notes, taxable, Type, Optional, Side, Drink) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     

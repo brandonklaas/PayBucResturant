@@ -6,6 +6,7 @@
 package core.database;
 
 import core.enums.Gender;
+import core.enums.OrderStatus;
 import core.enums.PaymentType;
 import core.enums.ProductStatus;
 import core.enums.ProductType;
@@ -357,6 +358,7 @@ public class DatabaseAccessObject {
                 order.setOrderNumber(rs.getString("OrderNumber"));
                 order.setTableID(rs.getInt("TableID"));
                 order.setEmployeeID(rs.getInt("EmployeeID"));
+                order.setOrderStatus(OrderStatus.fromId(rs.getInt("OrderStatus")));
                 
                 order.setProducts(getOrderedProducts(order.getOrderNumber()));
                 array.add(order);
@@ -754,6 +756,7 @@ public class DatabaseAccessObject {
                 pstmt.setString(1, (((Order) object).getOrderNumber()));
                 pstmt.setInt(2, ((Order) object).getTableID());
                 pstmt.setInt(3, ((Order) object).getEmployeeID()); 
+                pstmt.setInt(4, ((Order) object).getOrderStatus().getID()); 
                 pstmt.executeUpdate();
                 
                 //===================== BATCH ADD ======================
@@ -897,7 +900,8 @@ public class DatabaseAccessObject {
                 pstmt.setString(1, (((Order) object).getOrderNumber()));
                 pstmt.setInt(2, ((Order) object).getTableID());
                 pstmt.setInt(3, ((Order) object).getEmployeeID()); 
-                pstmt.setInt(4, ((Order) object).getId()); 
+                pstmt.setInt(4, ((Order) object).getOrderStatus().getID());
+                pstmt.setInt(5, ((Order) object).getId()); 
                 pstmt.executeUpdate();
 
             } else if (object instanceof OrderedProducts) {

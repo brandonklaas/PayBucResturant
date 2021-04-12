@@ -5,6 +5,7 @@
  */
 package core.general;
 
+import core.enums.OrderStatus;
 import java.util.ArrayList;
 
 /** 
@@ -15,6 +16,7 @@ public class Order {
     private String orderNumber;
     private int tableID;
     private int employeeID;
+    private OrderStatus orderStatus;
     private ArrayList<OrderedProducts> products;
 
     public int getId() {
@@ -25,6 +27,14 @@ public class Order {
         this.id = id;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+    
     public String getOrderNumber() {
         return orderNumber;
     }
