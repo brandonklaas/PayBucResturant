@@ -102,6 +102,7 @@ public class DatabaseAccessObject {
             SELECT_EMPLOYEE     = Derby.SELECT_EMPLOYEE;
             SELECT_PRODUCT      = Derby.SELECT_PRODUCT; 
             SELECT_ACCOUNT      = Derby.SELECT_ACCOUNT;
+            SELECT_ACCOUNT_WHERE      = Derby.SELECT_ACCOUNT_WHERE;
             SELECT_TABLE        = Derby.SELECT_TABLES;
             SELECT_ORDER        = Derby.SELECT_ORDER;
             SELECT_ORDERED_PRODUCT = Derby.SELECT_ORDERED_PRODUCTS;
@@ -420,6 +421,38 @@ public class DatabaseAccessObject {
             }
 
             return array;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public Account getAccount(String Username, String Password) {
+        try { 
+            PreparedStatement pstmt = connection.prepareStatement(SELECT_ACCOUNT_WHERE);
+            pstmt.setString(1, Username);
+            pstmt.setString(2, Password);
+            pstmt.executeQuery();
+            
+            ResultSet rs = pstmt.getResultSet();
+
+            rs.next();
+            Account account = new Account();
+            account.setId(rs.getInt("id"));
+            account.setUsername(rs.getString("Username"));
+            account.setPassword(rs.getString("Password"));
+
+            account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
+            account.setGuest((rs.getInt("Guest") == 1) ? true : false);
+            account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
+            account.setServices((rs.getInt("Services") == 1) ? true : false);
+            account.setProducts((rs.getInt("Products") == 1) ? true : false);
+            account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
+            account.setSettings((rs.getInt("Settings") == 1) ? true : false);
+            account.setAccounts((rs.getInt("Accounts") == 1) ? true : false); 
+            
+            return account;
 
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
@@ -978,6 +1011,8 @@ public class DatabaseAccessObject {
     private String SELECT_PRODUCT      = null;
     
     private String SELECT_ACCOUNT       = null;
+    
+    private String SELECT_ACCOUNT_WHERE = null;
     
     private String SELECT_TABLE      = null;
     

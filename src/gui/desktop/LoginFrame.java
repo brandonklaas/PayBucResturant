@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 package gui.desktop;
-
-import com.mysql.cj.conf.PropertyKey;
+ 
 import core.database.DatabaseAccessObject;
 import core.general.Account;
 import core.utilities.Session;

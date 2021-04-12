@@ -327,17 +327,12 @@ public class ProductDialogue extends javax.swing.JPanel {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             File dest = new File(new File("").getAbsolutePath()+"\\bin\\ProductImages\\"+file.getName());
-            try {
-                FileUtils.copyFile(file, dest);
-                imagePath = "\\bin\\ProductImages\\"+file.getName();
-                productImage.setText("");
-                productImage.setIcon(new javax.swing.ImageIcon(imagePath));
-                jPanel1.validate();
-                jPanel1.repaint();
-                
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            FileUtils.copyFile(file, dest);
+            imagePath = "\\bin\\ProductImages\\"+file.getName();
+            productImage.setText("");
+            productImage.setIcon(new javax.swing.ImageIcon(imagePath));
+            jPanel1.validate();
+            jPanel1.repaint();
         }
     }//GEN-LAST:event_browseBtnActionPerformed
 

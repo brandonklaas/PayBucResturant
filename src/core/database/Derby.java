@@ -34,6 +34,8 @@ public class Derby {
     
     public static final String SELECT_ACCOUNT       = "SELECT * FROM Accounts";
     
+    public static final String SELECT_ACCOUNT_WHERE = "SELECT * FROM Accounts WHERE Username = ?, Password = ?";
+    
     public static final String SELECT_OCCUPATION   = "SELECT * FROM Occupation";
     
     public static final String SELECT_TABLES       = "SELECT * FROM TableData";

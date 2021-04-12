@@ -21,6 +21,7 @@ import gui.services.ServiceManagementPanel;
 import gui.services.TablesManagementPanel;
 import gui.services.TransactionsManagementPanel;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import javax.swing.table.TableColumn;
  */
 public class ModernUI extends javax.swing.JFrame {
 
+    private Dimension dim;
     private Order currentOrder;
     private DefaultTableModel tableModel = new DefaultTableModel();
     private ArrayList<OrderedProducts> products = new ArrayList<>();
@@ -68,6 +70,27 @@ public class ModernUI extends javax.swing.JFrame {
         defaults();
         createGlassPanel();
         
+        
+        servicePanel = new ServiceManagementPanel(session);
+        productsPanel = new ProductManagementPanel(session);
+        transactionsPanel = new TransactionsManagementPanel(session);
+        employeesPanel = new EmployeesManagementPanel(session); 
+        tablesPanel = new TablesManagementPanel(session);
+        ordersPanel = new OrdersManagementPanel(session);
+        
+        foodBtnActionPerformed(null);
+    }
+    
+    
+    public ModernUI(Dimension dimension, Session session) {
+        this.dim = dimension; 
+        this.session = session;
+        this.database = session.getDatabase();
+        this.setVisible(false);
+        
+        initComponents();
+        defaults();
+        createGlassPanel();
         
         servicePanel = new ServiceManagementPanel(session);
         productsPanel = new ProductManagementPanel(session);
