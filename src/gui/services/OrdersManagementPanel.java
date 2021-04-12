@@ -6,6 +6,7 @@
 package gui.services;
 
 import core.database.DatabaseAccessObject;
+import core.enums.OrderStatus;
 import core.enums.ProductStatus;
 import core.general.Employee;
 import core.general.Order;
@@ -47,7 +48,6 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     
     public void searchDatabase() {
         searchedOrders    = database.getOrders();
-        array = database.getOrderedProducts();
         searchedEmployees = database.getEmployees();
         searchedTables    = database.getTables();
         searchedProducts  = database.getProducts();
@@ -57,25 +57,20 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Order #");
         tableModel.addColumn("Table");
-        tableModel.addColumn("Product");
-        tableModel.addColumn("Notes");
-        tableModel.addColumn("Side");
-        tableModel.addColumn("Option");
         tableModel.addColumn("Waiter");
+        tableModel.addColumn("Served Items");
         tableModel.addColumn("Status");
         
         if(array.size() > 0){
-            for(OrderedProducts orderedProducts : array){
-                tableModel.addRow(new Object[]{orderedProducts.getOrderNumber(),
-//                                             getTableName(getOrder(orderedProducts.getOrderNumber()).getTableID()),
-                                               ""+getOrder(orderedProducts.getOrderNumber()).getTableID(),
-                                               orderedProducts.getProductName(),
-                                               orderedProducts.getNotes(),
-                                               getProductName(orderedProducts.getSide()),
-                                               getProductName(orderedProducts.getOptional()), ""+getOrder(orderedProducts.getOrderNumber()).getEmployeeID(),
-//                                             getEmployeeName(getOrder(orderedProducts.getOrderNumber()).getEmployeeID()),
-                                               ProductStatus.fromId(orderedProducts.getProductStatus())
+            for(Order order : searchedOrders){
+                if(order.getOrderStatus() == OrderStatus.UNPAID){
+                tableModel.addRow(new Object[]{order.getOrderNumber(), 
+                                               ""+getTableName(order.getTableID()),
+                                               ""+getEmployeeName(order.getEmployeeID()),
+                                               countServedItems(order),
+                                               order.getOrderStatus().toString()
                                                });
+                }
             }
         }
         
@@ -273,6 +268,17 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
             } 
         }
         return "<None>";
+    }
+    
+    
+    public String countServedItems(Order order){
+        int served = 0;
+        for(OrderedProducts product : order.getProducts()){
+            if(ProductStatus.fromId(product.getProductStatus()) == ProductStatus.SERVED){
+                served++;
+            } 
+        }
+        return served+"/"+order.getProducts().size();
     }
     
     public String getProductName(int productID){

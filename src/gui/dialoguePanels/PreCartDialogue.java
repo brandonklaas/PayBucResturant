@@ -89,6 +89,8 @@ public class PreCartDialogue extends javax.swing.JPanel {
         notesTf.setText(""); 
         sideCB.setSelectedIndex(-1);
         optionsCB.setSelectedIndex(-1);
+        updateBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
     }
     
     public void updateTable(){
@@ -376,6 +378,8 @@ public class PreCartDialogue extends javax.swing.JPanel {
                                      getProductName(products.get(preCartTable.getSelectedRow()).getSide()) : "<Select Side>");
             optionsCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getOptional() > -1) ?
                                       getProductName(products.get(preCartTable.getSelectedRow()).getOptional()) : "<Select Option>");
+            updateBtn.setEnabled(true);
+            deleteBtn.setEnabled(true);
         }
     }//GEN-LAST:event_preCartTableMouseClicked
 
@@ -385,7 +389,10 @@ public class PreCartDialogue extends javax.swing.JPanel {
             products.get(preCartTable.getSelectedRow()).setNotes(notesTf.getText());
             products.get(preCartTable.getSelectedRow()).setOptional((optionsCB.getSelectedIndex() > 0) ? getProductID(optionsCB.getSelectedItem().toString()) : -1); 
             products.get(preCartTable.getSelectedRow()).setSide((sideCB.getSelectedIndex() > 0) ? getProductID(sideCB.getSelectedItem().toString()) : -1);
-            updateTable();
+            clearPanel();
+            updateTable(); 
+        } else {
+            new OkayDialogue(desktop, true, "Select Product to Update");
         }
     }//GEN-LAST:event_updateBtnActionPerformed
 
@@ -397,6 +404,13 @@ public class PreCartDialogue extends javax.swing.JPanel {
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
+        if(preCartTable.getSelectedRow() > -1){
+            products.remove(preCartTable.getSelectedRow());
+            clearPanel();
+            updateTable(); 
+        } else {
+            new OkayDialogue(desktop, true, "Select Product to Delete");
+        }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     public int getProductID(String productName){
