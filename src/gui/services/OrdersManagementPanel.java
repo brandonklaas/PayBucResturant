@@ -94,6 +94,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         deleteBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
+        payBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         occupationTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -144,6 +145,18 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
             }
         });
         bottomButtonsPanel.add(addBtn);
+
+        payBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        payBtn.setBorder(null);
+        payBtn.setBorderPainted(false);
+        payBtn.setContentAreaFilled(false);
+        payBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-pressed.png"))); // NOI18N
+        payBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payBtnActionPerformed(evt);
+            }
+        });
+        bottomButtonsPanel.add(payBtn);
 
         main.add(bottomButtonsPanel, java.awt.BorderLayout.PAGE_END);
 
@@ -242,6 +255,10 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_editBtnActionPerformed
 
+    private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_payBtnActionPerformed
+
     
     public Order getOrder(String orderNumber){
         for(Order order : searchedOrders){
@@ -301,5 +318,6 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel main;
     private javax.swing.JTable occupationTable;
+    private javax.swing.JButton payBtn;
     // End of variables declaration//GEN-END:variables
 }
