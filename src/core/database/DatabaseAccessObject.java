@@ -756,8 +756,9 @@ public class DatabaseAccessObject {
                 pstmt.setInt(3, ((Order) object).getEmployeeID()); 
                 pstmt.executeUpdate();
                 
+                //===================== BATCH ADD ======================
+                pstmt = connection.prepareStatement(INSERT_ORDERED_PRODUCTS);
                 for(OrderedProducts product : ((Order) object).getProducts()) {
-                    pstmt = connection.prepareStatement(INSERT_ORDERED_PRODUCTS);
                     pstmt.setString(1, product.getOrderNumber());
                     pstmt.setInt(2, product.getId());
                     pstmt.setString(3, product.getProductName());

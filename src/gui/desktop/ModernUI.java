@@ -432,7 +432,6 @@ public class ModernUI extends javax.swing.JFrame {
         ordersBtn.setBorder(null);
         ordersBtn.setContentAreaFilled(false);
         ordersBtn.setFocusPainted(false);
-        ordersBtn.setPreferredSize(new java.awt.Dimension(110, 120));
         ordersBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/orders-pressed.png"))); // NOI18N
         ordersBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/orders-pressed.png"))); // NOI18N
         ordersBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -446,7 +445,6 @@ public class ModernUI extends javax.swing.JFrame {
         tableBtn.setBorder(null);
         tableBtn.setContentAreaFilled(false);
         tableBtn.setFocusPainted(false);
-        tableBtn.setPreferredSize(new java.awt.Dimension(110, 120));
         tableBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tables-pressed.png"))); // NOI18N
         tableBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tables-pressed.png"))); // NOI18N
         tableBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -460,7 +458,6 @@ public class ModernUI extends javax.swing.JFrame {
         employeesBtn.setBorder(null);
         employeesBtn.setContentAreaFilled(false);
         employeesBtn.setFocusPainted(false);
-        employeesBtn.setPreferredSize(new java.awt.Dimension(110, 120));
         employeesBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/employees-pressed.png"))); // NOI18N
         employeesBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/employees-pressed.png"))); // NOI18N
         employeesBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -474,7 +471,6 @@ public class ModernUI extends javax.swing.JFrame {
         reportsBtn.setBorder(null);
         reportsBtn.setContentAreaFilled(false);
         reportsBtn.setFocusPainted(false);
-        reportsBtn.setPreferredSize(new java.awt.Dimension(110, 120));
         reportsBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/transaction-pressed.png"))); // NOI18N
         reportsBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/transaction-pressed.png"))); // NOI18N
         reportsBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -501,7 +497,6 @@ public class ModernUI extends javax.swing.JFrame {
         jButton2.setBorder(null);
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
-        jButton2.setPreferredSize(new java.awt.Dimension(110, 120));
         jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/settings-pressed.png"))); // NOI18N
         MainLeftPanel.add(jButton2);
 

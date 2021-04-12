@@ -60,8 +60,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
             ordered.setProductName(product.getName());
             ordered.setProductDescription(product.getDescription());
             ordered.setProductPrice(product.getPrice()); 
-            ordered.setTaxable(product.isTaxable());  
-            
+            ordered.setTaxable(product.isTaxable());
             ordered.setProductStatus(ProductStatus.PENDING.getID()); 
             ordered.setOptional(-1);
             ordered.setSide(-1);

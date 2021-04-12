@@ -59,6 +59,7 @@ public class OrderDialogue extends javax.swing.JPanel {
         this.database = session.getDatabase();
         this.desktop = desktop;
         this.products = products;
+        
         initComponents();
         createOrder();
         searchDatabase();

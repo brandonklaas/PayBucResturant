@@ -9,8 +9,7 @@ import core.utilities.Session;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.control.ProgressBar;
+import java.util.logging.Logger; 
 import javax.swing.ImageIcon;
 
 /**
@@ -49,7 +48,7 @@ public class Loading extends javax.swing.JDialog {
 
     Runnable loadEnvironment = new Runnable() {
         public void run() {
-            DesktopFrame frame = null;
+            ModernUI frame = null;
 
             int count = 0;
 
@@ -58,7 +57,7 @@ public class Loading extends javax.swing.JDialog {
                     Thread.sleep(70L);
                     
                     if(count == 63){
-//                        frame = new DesktopFrame(dim, session);
+                        frame = new ModernUI(dim, session);
                     }
                     
                     if(count < 63){

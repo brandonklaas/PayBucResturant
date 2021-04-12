@@ -70,19 +70,19 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
     }
 
     public void fillPanel() {
-        serviceCB.setSelectedItem(selectedTransaction.getTitle());
-        descriptionTf.setText(servicesArray.get(serviceCB.getSelectedIndex()).getDescription());
-        stylistCB.setSelectedItem(selectedTransaction.getEmployee());
-        
-        if ((selectedTransaction.getPayment().equals("Cash"))) {
-            cashBtn.setSelected(true); 
-        } else {
-            cardBtn.setSelected(true);
-        }
-        priceTf.setText(selectedTransaction.getPrice()+"");
-        
-        customerNameTf.setText(selectedTransaction.getCustomerName());
-        customerCell.setText(selectedTransaction.getCustomerNumber());
+//        serviceCB.setSelectedItem(selectedTransaction.getTitle());
+//        descriptionTf.setText(servicesArray.get(serviceCB.getSelectedIndex()).getDescription());
+//        stylistCB.setSelectedItem(selectedTransaction.getEmployee());
+//        
+//        if ((selectedTransaction.getPayment().equals("Cash"))) {
+//            cashBtn.setSelected(true); 
+//        } else {
+//            cardBtn.setSelected(true);
+//        }
+//        priceTf.setText(selectedTransaction.getPrice()+"");
+//        
+//        customerNameTf.setText(selectedTransaction.getCustomerName());
+//        customerCell.setText(selectedTransaction.getCustomerNumber());
     }
 
     private void setDefaults() {
@@ -353,28 +353,28 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
                 && stylistCB.getSelectedIndex() > 0 
                 && serviceCB.getSelectedIndex() > 0) {
             
-            Transaction transaction = new Transaction();
-            transaction.setId(selectedTransaction.getId());
-            transaction.setSite(session.getBranch().getId());
-            transaction.setTitle(serviceCB.getSelectedItem().toString());
-            transaction.setType("Service");
-            transaction.setTypeID(servicesArray.get(serviceCB.getSelectedIndex()-1).getId());
-            transaction.setPayment((cashBtn.isSelected()) ? "Cash" : "Card");
-            transaction.setPrice(Double.parseDouble(priceTf.getText()));
-            transaction.setEmployee(stylistCB.getSelectedItem().toString());
-            transaction.setCustomerName(customerNameTf.getText());
-            transaction.setCustomerNumber(customerCell.getText());
-            transaction.setDate(timeChooser.getCalendarWithTime(dateChooser.getDate()).getTime());
-
-            if (database.update(transaction)) {
-
-                diag.dispose();
-                panel.refreshTable();
-                new OkayDialogue(null, true, "Transaction updated successfully");
-
-            } else {
-                new OkayDialogue(null, true, "Failed to updated Transaction");
-            }
+//            Transaction transaction = new Transaction();
+//            transaction.setId(selectedTransaction.getId());
+//            transaction.setSite(session.getBranch().getId());
+//            transaction.setTitle(serviceCB.getSelectedItem().toString());
+//            transaction.setType("Service");
+//            transaction.setTypeID(servicesArray.get(serviceCB.getSelectedIndex()-1).getId());
+//            transaction.setPayment((cashBtn.isSelected()) ? "Cash" : "Card");
+//            transaction.setPrice(Double.parseDouble(priceTf.getText()));
+//            transaction.setEmployee(stylistCB.getSelectedItem().toString());
+//            transaction.setCustomerName(customerNameTf.getText());
+//            transaction.setCustomerNumber(customerCell.getText());
+//            transaction.setDate(timeChooser.getCalendarWithTime(dateChooser.getDate()).getTime());
+//
+//            if (database.update(transaction)) {
+//
+//                diag.dispose();
+//                panel.refreshTable();
+//                new OkayDialogue(null, true, "Transaction updated successfully");
+//
+//            } else {
+//                new OkayDialogue(null, true, "Failed to updated Transaction");
+//            }
         } else {
                 new OkayDialogue(null, true, "Fill in all the required fileds before updating");
         }
@@ -386,27 +386,27 @@ public class ServiceTransactionDialogue extends javax.swing.JPanel {
                 && customerCell.getText().isEmpty() == false && stylistCB.getSelectedIndex() > 0 && serviceCB.getSelectedIndex() > 0) {
 
             if (session.getSettings().getDefaultBranch().equals("<None>") == false) {
-                Transaction transaction = new Transaction();
-                transaction.setSite(session.getBranch().getId());
-                transaction.setTitle(serviceCB.getSelectedItem().toString());
-                transaction.setType("Service");
-                transaction.setTypeID(servicesArray.get(serviceCB.getSelectedIndex() - 1).getId());
-                transaction.setPayment((cashBtn.isSelected()) ? "Cash" : "Card");
-                transaction.setPrice(Double.parseDouble(priceTf.getText()));
-                transaction.setEmployee(stylistCB.getSelectedItem().toString());
-                transaction.setCustomerName(customerNameTf.getText());
-                transaction.setCustomerNumber(customerCell.getText());
-                transaction.setDate(timeChooser.getCalendarWithTime(dateChooser.getDate()).getTime());
+//                Transaction transaction = new Transaction();
+//                transaction.setSite(session.getBranch().getId());
+//                transaction.setTitle(serviceCB.getSelectedItem().toString());
+//                transaction.setType("Service");
+//                transaction.setTypeID(servicesArray.get(serviceCB.getSelectedIndex() - 1).getId());
+//                transaction.setPayment((cashBtn.isSelected()) ? "Cash" : "Card");
+//                transaction.setPrice(Double.parseDouble(priceTf.getText()));
+//                transaction.setEmployee(stylistCB.getSelectedItem().toString());
+//                transaction.setCustomerName(customerNameTf.getText());
+//                transaction.setCustomerNumber(customerCell.getText());
+//                transaction.setDate(timeChooser.getCalendarWithTime(dateChooser.getDate()).getTime());
 
-                if (database.insert(transaction)) {
-
-                    diag.dispose();
-                    panel.refreshTable();
-                    new OkayDialogue(null, true, "Transaction save successfully");
-
-                } else {
-                    new OkayDialogue(null, true, "Failed to save Transaction");
-                }
+//                if (database.insert(transaction)) {
+//
+//                    diag.dispose();
+//                    panel.refreshTable();
+//                    new OkayDialogue(null, true, "Transaction save successfully");
+//
+//                } else {
+//                    new OkayDialogue(null, true, "Failed to save Transaction");
+//                }
             } else {
                 new OkayDialogue(null, true, "Set deefault before saving Transaction. To set Default head to Settings > Default Branch");
             }

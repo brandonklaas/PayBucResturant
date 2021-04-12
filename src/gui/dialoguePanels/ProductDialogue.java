@@ -11,8 +11,10 @@ import core.general.Product;
 import core.utilities.Session;
 import gui.services.ProductManagementPanel;
 import java.awt.Image;
-import java.io.File; 
-import java.io.IOException; 
+import java.io.File;  
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser; 
@@ -325,14 +327,18 @@ public class ProductDialogue extends javax.swing.JPanel {
         
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            File dest = new File(new File("").getAbsolutePath()+"\\bin\\ProductImages\\"+file.getName());
-            FileUtils.copyFile(file, dest);
-            imagePath = "\\bin\\ProductImages\\"+file.getName();
-            productImage.setText("");
-            productImage.setIcon(new javax.swing.ImageIcon(imagePath));
-            jPanel1.validate();
-            jPanel1.repaint();
+            try {
+                File file = fileChooser.getSelectedFile();
+                File dest = new File(new File("").getAbsolutePath()+"\\bin\\ProductImages\\"+file.getName());
+                FileUtils.copyFile(file, dest);
+                imagePath = "\\bin\\ProductImages\\"+file.getName();
+                productImage.setText("");
+                productImage.setIcon(new javax.swing.ImageIcon(imagePath));
+                jPanel1.validate();
+                jPanel1.repaint();
+            } catch (IOException ex) {
+                Logger.getLogger(ProductDialogue.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_browseBtnActionPerformed
 
