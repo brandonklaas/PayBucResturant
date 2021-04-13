@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 public class DatabaseConnection {
     
     private Connection connection;
+    private boolean offline;
     
     public DatabaseConnection(boolean offline){
         if(offline){
@@ -57,9 +58,14 @@ public class DatabaseConnection {
         return connection;
     }
     
+    
     public boolean closeConnection(){
         try {
-            connection.close();
+            if(offline){
+                connection.close();
+            } else {
+                connection.close();
+            }
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnection.class.getName()).log(Level.SEVERE, null, ex);

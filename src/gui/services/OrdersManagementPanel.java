@@ -14,7 +14,11 @@ import core.general.OrderedProducts;
 import core.general.Product;
 import core.general.Table;
 import core.utilities.Session; 
+import gui.desktop.ModernUI;
+import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OkayDialogue;
+import gui.dialoguePanels.OrderCheckoutDialogue;
+import gui.dialoguePanels.TransactionDialogue;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,17 +31,19 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     private Session session;
     private DatabaseAccessObject database;
     private DefaultTableModel tableModel;
-    private ArrayList<OrderedProducts> array;
     private ArrayList<Order> searchedOrders;
     private ArrayList<Employee> searchedEmployees;
     private ArrayList<Table> searchedTables;
     private ArrayList<Product> searchedProducts;
     
+    private ModernUI desktop;
+    
     /**
      * Creates new form Services
      */
-    public OrdersManagementPanel(Session session) {
+    public OrdersManagementPanel(Session session, ModernUI desktop) {
         this.session = session;
+        this.desktop = desktop;
         this.database = session.getDatabase();
         
         initComponents();
@@ -54,6 +60,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     }
     
     public void refreshTable(){
+        searchDatabase();
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Order #");
         tableModel.addColumn("Table");
@@ -61,7 +68,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         tableModel.addColumn("Served Items");
         tableModel.addColumn("Status");
         
-        if(array.size() > 0){
+        if(searchedOrders.size() > 0){
             for(Order order : searchedOrders){
                 if(order.getOrderStatus() == OrderStatus.UNPAID){
                 tableModel.addRow(new Object[]{order.getOrderNumber(), 
@@ -74,9 +81,9 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
             }
         }
         
-        occupationTable.setModel(tableModel);
-        occupationTable.repaint();
-        occupationTable.validate();
+        ordersTable.setModel(tableModel);
+        ordersTable.repaint();
+        ordersTable.validate();
     }
     
 
@@ -93,10 +100,9 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         bottomButtonsPanel = new javax.swing.JPanel();
         deleteBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
-        addBtn = new javax.swing.JButton();
         payBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        occupationTable = new javax.swing.JTable();
+        ordersTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -114,6 +120,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         deleteBtn.setBorder(null);
         deleteBtn.setBorderPainted(false);
         deleteBtn.setContentAreaFilled(false);
+        deleteBtn.setEnabled(false);
         deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
         deleteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,6 +133,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         editBtn.setBorder(null);
         editBtn.setBorderPainted(false);
         editBtn.setContentAreaFilled(false);
+        editBtn.setEnabled(false);
         editBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit-pressed.png"))); // NOI18N
         editBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,23 +142,12 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         });
         bottomButtonsPanel.add(editBtn);
 
-        addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
-        addBtn.setBorder(null);
-        addBtn.setBorderPainted(false);
-        addBtn.setContentAreaFilled(false);
-        addBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-pressed.png"))); // NOI18N
-        addBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addBtnActionPerformed(evt);
-            }
-        });
-        bottomButtonsPanel.add(addBtn);
-
-        payBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
+        payBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pay.png"))); // NOI18N
         payBtn.setBorder(null);
         payBtn.setBorderPainted(false);
         payBtn.setContentAreaFilled(false);
-        payBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add-pressed.png"))); // NOI18N
+        payBtn.setEnabled(false);
+        payBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pay-pressed.png"))); // NOI18N
         payBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 payBtnActionPerformed(evt);
@@ -160,10 +157,10 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
 
         main.add(bottomButtonsPanel, java.awt.BorderLayout.PAGE_END);
 
-        occupationTable.setBackground(new java.awt.Color(255, 255, 255));
-        occupationTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        occupationTable.setForeground(new java.awt.Color(51, 51, 51));
-        occupationTable.setModel(new javax.swing.table.DefaultTableModel(
+        ordersTable.setBackground(new java.awt.Color(255, 255, 255));
+        ordersTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        ordersTable.setForeground(new java.awt.Color(51, 51, 51));
+        ordersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -171,9 +168,14 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
                 "Name", "Description", "Price"
             }
         ));
-        occupationTable.setGridColor(new java.awt.Color(204, 204, 204));
-        occupationTable.setOpaque(false);
-        jScrollPane1.setViewportView(occupationTable);
+        ordersTable.setGridColor(new java.awt.Color(204, 204, 204));
+        ordersTable.setOpaque(false);
+        ordersTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ordersTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(ordersTable);
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -228,36 +230,49 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
         add(main, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        // TODO add your handling code here:
-//        new Dialogue(null, true, new OccupationDialogue(session, this), "Occupation Management");
-    }//GEN-LAST:event_addBtnActionPerformed
-
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
-        if(occupationTable.getSelectedRow() > -1){
-            if(database.delete(array.get(occupationTable.getSelectedRow()))){
-                new OkayDialogue(null, true, "Occupation Deleleted Successfully");
+        if(ordersTable.getSelectedRow() > -1){
+            if(database.delete(searchedOrders.get(ordersTable.getSelectedRow()))){
                 refreshTable();
+                new OkayDialogue(null, true, "Order Deleleted Successfully");
             } else {
-                new OkayDialogue(null, true, "Failed to Occupation");
+                new OkayDialogue(null, true, "Failed to delete Order");
             }
         } else {
-            new OkayDialogue(null, true, "Select Occupation to delete");
+            new OkayDialogue(null, true, "Select Order to delete");
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         // TODO add your handling code here:
-        if(occupationTable.getSelectedRow() > -1){
-//            new Dialogue(null, true, new OccupationDialogue(session, this, array.get(occupationTable.getSelectedRow())), "Occupation Management");
+        if(ordersTable.getSelectedRow() > -1){
+            desktop.dim(true);
+            new Dialogue(null, true, new OrderCheckoutDialogue(desktop, searchedOrders.get(ordersTable.getSelectedRow()), session), "Order Management", "");
+            refreshTable();
+            desktop.dim(false);
         }
         
     }//GEN-LAST:event_editBtnActionPerformed
 
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
         // TODO add your handling code here:
+        if(ordersTable.getSelectedRow() > -1){
+            desktop.dim(true);
+            new Dialogue(null, true, new TransactionDialogue(desktop, searchedOrders.get(ordersTable.getSelectedRow()), session), "Transaction Management", "");
+            refreshTable();
+            desktop.dim(false);
+        }
     }//GEN-LAST:event_payBtnActionPerformed
+
+    private void ordersTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersTableMouseClicked
+        // TODO add your handling code here:
+        if(ordersTable.getSelectedRow() > -1) {
+            editBtn.setEnabled(true);
+            deleteBtn.setEnabled(true);
+            payBtn.setEnabled(true);
+        }
+    }//GEN-LAST:event_ordersTableMouseClicked
 
     
     public Order getOrder(String orderNumber){
@@ -308,7 +323,6 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addBtn;
     private javax.swing.JPanel bottomButtonsPanel;
     private javax.swing.JButton deleteBtn;
     private javax.swing.JButton editBtn;
@@ -317,7 +331,7 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel main;
-    private javax.swing.JTable occupationTable;
+    private javax.swing.JTable ordersTable;
     private javax.swing.JButton payBtn;
     // End of variables declaration//GEN-END:variables
 }

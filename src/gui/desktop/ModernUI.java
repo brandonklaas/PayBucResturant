@@ -26,6 +26,7 @@ import java.awt.Graphics;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer; 
 import javax.swing.table.DefaultTableModel;
@@ -65,6 +66,7 @@ public class ModernUI extends javax.swing.JFrame {
     public ModernUI() {
         this.session = new Session();
         this.database = session.getDatabase();
+        this.setIconImage(new ImageIcon(getClass().getResource("/icons/round-logo.png")).getImage());
         
         initComponents();
         defaults();
@@ -76,7 +78,7 @@ public class ModernUI extends javax.swing.JFrame {
         transactionsPanel = new TransactionsManagementPanel(session);
         employeesPanel = new EmployeesManagementPanel(session); 
         tablesPanel = new TablesManagementPanel(session);
-        ordersPanel = new OrdersManagementPanel(session);
+        ordersPanel = new OrdersManagementPanel(session, this);
         
         foodBtnActionPerformed(null);
     }
@@ -97,7 +99,7 @@ public class ModernUI extends javax.swing.JFrame {
         transactionsPanel = new TransactionsManagementPanel(session);
         employeesPanel = new EmployeesManagementPanel(session); 
         tablesPanel = new TablesManagementPanel(session);
-        ordersPanel = new OrdersManagementPanel(session);
+        ordersPanel = new OrdersManagementPanel(session,this);
         
         foodBtnActionPerformed(null);
     }
@@ -213,6 +215,10 @@ public class ModernUI extends javax.swing.JFrame {
             column.setPreferredWidth(width);
         }
     }
+     
+    public void closeDatabase(){
+        session.getDatabase().close();
+    }
     
     public void calculateTotal(){
         double tempTotal = 0.0; 
@@ -239,6 +245,7 @@ public class ModernUI extends javax.swing.JFrame {
         mainPanel = new javax.swing.JPanel();
         MainHeader = new javax.swing.JPanel();
         headerLeftPanel = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
         headerRightPanel = new javax.swing.JPanel();
         headerCenterMain = new javax.swing.JPanel();
         panelSearchPanel = new javax.swing.JPanel();
@@ -304,17 +311,10 @@ public class ModernUI extends javax.swing.JFrame {
 
         headerLeftPanel.setBackground(new java.awt.Color(52, 188, 183));
         headerLeftPanel.setPreferredSize(new java.awt.Dimension(300, 78));
+        headerLeftPanel.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout headerLeftPanelLayout = new javax.swing.GroupLayout(headerLeftPanel);
-        headerLeftPanel.setLayout(headerLeftPanelLayout);
-        headerLeftPanelLayout.setHorizontalGroup(
-            headerLeftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
-        headerLeftPanelLayout.setVerticalGroup(
-            headerLeftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 78, Short.MAX_VALUE)
-        );
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/header.png"))); // NOI18N
+        headerLeftPanel.add(jLabel7, java.awt.BorderLayout.CENTER);
 
         MainHeader.add(headerLeftPanel, java.awt.BorderLayout.LINE_START);
 
@@ -894,6 +894,7 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

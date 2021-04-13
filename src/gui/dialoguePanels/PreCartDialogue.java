@@ -89,8 +89,17 @@ public class PreCartDialogue extends javax.swing.JPanel {
         notesTf.setText(""); 
         sideCB.setSelectedIndex(-1);
         optionsCB.setSelectedIndex(-1);
-        updateBtn.setEnabled(false);
-        deleteBtn.setEnabled(false);
+        enabledState(false);
+    }
+    
+    
+    public void enabledState(boolean state){
+        productDescTF.setEnabled(state);
+        notesTf.setEnabled(state);
+        sideCB.setEnabled(state);
+        optionsCB.setEnabled(state);
+        updateBtn.setEnabled(state);
+        deleteBtn.setEnabled(state);
     }
     
     public void updateTable(){
@@ -156,10 +165,10 @@ public class PreCartDialogue extends javax.swing.JPanel {
         sideCB = new javax.swing.JComboBox<>();
         jScrollPane4 = new javax.swing.JScrollPane();
         notesTf = new javax.swing.JTextPane();
-        buttonsPanel = new javax.swing.JPanel();
-        saveBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
+        buttonsPanel = new javax.swing.JPanel();
+        saveBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -205,10 +214,12 @@ public class PreCartDialogue extends javax.swing.JPanel {
         productNameTF.setEditable(false);
         productNameTF.setBackground(new java.awt.Color(255, 255, 255));
         productNameTF.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(204, 204, 204)));
+        productNameTF.setEnabled(false);
 
         productDescTF.setEditable(false);
         productDescTF.setBackground(new java.awt.Color(255, 255, 255));
         productDescTF.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
+        productDescTF.setEnabled(false);
         productDescTF.setOpaque(false);
         jScrollPane2.setViewportView(productDescTF);
 
@@ -221,13 +232,42 @@ public class PreCartDialogue extends javax.swing.JPanel {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Option :");
 
+        optionsCB.setEnabled(false);
+
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Side :");
 
+        sideCB.setEnabled(false);
+
         notesTf.setBackground(new java.awt.Color(255, 255, 255));
         notesTf.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
+        notesTf.setEnabled(false);
         notesTf.setOpaque(false);
         jScrollPane4.setViewportView(notesTf);
+
+        updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update.png"))); // NOI18N
+        updateBtn.setBorder(null);
+        updateBtn.setBorderPainted(false);
+        updateBtn.setContentAreaFilled(false);
+        updateBtn.setEnabled(false);
+        updateBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update-pressed.png"))); // NOI18N
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        deleteBtn.setBorder(null);
+        deleteBtn.setBorderPainted(false);
+        deleteBtn.setContentAreaFilled(false);
+        deleteBtn.setEnabled(false);
+        deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -263,9 +303,15 @@ public class PreCartDialogue extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(updateBtn)
+                        .addGap(5, 5, 5)
+                        .addComponent(deleteBtn))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -294,17 +340,24 @@ public class PreCartDialogue extends javax.swing.JPanel {
                         .addComponent(jLabel13)))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(4, 4, 4)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel14))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(updateBtn)
+                            .addComponent(deleteBtn))))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -323,30 +376,6 @@ public class PreCartDialogue extends javax.swing.JPanel {
             }
         });
         buttonsPanel.add(saveBtn);
-
-        updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update.png"))); // NOI18N
-        updateBtn.setBorder(null);
-        updateBtn.setBorderPainted(false);
-        updateBtn.setContentAreaFilled(false);
-        updateBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update-pressed.png"))); // NOI18N
-        updateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateBtnActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(updateBtn);
-
-        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
-        deleteBtn.setBorder(null);
-        deleteBtn.setBorderPainted(false);
-        deleteBtn.setContentAreaFilled(false);
-        deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
-        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBtnActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(deleteBtn);
 
         cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
         cancelBtn.setBorder(null);
@@ -378,8 +407,9 @@ public class PreCartDialogue extends javax.swing.JPanel {
                                      getProductName(products.get(preCartTable.getSelectedRow()).getSide()) : "<Select Side>");
             optionsCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getOptional() > -1) ?
                                       getProductName(products.get(preCartTable.getSelectedRow()).getOptional()) : "<Select Option>");
-            updateBtn.setEnabled(true);
-            deleteBtn.setEnabled(true);
+            enabledState(true);
+        } else {
+            new OkayDialogue(desktop, true, "Select Product");
         }
     }//GEN-LAST:event_preCartTableMouseClicked
 

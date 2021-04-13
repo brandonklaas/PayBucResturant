@@ -8,9 +8,13 @@ package gui.desktop;
 import core.database.DatabaseAccessObject;
 import core.general.Account;
 import core.utilities.Session;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 
 /**
  *
@@ -252,7 +256,10 @@ public class LoginFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        UIDefaults uiDefaults = UIManager.getDefaults();
+        uiDefaults.put("activeCaption", new javax.swing.plaf.ColorUIResource(Color.red));
+        uiDefaults.put("activeCaptionText", new javax.swing.plaf.ColorUIResource(Color.white));
+        JFrame.setDefaultLookAndFeelDecorated(true);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

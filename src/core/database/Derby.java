@@ -34,7 +34,7 @@ public class Derby {
     
     public static final String SELECT_ACCOUNT       = "SELECT * FROM Accounts";
     
-    public static final String SELECT_ACCOUNT_WHERE = "SELECT * FROM Accounts WHERE Username = ?, Password = ?";
+    public static final String SELECT_ACCOUNT_WHERE = "SELECT * FROM Accounts WHERE Username = ? AND Password = ?";
     
     public static final String SELECT_OCCUPATION   = "SELECT * FROM Occupation";
     
@@ -67,7 +67,7 @@ public class Derby {
     
     public static final String DELETE_TABLE        = "DELETE FROM TableData WHERE id = ?";
     
-    public static final String DELETE_ORDER        = "DELETE FROM Order WHERE id = ?";
+    public static final String DELETE_ORDER        = "DELETE FROM OrderData WHERE id = ?";
     
     public static final String DELETE_ORDERED_PRODUCT = "DELETE FROM OrderedProducts WHERE id = ?";
     
@@ -96,7 +96,9 @@ public class Derby {
 
     public static final String UPDATE_ORDERED_PRODUCT = "UPDATE OrderedProducts SET OrderNumber = ?, ProductID = ?, ProductName = ?, ProductDescription = ?, ProductPrice = ?, Status = ?, Notes = ?, taxable = ?, Type = ?, Side = ?, Optional = ?, Drink = ? WHERE id = ?";
     
+    public static final String UPDATE_ORDERED_PRODUCT_WHERE_ORDERNUM = "UPDATE OrderedProducts SET ProductID = ?, ProductName = ?, ProductDescription = ?, ProductPrice = ?, Status = ?, Notes = ?, taxable = ?, Type = ?, Side = ?, Optional = ?, Drink = ? WHERE OrderNumber = ? AND Id = ?";
     
+            
     
     
     public static final String INSERT_SITE         = "INSERT INTO Site (Name , Address, BranchNo) VALUES (?,?,?)";
@@ -144,7 +146,7 @@ public class Derby {
     
     public static final String CREATE_OCCUPATION   = "CREATE TABLE Occupation (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Title varchar(255),  Responsibilities varchar(255))";
     
-    public static final String CREATE_ORDER   = "CREATE TABLE OrderData (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderNumber varchar(255),  TableID int, EmployeeID int, FOREIGN KEY (EmployeeID) REFERENCES Employees(id), FOREIGN KEY (TableID) REFERENCES TableData(id))";
+    public static final String CREATE_ORDER   = "CREATE TABLE OrderData (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderNumber varchar(255),  TableID int, EmployeeID int, OrderStatus int, FOREIGN KEY (EmployeeID) REFERENCES Employees(id), FOREIGN KEY (TableID) REFERENCES TableData(id))";
     
     public static final String CREATE_ORDERED_PRODUCTS = "CREATE TABLE OrderedProducts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, OrderNumber varchar(255), ProductID int, ProductName varchar(255), ProductDescription varchar(255), "
                                                        + "ProductPrice decimal(18,2), Status int, Notes varchar(255), taxable boolean, Type int, Side int, Optional int, Drink int)";

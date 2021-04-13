@@ -67,7 +67,14 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof TablesDialogue) {
             ((TablesDialogue) panel).setDialogue(this);
-        }
+        
+        } else if (panel instanceof OrderCheckoutDialogue) {
+            ((OrderCheckoutDialogue) panel).setDialogue(this);
+        
+            
+        } else if (panel instanceof TransactionDialogue) {
+            ((TransactionDialogue) panel).setDialogue(this);
+        }  
 
         jLabel1.setText(title);
 
@@ -121,7 +128,14 @@ public class Dialogue extends javax.swing.JDialog {
             
         } else if (panel instanceof TablesDialogue) {
             ((TablesDialogue) panel).setDialogue(this);
-        }
+        
+        
+        } else if (panel instanceof OrderCheckoutDialogue) {
+            ((OrderCheckoutDialogue) panel).setDialogue(this);
+          
+        } else if (panel instanceof TransactionDialogue) {
+            ((TransactionDialogue) panel).setDialogue(this);
+        }  
 
         jLabel1.setText(title);
 

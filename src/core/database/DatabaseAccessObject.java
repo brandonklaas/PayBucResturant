@@ -79,6 +79,14 @@ public class DatabaseAccessObject {
         }
     }
     
+    public void close(){
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void checkTables() {
         
         if (offline == false) {
@@ -90,7 +98,145 @@ public class DatabaseAccessObject {
         }
         
     }
-
+//
+//    public ArrayList<Transaction> getFilteredTransactions(java.util.Date from, java.util.Date to, boolean all, boolean card, boolean cash) {
+//        try {
+//            if (session.getSettings().getFilterBranches().equals("<Show All>")) {
+//                ArrayList<Transaction> array = new ArrayList<>();
+//                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE);
+//                
+//                pstmt.setDate(1, new java.sql.Date(from.getTime()));
+//                pstmt.setDate(2, new java.sql.Date(to.getTime()));
+//
+//                pstmt.executeQuery();
+//                ResultSet rs = pstmt.getResultSet();
+//                while (rs.next()) {
+//                    if (all) {
+//                        Transaction transaction = new Transaction();
+//                        transaction.setId(rs.getInt("id"));
+//                        transaction.setSite(rs.getInt("Site"));
+//                        transaction.setTitle(rs.getString("Title"));
+//                        transaction.setType(rs.getString("Type"));
+//                        transaction.setTypeID(rs.getInt("TypeID"));
+//                        transaction.setPayment(rs.getString("Payment"));
+//                        transaction.setPrice(rs.getDouble("Price"));
+//                        transaction.setEmployee(rs.getString("Employee"));
+//                        transaction.setCustomerName(rs.getString("CustomerName"));
+//                        transaction.setCustomerNumber(rs.getString("CustomerNumber"));
+//                        transaction.setDate(rs.getDate("Date"));
+//                        array.add(transaction);
+//                        
+//                    } else if (card) { 
+//                        if (rs.getString("Payment").equals("Card")) {
+//                            Transaction transaction = new Transaction();
+//                            transaction.setId(rs.getInt("id"));
+//                            transaction.setSite(rs.getInt("Site"));
+//                            transaction.setTitle(rs.getString("Title"));
+//                            transaction.setType(rs.getString("Type"));
+//                            transaction.setTypeID(rs.getInt("TypeID"));
+//                            transaction.setPayment(rs.getString("Payment"));
+//                            transaction.setPrice(rs.getDouble("Price"));
+//                            transaction.setEmployee(rs.getString("Employee"));
+//                            transaction.setCustomerName(rs.getString("CustomerName"));
+//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
+//                            transaction.setDate(rs.getDate("Date"));
+//                            array.add(transaction);
+//                        }
+//                        
+//                    } else if (cash) {
+//                        if (rs.getString("Payment").equals("Cash")) {
+//                            Transaction transaction = new Transaction();
+//                            transaction.setId(rs.getInt("id"));
+//                            transaction.setSite(rs.getInt("Site"));
+//                            transaction.setTitle(rs.getString("Title"));
+//                            transaction.setType(rs.getString("Type"));
+//                            transaction.setTypeID(rs.getInt("TypeID"));
+//                            transaction.setPayment(rs.getString("Payment"));
+//                            transaction.setPrice(rs.getDouble("Price"));
+//                            transaction.setEmployee(rs.getString("Employee"));
+//                            transaction.setCustomerName(rs.getString("CustomerName"));
+//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
+//                            transaction.setDate(rs.getDate("Date"));
+//                            array.add(transaction);
+//                        }
+//                    }
+//
+//                }
+//
+//                return array;
+//
+//            } else {
+//                ArrayList<Transaction> array = new ArrayList<>();
+//                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE_SITE);
+//                pstmt.setInt(1, session.getBranch().getId());
+//                pstmt.setDate(2, new java.sql.Date(from.getTime()));
+//                pstmt.setDate(3, new java.sql.Date(to.getTime()));
+//
+//                pstmt.executeQuery();
+//                ResultSet rs = pstmt.getResultSet();
+//                while (rs.next()) {
+//                    if (all) {
+//                        Transaction transaction = new Transaction();
+//                        transaction.setId(rs.getInt("id"));
+//                        transaction.setSite(rs.getInt("Site"));
+//                        transaction.setTitle(rs.getString("Title"));
+//                        transaction.setType(rs.getString("Type"));
+//                        transaction.setTypeID(rs.getInt("TypeID"));
+//                        transaction.setPayment(rs.getString("Payment"));
+//                        transaction.setPrice(rs.getDouble("Price"));
+//                        transaction.setEmployee(rs.getString("Employee"));
+//                        transaction.setCustomerName(rs.getString("CustomerName"));
+//                        transaction.setCustomerNumber(rs.getString("CustomerNumber"));
+//                        transaction.setDate(rs.getDate("Date"));
+//                        array.add(transaction);
+//
+//                    } else if (card) {
+//                        if (rs.getString("Payment").equals("Card")) {
+//                            Transaction transaction = new Transaction();
+//                            transaction.setId(rs.getInt("id"));
+//                            transaction.setSite(rs.getInt("Site"));
+//                            transaction.setTitle(rs.getString("Title"));
+//                            transaction.setType(rs.getString("Type"));
+//                            transaction.setTypeID(rs.getInt("TypeID"));
+//                            transaction.setPayment(rs.getString("Payment"));
+//                            transaction.setPrice(rs.getDouble("Price"));
+//                            transaction.setEmployee(rs.getString("Employee"));
+//                            transaction.setCustomerName(rs.getString("CustomerName"));
+//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
+//                            transaction.setDate(rs.getDate("Date"));
+//                            array.add(transaction);
+//                        }
+//
+//                    } else if (cash) {
+//                        if (rs.getString("Payment").equals("Cash")) {
+//                            Transaction transaction = new Transaction();
+//                            transaction.setId(rs.getInt("id"));
+//                            transaction.setSite(rs.getInt("Site"));
+//                            transaction.setTitle(rs.getString("Title"));
+//                            transaction.setType(rs.getString("Type"));
+//                            transaction.setTypeID(rs.getInt("TypeID"));
+//                            transaction.setPayment(rs.getString("Payment"));
+//                            transaction.setPrice(rs.getDouble("Price"));
+//                            transaction.setEmployee(rs.getString("Employee"));
+//                            transaction.setCustomerName(rs.getString("CustomerName"));
+//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
+//                            transaction.setDate(rs.getDate("Date"));
+//                            array.add(transaction);
+//                        }
+//                    }
+//                }
+//
+//                return array;
+//            }
+//            
+//            
+//        } catch (SQLException ex) {
+//            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+//            return null;
+//        }
+//    }
+//    
+    
     public void setQueries() {
         if(offline){
             SELECT_EMPLOYEE_BY_OCCUPATION = Derby.SELECT_EMPLOYEE_BY_OCCUPATION;
@@ -131,6 +277,7 @@ public class DatabaseAccessObject {
             UPDATE_TABLE        = Derby.UPDATE_TABLE;
             UPDATE_ORDER        = Derby.UPDATE_ORDER;
             UPDATE_ORDERED_PRODUCTS = Derby.UPDATE_ORDERED_PRODUCT;
+            UPDATE_ORDERED_PRODUCT_WHERE_ORDERNUM = Derby.UPDATE_ORDERED_PRODUCT_WHERE_ORDERNUM;
             
             INSERT_OCCUPATION   = Derby.INSERT_OCCUPATION;
             INSERT_SITE         = Derby.INSERT_SITE;
@@ -430,37 +577,43 @@ public class DatabaseAccessObject {
         }
     }
     
-    public Account getAccount(String Username, String Password) {
-        try { 
-            PreparedStatement pstmt = connection.prepareStatement(SELECT_ACCOUNT_WHERE);
+    
+     public Account getAccount(String Username, String password) {
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(SELECT_ACCOUNT_BY_NAME);
             pstmt.setString(1, Username);
-            pstmt.setString(2, Password);
-            pstmt.executeQuery();
+            pstmt.setString(2, password);
             
+            pstmt.executeQuery();
             ResultSet rs = pstmt.getResultSet();
+            
+            Account account = null;
+            
+            if (rs.next()) {
+                account = new Account();
+                account.setId(rs.getInt("id"));
+                account.setUsername(rs.getString("Username"));
+                account.setPassword(rs.getString("Password"));
 
-            rs.next();
-            Account account = new Account();
-            account.setId(rs.getInt("id"));
-            account.setUsername(rs.getString("Username"));
-            account.setPassword(rs.getString("Password"));
-
-            account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
-            account.setGuest((rs.getInt("Guest") == 1) ? true : false);
-            account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
-            account.setServices((rs.getInt("Services") == 1) ? true : false);
-            account.setProducts((rs.getInt("Products") == 1) ? true : false);
-            account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
-            account.setSettings((rs.getInt("Settings") == 1) ? true : false);
-            account.setAccounts((rs.getInt("Accounts") == 1) ? true : false); 
+                account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
+                account.setGuest((rs.getInt("Guest") == 1) ? true : false);
+                account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
+                account.setTransactions((rs.getInt("DeleteTransaction") == 1) ? true : false);
+                account.setServices((rs.getInt("Services") == 1) ? true : false);
+                account.setProducts((rs.getInt("Products") == 1) ? true : false);
+                account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
+                account.setSettings((rs.getInt("Settings") == 1) ? true : false);
+                account.setAccounts((rs.getInt("Accounts") == 1) ? true : false);
+            }
             
             return account;
-
+            
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
+     
 
     public Branch getBranchByName(String Branch) {
         try {
@@ -770,6 +923,10 @@ public class DatabaseAccessObject {
                     pstmt.setInt(6, ProductStatus.PENDING.getID());
                     pstmt.setString(7, product.getNotes());
                     pstmt.setBoolean(8, product.isTaxable());
+                    pstmt.setInt(9, product.getType().getID());
+                    pstmt.setInt(10, product.getOptional());
+                    pstmt.setInt(11, product.getSide());
+                    pstmt.setInt(12, 0);
                     pstmt.addBatch();
                 }
                 pstmt.executeBatch();
@@ -903,6 +1060,26 @@ public class DatabaseAccessObject {
                 pstmt.setInt(4, ((Order) object).getOrderStatus().getID());
                 pstmt.setInt(5, ((Order) object).getId()); 
                 pstmt.executeUpdate();
+                
+                //===================== BATCH ADD ======================
+                pstmt = connection.prepareStatement(UPDATE_ORDERED_PRODUCT_WHERE_ORDERNUM);
+                for(OrderedProducts product : ((Order) object).getProducts()) {
+                    pstmt.setInt(1, product.getId());
+                    pstmt.setString(2, product.getProductName());
+                    pstmt.setString(3, product.getProductDescription());
+                    pstmt.setDouble(4, product.getProductPrice());
+                    pstmt.setInt(5, product.getProductStatus());
+                    pstmt.setString(6, product.getNotes());
+                    pstmt.setBoolean(7, product.isTaxable());
+                    pstmt.setInt(8, product.getType().getID());
+                    pstmt.setInt(9, product.getSide());
+                    pstmt.setInt(10, product.getOptional()); 
+                    pstmt.setInt(11, 0); 
+                    pstmt.setString(12, product.getOrderNumber());
+                    pstmt.setInt(13, product.getId());
+                    pstmt.addBatch();
+                }
+                pstmt.executeBatch();
 
             } else if (object instanceof OrderedProducts) {
                 PreparedStatement pstmt = connection.prepareStatement(UPDATE_ORDERED_PRODUCTS);
@@ -973,13 +1150,11 @@ public class DatabaseAccessObject {
 
                 PreparedStatement pstmt = connection.prepareStatement(DELETE_ORDER);
                 pstmt.setInt(1, ((Order) object).getId());
-                pstmt.addBatch();
+                pstmt.executeUpdate();
                 
                 pstmt = connection.prepareStatement(DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM);
                 pstmt.setString(1, ((Order) object).getOrderNumber());
-                pstmt.addBatch();
-                
-                pstmt.executeBatch();
+                pstmt.executeUpdate();
                 
             } else if (object instanceof OrderedProducts) {
                 PreparedStatement pstmt = connection.prepareStatement(DELETE_ORDERED_PRODUCTS);
@@ -995,11 +1170,28 @@ public class DatabaseAccessObject {
 
     }
     
+    
     private String SELECT_EMPLOYEE_BY_OCCUPATION = null;
     
-            
+                
+    private String SUM_TRANSACTIONS_FROM_BRANCH = "SELECT SUM(Price) AS \"TransactionSales\" FROM Transactions WHERE Site = ? AND Date = ?";
+    
+    private String SUM_DAILY_SALES = "SELECT SUM(Price) AS \"TransactionSales\" FROM Transactions WHERE Type = ? AND Site = ? AND Date = ?";
+    
+    private String SUM_DAILY_CARD_SALES = "SELECT SUM(Price) AS \"TransactionSales\" FROM Transactions WHERE Payment = ? AND Site = ? AND Date = ?";
+    
+    
+    
+    private String SELECT_TRANSACTIONS_BY_DATE_SITE = "SELECT * FROM Transactions WHERE Site = ? AND Date BETWEEN ? AND ?";
+    
+    private String SELECT_TRANSACTIONS_BY_DATE = "SELECT * FROM Transactions WHERE Date BETWEEN ? AND ?";
+    
+    
     
     private String SELECT_SITE_BY_NAME = "SELECT * FROM Site WHERE Name = ?";
+       
+    private String SELECT_ACCOUNT_BY_NAME = "SELECT * FROM Accounts WHERE Username = ? AND Password = ?";
+    
             
     private String SELECT_TRANSACTIONS_BY_BRANCH = null;
     
@@ -1071,6 +1263,8 @@ public class DatabaseAccessObject {
     private String UPDATE_ORDER      = null;
     
     private String UPDATE_ORDERED_PRODUCTS      = null;
+    
+    private String UPDATE_ORDERED_PRODUCT_WHERE_ORDERNUM = null;
     
     
     

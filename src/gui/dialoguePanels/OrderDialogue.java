@@ -6,6 +6,7 @@
 package gui.dialoguePanels;
 
 import core.database.DatabaseAccessObject;
+import core.enums.OrderStatus;
 import core.general.Employee;
 import core.general.Order;
 import core.general.OrderedProducts;
@@ -41,9 +42,6 @@ public class OrderDialogue extends javax.swing.JPanel {
     private ModernUI desktop;
     
     private Order currentOrder;
-//    private ComboBoxModel optionalModel;
-//    private ComboBoxModel sidesModel;
-//    private ComboBoxModel drinksModel;
     
     /**
      * Creates new form TransactionDialogue
@@ -99,11 +97,20 @@ public class OrderDialogue extends javax.swing.JPanel {
     }
     
     public void clearPanel(){
-        orderNumberTF.setText("");
         productDescTF.setText("");
         notesTf.setText(""); 
         sideCB.setSelectedIndex(-1);
         optionsCB.setSelectedIndex(-1);
+        enabledState(false);
+    }
+     
+    public void enabledState(boolean state){
+        productDescTF.setEnabled(state);
+        notesTf.setEnabled(state);
+        sideCB.setEnabled(state);
+        optionsCB.setEnabled(state);
+        updateBtn.setEnabled(state);
+        deleteBtn.setEnabled(state); 
     }
     
     public void updateTable(){
@@ -197,10 +204,10 @@ public class OrderDialogue extends javax.swing.JPanel {
         sitInBtn = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        buttonsPanel = new javax.swing.JPanel();
-        saveBtn = new javax.swing.JButton();
         updateBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
+        buttonsPanel = new javax.swing.JPanel();
+        saveBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -248,10 +255,16 @@ public class OrderDialogue extends javax.swing.JPanel {
         preCartTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
         preCartTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         preCartTable.setShowVerticalLines(false);
+        preCartTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                preCartTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(preCartTable);
 
         notesTf.setBackground(new java.awt.Color(255, 255, 255));
         notesTf.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
+        notesTf.setEnabled(false);
         notesTf.setOpaque(false);
         jScrollPane4.setViewportView(notesTf);
 
@@ -264,12 +277,18 @@ public class OrderDialogue extends javax.swing.JPanel {
         productDescTF.setEditable(false);
         productDescTF.setBackground(new java.awt.Color(255, 255, 255));
         productDescTF.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
+        productDescTF.setEnabled(false);
         productDescTF.setOpaque(false);
         jScrollPane2.setViewportView(productDescTF);
+
+        sideCB.setEnabled(false);
+
+        optionsCB.setEnabled(false);
 
         productNameTF.setEditable(false);
         productNameTF.setBackground(new java.awt.Color(255, 255, 255));
         productNameTF.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(204, 204, 204)));
+        productNameTF.setEnabled(false);
 
         jLabel14.setForeground(new java.awt.Color(0, 0, 0));
         jLabel14.setText("Product Name :");
@@ -316,6 +335,30 @@ public class OrderDialogue extends javax.swing.JPanel {
 
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Option :");
+
+        updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update.png"))); // NOI18N
+        updateBtn.setBorder(null);
+        updateBtn.setBorderPainted(false);
+        updateBtn.setContentAreaFilled(false);
+        updateBtn.setEnabled(false);
+        updateBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update-pressed.png"))); // NOI18N
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
+
+        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
+        deleteBtn.setBorder(null);
+        deleteBtn.setBorderPainted(false);
+        deleteBtn.setContentAreaFilled(false);
+        deleteBtn.setEnabled(false);
+        deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -375,18 +418,25 @@ public class OrderDialogue extends javax.swing.JPanel {
                 .addComponent(optionsCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(20, 20, 20)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(46, 46, 46)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(updateBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(deleteBtn))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -432,17 +482,24 @@ public class OrderDialogue extends javax.swing.JPanel {
                         .addComponent(jLabel1)))
                 .addGap(4, 4, 4)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(sideCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))))
-                .addGap(10, 10, 10)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(updateBtn)
+                            .addComponent(deleteBtn))))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -461,30 +518,6 @@ public class OrderDialogue extends javax.swing.JPanel {
             }
         });
         buttonsPanel.add(saveBtn);
-
-        updateBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update.png"))); // NOI18N
-        updateBtn.setBorder(null);
-        updateBtn.setBorderPainted(false);
-        updateBtn.setContentAreaFilled(false);
-        updateBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/update-pressed.png"))); // NOI18N
-        updateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateBtnActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(updateBtn);
-
-        deleteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
-        deleteBtn.setBorder(null);
-        deleteBtn.setBorderPainted(false);
-        deleteBtn.setContentAreaFilled(false);
-        deleteBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete-pressed.png"))); // NOI18N
-        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteBtnActionPerformed(evt);
-            }
-        });
-        buttonsPanel.add(deleteBtn);
 
         cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
         cancelBtn.setBorder(null);
@@ -513,6 +546,7 @@ public class OrderDialogue extends javax.swing.JPanel {
             products.get(preCartTable.getSelectedRow()).setOptional((optionsCB.getSelectedIndex() > 0) ? getProductID(optionsCB.getSelectedItem().toString()) : -1);
             products.get(preCartTable.getSelectedRow()).setSide((sideCB.getSelectedIndex() > 0) ? getProductID(sideCB.getSelectedItem().toString()) : -1);
             updateTable();
+            clearPanel();
         }
     }//GEN-LAST:event_updateBtnActionPerformed
 
@@ -521,6 +555,7 @@ public class OrderDialogue extends javax.swing.JPanel {
         if(products.size() > 0 && waiterCB.getSelectedIndex() > 0){
             currentOrder.setEmployeeID(searchedEmployees.get(waiterCB.getSelectedIndex()-1).getId());
             currentOrder.setTableID(searchedTables.get(tableCB.getSelectedIndex()-1).getId());
+            currentOrder.setOrderStatus(OrderStatus.UNPAID);
             currentOrder.setProducts(products);
             
             for(OrderedProducts ordered : currentOrder.getProducts()){
@@ -538,6 +573,13 @@ public class OrderDialogue extends javax.swing.JPanel {
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
+        if(preCartTable.getSelectedRow() > -1){
+            products.remove(preCartTable.getSelectedRow());
+            clearPanel();
+            updateTable(); 
+        } else {
+            new OkayDialogue(desktop, true, "Select Product to Delete");
+        }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void sitInBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sitInBtnActionPerformed
@@ -554,6 +596,20 @@ public class OrderDialogue extends javax.swing.JPanel {
             tableCB.setSelectedIndex(0);
         }
     }//GEN-LAST:event_takeawayBtnActionPerformed
+
+    private void preCartTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_preCartTableMouseClicked
+        // TODO add your handling code here:
+        if(preCartTable.getSelectedRow() > -1){
+            productNameTF.setText(products.get(preCartTable.getSelectedRow()).getProductName());
+            productDescTF.setText(products.get(preCartTable.getSelectedRow()).getProductDescription());
+            notesTf.setText(products.get(preCartTable.getSelectedRow()).getNotes()); 
+            sideCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getSide()> -1) ? 
+                                     getProductName(products.get(preCartTable.getSelectedRow()).getSide()) : "<Select Side>");
+            optionsCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getOptional() > -1) ?
+                                      getProductName(products.get(preCartTable.getSelectedRow()).getOptional()) : "<Select Option>");
+            enabledState(true);
+        }
+    }//GEN-LAST:event_preCartTableMouseClicked
 
     public int getProductID(String productName){
         
