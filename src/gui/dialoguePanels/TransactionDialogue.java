@@ -7,12 +7,14 @@ package gui.dialoguePanels;
 
 import com.sun.glass.events.KeyEvent;
 import core.database.DatabaseAccessObject;
+import core.enums.PaymentType;
 import core.enums.ProductStatus;
 import core.general.Employee;
 import core.general.Order;
 import core.general.OrderedProducts;
 import core.general.Product;
 import core.general.Table;
+import core.general.Transaction;
 import core.utilities.Session;
 import gui.desktop.ModernUI;
 import java.text.DecimalFormat;
@@ -218,7 +220,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
         jLabel20 = new javax.swing.JLabel();
         grandTotalTF = new javax.swing.JTextField();
         jLabel21 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser(Calendar.getInstance().getTime());
+        date = new com.toedter.calendar.JDateChooser(Calendar.getInstance().getTime());
         timeTF = new lu.tudor.santec.jtimechooser.JTimeChooser();
         buttonsPanel = new javax.swing.JPanel();
         payBtn = new javax.swing.JButton();
@@ -406,7 +408,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(timeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -430,7 +432,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
                                 .addComponent(jLabel21))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(timeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -494,6 +496,11 @@ public class TransactionDialogue extends javax.swing.JPanel {
         payBtn.setContentAreaFilled(false);
         payBtn.setDefaultCapable(false);
         payBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pay-pressed.png"))); // NOI18N
+        payBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payBtnActionPerformed(evt);
+            }
+        });
         buttonsPanel.add(payBtn);
 
         cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel.png"))); // NOI18N
@@ -537,6 +544,28 @@ public class TransactionDialogue extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tipTFKeyTyped
 
+    private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
+        // TODO add your handling code here:
+        Transaction transaction = new Transaction();
+        transaction.setDate(timeTF.getCalendarWithTime(date.getDate()).getTime());
+        transaction.setEmployeeID(currentOrder.getEmployeeID());
+        transaction.setOrderID(currentOrder.getId());
+        transaction.setOrderNumber(currentOrder.getOrderNumber());
+        transaction.setPayment((cashBtn.isSelected()) ? PaymentType.CASH : PaymentType.CARD );
+        transaction.setPrice(Double.parseDouble(grandTotalTF.getText()));
+        transaction.setSite(session.getBranch().getId());
+        transaction.setTableID(currentOrder.getTableID());
+        transaction.setTip(Double.parseDouble(tipTF.getText()));
+        transaction.setVat(vat);
+        
+        if(database.insert(transaction)){
+            new OkayDialogue(desktop, true, "Transaction saved Succesfully");
+            diag.dispose();
+        } else {
+            new OkayDialogue(desktop, true, "Failed to save Transaction");
+        }
+    }//GEN-LAST:event_payBtnActionPerformed
+
     public int getProductID(String productName){
         
         for(int i = 0; i < searchedProducts.size(); i++){
@@ -562,8 +591,8 @@ public class TransactionDialogue extends javax.swing.JPanel {
     private javax.swing.JButton cancelBtn;
     private javax.swing.JToggleButton cardBtn;
     private javax.swing.JToggleButton cashBtn;
+    private com.toedter.calendar.JDateChooser date;
     private javax.swing.JTextField grandTotalTF;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

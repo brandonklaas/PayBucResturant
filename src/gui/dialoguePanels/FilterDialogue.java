@@ -5,13 +5,10 @@
  */
 package gui.dialoguePanels;
 
-import core.database.DatabaseAccessObject;
-import core.general.Person;
-import core.utilities.Session;
-import gui.services.DashboardPanel;
+import core.database.DatabaseAccessObject; 
+import core.utilities.Session; 
 import gui.services.TransactionsManagementPanel;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat; 
 import javax.swing.ButtonGroup;
 
 /**

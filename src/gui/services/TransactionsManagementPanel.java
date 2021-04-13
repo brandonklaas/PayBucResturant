@@ -6,6 +6,9 @@
 package gui.services;
 
 import core.database.DatabaseAccessObject;
+import core.general.Employee;
+import core.general.Product;
+import core.general.Table;
 import core.general.Transaction;
 import core.pdf.TransactionReportPDF;
 import core.utilities.Session;
@@ -36,6 +39,9 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
     private DatabaseAccessObject database;
     private ArrayList<Transaction> array;
     
+    private ArrayList<Product> searchedProducts = new ArrayList<>(); 
+    private ArrayList<Employee> searchedEmployees = new ArrayList<>(); 
+    private ArrayList<Table> searchedTables = new ArrayList<>(); 
     
     private String filtrationStr = null;
     
@@ -49,7 +55,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         this.database = session.getDatabase();
         
         initComponents();
-//        refreshTable();
+        refreshTable();
         setDefaults();
     }
     
@@ -74,7 +80,6 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         productBtn1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         deleteBtn = new javax.swing.JButton();
-        productBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         transactionsTable = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -150,19 +155,6 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         });
         jPanel4.add(deleteBtn);
 
-        productBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product-sale.png"))); // NOI18N
-        productBtn.setBorder(null);
-        productBtn.setBorderPainted(false);
-        productBtn.setContentAreaFilled(false);
-        productBtn.setPreferredSize(new java.awt.Dimension(130, 35));
-        productBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/product-sale-pressed.png"))); // NOI18N
-        productBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productBtnActionPerformed(evt);
-            }
-        });
-        jPanel4.add(productBtn);
-
         bottomButtonsPanel.add(jPanel4);
 
         main.add(bottomButtonsPanel, java.awt.BorderLayout.PAGE_END);
@@ -234,11 +226,6 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         add(main, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void productBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productBtnActionPerformed
-        // TODO add your handling code here:
-        new Dialogue(null, true, new ProductsTransactionDialogue(session, this), "Product Transaction Management");
-    }//GEN-LAST:event_productBtnActionPerformed
-
     private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
         // TODO add your handling code here:
         new Dialogue(null, true, new FilterDialogue(session, this), "Filter");
@@ -280,21 +267,20 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
             new OkayDialogue(null, true, "Transaction Successfuly Deleted");
         } else {
             array.remove(transactionsTable.getSelectedRow());
-
+            
             tableModel = new DefaultTableModel();
             tableModel.addColumn("Date");
-            tableModel.addColumn("Title");
-            tableModel.addColumn("Type");
+            tableModel.addColumn("OrderNumber");
+            tableModel.addColumn("Table");
+            tableModel.addColumn("Waiter/Emp");
             tableModel.addColumn("Payment");
-            tableModel.addColumn("Customer");
-            tableModel.addColumn("Customer Cell");
-            tableModel.addColumn("Employee");
-            tableModel.addColumn("Price");
+            tableModel.addColumn("Tip");
+            tableModel.addColumn("Total Price");
 
             if (array.size() > 0) {
                 for (Transaction transaction : array) {
-                    tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                        transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), df2.format(transaction.getPrice())});
+                    tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getOrderNumber(), getTable(transaction.getTableID()).getTableName(),
+                        getEmployee(transaction.getEmployeeID()).getFirstname() + " " + getEmployee(transaction.getEmployeeID()).getLastname(), transaction.getPayment(), df2.format(transaction.getTip()), df2.format(transaction.getPrice())});
                 }
             }
 
@@ -305,23 +291,28 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         }
     }
 
+    public void searchDatabase(){
+        searchedEmployees = database.getEmployees();
+        searchedTables = database.getTables();
+        searchedProducts = database.getProducts();
+    }
+    
     public void refreshTable() {
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Date");
-        tableModel.addColumn("Title");
-        tableModel.addColumn("Type");
-        tableModel.addColumn("Payment");
-        tableModel.addColumn("Customer");
-        tableModel.addColumn("Customer Cell");
-        tableModel.addColumn("Employee");
-        tableModel.addColumn("Price");
+        tableModel.addColumn("OrderNumber");
+        tableModel.addColumn("Table");
+        tableModel.addColumn("Waiter/Emp");
+        tableModel.addColumn("Payment"); 
+        tableModel.addColumn("Tip");
+        tableModel.addColumn("Total Price");
 
         array = database.getTransactions(); 
         
         if (array.size() > 0) {
             for (Transaction transaction : array) {
-                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), df2.format(transaction.getPrice())});
+                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getOrderNumber(), getTable(transaction.getTableID()).getTableName(),
+                getEmployee(transaction.getEmployeeID()).getFirstname()+" "+getEmployee(transaction.getEmployeeID()).getLastname() , transaction.getPayment(), df2.format(transaction.getTip()), df2.format(transaction.getPrice())});
             }
         }
 
@@ -334,23 +325,20 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
     
     public void refreshFilteredTable(ArrayList<Transaction> array, String filtrationStr) {
         this.filtrationStr = filtrationStr;
-        
+
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Date");
-        tableModel.addColumn("Title");
-        tableModel.addColumn("Type");
+        tableModel.addColumn("OrderNumber");
+        tableModel.addColumn("Table");
+        tableModel.addColumn("Waiter/Emp");
         tableModel.addColumn("Payment");
-        tableModel.addColumn("Customer");
-        tableModel.addColumn("Customer Cell");
-        tableModel.addColumn("Employee");
-        tableModel.addColumn("Price");
+        tableModel.addColumn("Tip");
+        tableModel.addColumn("Total Price");
 
-        this.array = array;
-        
         if (array.size() > 0) {
             for (Transaction transaction : array) {
-                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getTitle(), transaction.getType(),
-                transaction.getPayment(), transaction.getCustomerName(), transaction.getCustomerNumber(), transaction.getEmployee(), df2.format(transaction.getPrice())});
+                tableModel.addRow(new Object[]{simpleDateFormat.format(transaction.getDate()), transaction.getOrderNumber(), getTable(transaction.getTableID()).getTableName(),
+                    getEmployee(transaction.getEmployeeID()).getFirstname() + " " + getEmployee(transaction.getEmployeeID()).getLastname(), transaction.getPayment(), df2.format(transaction.getTip()), df2.format(transaction.getPrice())});
             }
         }
 
@@ -361,6 +349,25 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         showAll = false;
     }
     
+    
+    
+    public Table getTable(int id){
+        for(Table table : searchedTables){
+            if(table.getId() == id){
+                return table;
+            }
+        }
+        return null;
+    }
+    
+    public Employee getEmployee(int id){
+        for(Employee employee : searchedEmployees){
+            if(employee.getId() == id){
+                return employee;
+            }
+        }
+        return null;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomButtonsPanel;
@@ -373,7 +380,6 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel main;
-    private javax.swing.JButton productBtn;
     private javax.swing.JButton productBtn1;
     private javax.swing.JButton reportBtn;
     private javax.swing.JTable transactionsTable;

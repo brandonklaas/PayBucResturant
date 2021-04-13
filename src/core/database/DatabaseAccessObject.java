@@ -98,144 +98,145 @@ public class DatabaseAccessObject {
         }
         
     }
-//
-//    public ArrayList<Transaction> getFilteredTransactions(java.util.Date from, java.util.Date to, boolean all, boolean card, boolean cash) {
-//        try {
-//            if (session.getSettings().getFilterBranches().equals("<Show All>")) {
-//                ArrayList<Transaction> array = new ArrayList<>();
-//                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE);
-//                
-//                pstmt.setDate(1, new java.sql.Date(from.getTime()));
-//                pstmt.setDate(2, new java.sql.Date(to.getTime()));
-//
-//                pstmt.executeQuery();
-//                ResultSet rs = pstmt.getResultSet();
-//                while (rs.next()) {
-//                    if (all) {
-//                        Transaction transaction = new Transaction();
-//                        transaction.setId(rs.getInt("id"));
-//                        transaction.setSite(rs.getInt("Site"));
-//                        transaction.setTitle(rs.getString("Title"));
-//                        transaction.setType(rs.getString("Type"));
-//                        transaction.setTypeID(rs.getInt("TypeID"));
-//                        transaction.setPayment(rs.getString("Payment"));
-//                        transaction.setPrice(rs.getDouble("Price"));
-//                        transaction.setEmployee(rs.getString("Employee"));
-//                        transaction.setCustomerName(rs.getString("CustomerName"));
-//                        transaction.setCustomerNumber(rs.getString("CustomerNumber"));
-//                        transaction.setDate(rs.getDate("Date"));
-//                        array.add(transaction);
-//                        
-//                    } else if (card) { 
-//                        if (rs.getString("Payment").equals("Card")) {
-//                            Transaction transaction = new Transaction();
-//                            transaction.setId(rs.getInt("id"));
-//                            transaction.setSite(rs.getInt("Site"));
-//                            transaction.setTitle(rs.getString("Title"));
-//                            transaction.setType(rs.getString("Type"));
-//                            transaction.setTypeID(rs.getInt("TypeID"));
-//                            transaction.setPayment(rs.getString("Payment"));
-//                            transaction.setPrice(rs.getDouble("Price"));
-//                            transaction.setEmployee(rs.getString("Employee"));
-//                            transaction.setCustomerName(rs.getString("CustomerName"));
-//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
-//                            transaction.setDate(rs.getDate("Date"));
-//                            array.add(transaction);
-//                        }
-//                        
-//                    } else if (cash) {
-//                        if (rs.getString("Payment").equals("Cash")) {
-//                            Transaction transaction = new Transaction();
-//                            transaction.setId(rs.getInt("id"));
-//                            transaction.setSite(rs.getInt("Site"));
-//                            transaction.setTitle(rs.getString("Title"));
-//                            transaction.setType(rs.getString("Type"));
-//                            transaction.setTypeID(rs.getInt("TypeID"));
-//                            transaction.setPayment(rs.getString("Payment"));
-//                            transaction.setPrice(rs.getDouble("Price"));
-//                            transaction.setEmployee(rs.getString("Employee"));
-//                            transaction.setCustomerName(rs.getString("CustomerName"));
-//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
-//                            transaction.setDate(rs.getDate("Date"));
-//                            array.add(transaction);
-//                        }
-//                    }
-//
-//                }
-//
-//                return array;
-//
-//            } else {
-//                ArrayList<Transaction> array = new ArrayList<>();
-//                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE_SITE);
-//                pstmt.setInt(1, session.getBranch().getId());
-//                pstmt.setDate(2, new java.sql.Date(from.getTime()));
-//                pstmt.setDate(3, new java.sql.Date(to.getTime()));
-//
-//                pstmt.executeQuery();
-//                ResultSet rs = pstmt.getResultSet();
-//                while (rs.next()) {
-//                    if (all) {
-//                        Transaction transaction = new Transaction();
-//                        transaction.setId(rs.getInt("id"));
-//                        transaction.setSite(rs.getInt("Site"));
-//                        transaction.setTitle(rs.getString("Title"));
-//                        transaction.setType(rs.getString("Type"));
-//                        transaction.setTypeID(rs.getInt("TypeID"));
-//                        transaction.setPayment(rs.getString("Payment"));
-//                        transaction.setPrice(rs.getDouble("Price"));
-//                        transaction.setEmployee(rs.getString("Employee"));
-//                        transaction.setCustomerName(rs.getString("CustomerName"));
-//                        transaction.setCustomerNumber(rs.getString("CustomerNumber"));
-//                        transaction.setDate(rs.getDate("Date"));
-//                        array.add(transaction);
-//
-//                    } else if (card) {
-//                        if (rs.getString("Payment").equals("Card")) {
-//                            Transaction transaction = new Transaction();
-//                            transaction.setId(rs.getInt("id"));
-//                            transaction.setSite(rs.getInt("Site"));
-//                            transaction.setTitle(rs.getString("Title"));
-//                            transaction.setType(rs.getString("Type"));
-//                            transaction.setTypeID(rs.getInt("TypeID"));
-//                            transaction.setPayment(rs.getString("Payment"));
-//                            transaction.setPrice(rs.getDouble("Price"));
-//                            transaction.setEmployee(rs.getString("Employee"));
-//                            transaction.setCustomerName(rs.getString("CustomerName"));
-//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
-//                            transaction.setDate(rs.getDate("Date"));
-//                            array.add(transaction);
-//                        }
-//
-//                    } else if (cash) {
-//                        if (rs.getString("Payment").equals("Cash")) {
-//                            Transaction transaction = new Transaction();
-//                            transaction.setId(rs.getInt("id"));
-//                            transaction.setSite(rs.getInt("Site"));
-//                            transaction.setTitle(rs.getString("Title"));
-//                            transaction.setType(rs.getString("Type"));
-//                            transaction.setTypeID(rs.getInt("TypeID"));
-//                            transaction.setPayment(rs.getString("Payment"));
-//                            transaction.setPrice(rs.getDouble("Price"));
-//                            transaction.setEmployee(rs.getString("Employee"));
-//                            transaction.setCustomerName(rs.getString("CustomerName"));
-//                            transaction.setCustomerNumber(rs.getString("CustomerNumber"));
-//                            transaction.setDate(rs.getDate("Date"));
-//                            array.add(transaction);
-//                        }
-//                    }
-//                }
-//
-//                return array;
-//            }
-//            
-//            
-//        } catch (SQLException ex) {
-//            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
-//            return null;
-//        }
-//    }
-//    
+    
+    public ArrayList<Transaction> getFilteredTransactions(java.util.Date from, java.util.Date to, boolean all, boolean card, boolean cash) {
+        try {
+            if (session.getSettings().getFilterBranches().equals("<Show All>")) {
+                ArrayList<Transaction> array = new ArrayList<>();
+                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE);
+                
+                pstmt.setDate(1, new java.sql.Date(from.getTime()));
+                pstmt.setDate(2, new java.sql.Date(to.getTime()));
+
+                pstmt.executeQuery();
+                ResultSet rs = pstmt.getResultSet();
+                while (rs.next()) {
+                    if (all) {
+                        Transaction transaction = new Transaction();
+                        transaction.setId(rs.getInt("id"));
+                        transaction.setSite(rs.getInt("Site"));
+                        transaction.setEmployeeID(rs.getInt("EmployeeID"));
+                        transaction.setTableID(rs.getInt("TableID"));
+                        transaction.setOrderID(rs.getInt("OrderID"));
+                        transaction.setOrderNumber(rs.getString("OrderNumber"));
+                        transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                        transaction.setVat(rs.getInt("Vat"));
+                        transaction.setPrice(rs.getDouble("Price"));
+                        transaction.setTip(rs.getDouble("Tip"));
+                        transaction.setDate(rs.getDate("Date"));
+                        array.add(transaction);
+
+                    } else if (card) { 
+                        if (rs.getString("Payment").equalsIgnoreCase("Card")) {
+                            Transaction transaction = new Transaction();
+                            transaction.setId(rs.getInt("id"));
+                            transaction.setSite(rs.getInt("Site"));
+                            transaction.setEmployeeID(rs.getInt("EmployeeID"));
+                            transaction.setTableID(rs.getInt("TableID"));
+                            transaction.setOrderID(rs.getInt("OrderID"));
+                            transaction.setOrderNumber(rs.getString("OrderNumber"));
+                            transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                            transaction.setVat(rs.getInt("Vat"));
+                            transaction.setPrice(rs.getDouble("Price"));
+                            transaction.setTip(rs.getDouble("Tip"));
+                            transaction.setDate(rs.getDate("Date"));
+                            array.add(transaction);
+                        }
+                        
+                    } else if (cash) {
+                        
+                        if (rs.getString("Payment").equalsIgnoreCase("Cash")) {
+                            Transaction transaction = new Transaction();
+                            transaction.setId(rs.getInt("id"));
+                            transaction.setSite(rs.getInt("Site"));
+                            transaction.setEmployeeID(rs.getInt("EmployeeID"));
+                            transaction.setTableID(rs.getInt("TableID"));
+                            transaction.setOrderID(rs.getInt("OrderID"));
+                            transaction.setOrderNumber(rs.getString("OrderNumber"));
+                            transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                            transaction.setVat(rs.getInt("Vat"));
+                            transaction.setPrice(rs.getDouble("Price"));
+                            transaction.setTip(rs.getDouble("Tip"));
+                            transaction.setDate(rs.getDate("Date"));
+                            array.add(transaction);
+                        }
+                    }
+
+                }
+
+                return array;
+
+            } else {
+                ArrayList<Transaction> array = new ArrayList<>();
+                PreparedStatement pstmt = connection.prepareStatement(SELECT_TRANSACTIONS_BY_DATE_SITE);
+                pstmt.setInt(1, session.getBranch().getId());
+                pstmt.setDate(2, new java.sql.Date(from.getTime()));
+                pstmt.setDate(3, new java.sql.Date(to.getTime()));
+
+                pstmt.executeQuery();
+                ResultSet rs = pstmt.getResultSet();
+                while (rs.next()) {
+                    if (all) {
+                            Transaction transaction = new Transaction();
+                            transaction.setId(rs.getInt("id"));
+                            transaction.setSite(rs.getInt("Site"));
+                            transaction.setEmployeeID(rs.getInt("EmployeeID"));
+                            transaction.setTableID(rs.getInt("TableID"));
+                            transaction.setOrderID(rs.getInt("OrderID"));
+                            transaction.setOrderNumber(rs.getString("OrderNumber"));
+                            transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                            transaction.setVat(rs.getInt("Vat"));
+                            transaction.setPrice(rs.getDouble("Price"));
+                            transaction.setTip(rs.getDouble("Tip"));
+                            transaction.setDate(rs.getDate("Date"));
+                            array.add(transaction);
+
+                    } else if (card) {
+                        if (rs.getString("Payment").equalsIgnoreCase("Card")) {
+                            Transaction transaction = new Transaction();
+                            transaction.setId(rs.getInt("id"));
+                            transaction.setSite(rs.getInt("Site"));
+                            transaction.setEmployeeID(rs.getInt("EmployeeID"));
+                            transaction.setTableID(rs.getInt("TableID"));
+                            transaction.setOrderID(rs.getInt("OrderID"));
+                            transaction.setOrderNumber(rs.getString("OrderNumber"));
+                            transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                            transaction.setVat(rs.getInt("Vat"));
+                            transaction.setPrice(rs.getDouble("Price"));
+                            transaction.setTip(rs.getDouble("Tip"));
+                            transaction.setDate(rs.getDate("Date"));
+                            array.add(transaction);
+                        }
+
+                    } else if (cash) {
+                        if (rs.getString("Payment").equalsIgnoreCase("Cash")) {
+                            Transaction transaction = new Transaction();
+                            transaction.setId(rs.getInt("id"));
+                            transaction.setSite(rs.getInt("Site"));
+                            transaction.setEmployeeID(rs.getInt("EmployeeID"));
+                            transaction.setTableID(rs.getInt("TableID"));
+                            transaction.setOrderID(rs.getInt("OrderID"));
+                            transaction.setOrderNumber(rs.getString("OrderNumber"));
+                            transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                            transaction.setVat(rs.getInt("Vat"));
+                            transaction.setPrice(rs.getDouble("Price"));
+                            transaction.setTip(rs.getDouble("Tip"));
+                            transaction.setDate(rs.getDate("Date"));
+                            array.add(transaction);
+                        }
+                    }
+                }
+
+                return array;
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
     
     public void setQueries() {
         if(offline){
@@ -722,8 +723,9 @@ public class DatabaseAccessObject {
                     transaction.setEmployeeID(rs.getInt("EmployeeID"));
                     transaction.setTableID(rs.getInt("TableID"));
                     transaction.setOrderID(rs.getInt("OrderID"));
-                    transaction.setOrderNumber(rs.getInt("OrderNumber"));
+                    transaction.setOrderNumber(rs.getString("OrderNumber"));
                     transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                    transaction.setVat(rs.getInt("Vat"));
                     transaction.setPrice(rs.getDouble("Price"));
                     transaction.setTip(rs.getDouble("Tip"));
                     transaction.setDate(rs.getDate("Date"));
@@ -748,12 +750,13 @@ public class DatabaseAccessObject {
                     transaction.setEmployeeID(rs.getInt("EmployeeID"));
                     transaction.setTableID(rs.getInt("TableID"));
                     transaction.setOrderID(rs.getInt("OrderID"));
-                    transaction.setOrderNumber(rs.getInt("OrderNumber"));
+                    transaction.setOrderNumber(rs.getString("OrderNumber"));
                     transaction.setPayment(PaymentType.fromId(rs.getInt("PaymentType")));
+                    transaction.setVat(rs.getInt("Vat"));
                     transaction.setPrice(rs.getDouble("Price"));
                     transaction.setTip(rs.getDouble("Tip"));
                     transaction.setDate(rs.getDate("Date"));
-                    array.add(transaction); 
+                    array.add(transaction);
                 }
 
                 return array;
@@ -865,11 +868,12 @@ public class DatabaseAccessObject {
                 pstmt.setInt(2, ((Transaction) object).getEmployeeID());
                 pstmt.setInt(3, ((Transaction) object).getTableID());
                 pstmt.setInt(4, ((Transaction) object).getOrderID());
-                pstmt.setInt(5, ((Transaction) object).getOrderNumber());
-                pstmt.setDouble(6, ((Transaction) object).getPrice());
-                pstmt.setDouble(7, ((Transaction) object).getTip());
-                pstmt.setInt(8, ((Transaction) object).getPayment().getID());
-                pstmt.setDate(9, new java.sql.Date(((Transaction) object).getDate().getTime())); 
+                pstmt.setString(5, ((Transaction) object).getOrderNumber());
+                pstmt.setInt(6, ((Transaction) object).getVat());
+                pstmt.setDouble(7, ((Transaction) object).getPrice());
+                pstmt.setDouble(8, ((Transaction) object).getTip());
+                pstmt.setInt(9, ((Transaction) object).getPayment().getID());
+                pstmt.setDate(10, new java.sql.Date(((Transaction) object).getDate().getTime())); 
                 pstmt.executeUpdate(); 
 
             } else if (object instanceof Employee) {
@@ -1009,12 +1013,13 @@ public class DatabaseAccessObject {
                 pstmt.setInt(2, ((Transaction) object).getEmployeeID());
                 pstmt.setInt(3, ((Transaction) object).getTableID());
                 pstmt.setInt(4, ((Transaction) object).getOrderID());
-                pstmt.setInt(5, ((Transaction) object).getOrderNumber());
-                pstmt.setDouble(6, ((Transaction) object).getPrice()); 
-                pstmt.setDouble(7, ((Transaction) object).getTip());
-                pstmt.setInt(8, ((Transaction) object).getPayment().getID());
-                pstmt.setDate(9, new Date(((Transaction) object).getDate().getTime()));
-                pstmt.setInt(10, ((Transaction) object).getId());
+                pstmt.setString(5, ((Transaction) object).getOrderNumber());
+                pstmt.setInt(6, ((Transaction) object).getVat()); 
+                pstmt.setDouble(7, ((Transaction) object).getPrice()); 
+                pstmt.setDouble(8, ((Transaction) object).getTip());
+                pstmt.setInt(9, ((Transaction) object).getPayment().getID());
+                pstmt.setDate(10, new Date(((Transaction) object).getDate().getTime()));
+                pstmt.setInt(11, ((Transaction) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Employee) {

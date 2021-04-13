@@ -131,7 +131,7 @@ public class Derby {
     
     public static final String CREATE_SERVICES = "CREATE TABLE Services (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Name varchar(255),  Description varchar(255), Price decimal(18,2),   Taxable int)";
     
-    public static final String CREATE_TRANSACTIONS  = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Site int, EmployeeID int, TableID int, OrderID int, OrderNumber int, Price decimal(18,2), Tip decimal(18,2), PaymentType int, Date Date"
+    public static final String CREATE_TRANSACTIONS  = "CREATE TABLE Transactions (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Site int, EmployeeID int, TableID int, OrderID int, OrderNumber varchar(255), Price decimal(18,2), Tip decimal(18,2), PaymentType int, Date Date"
                                                     + ",  FOREIGN KEY (Site) REFERENCES Site(id), FOREIGN KEY (EmployeeID) REFERENCES Employees(id), FOREIGN KEY (TableID) REFERENCES TableData(id), FOREIGN KEY (OrderID) REFERENCES OrderData(id))";
                 
     public static final String CREATE_EMPLOYEE = "CREATE TABLE Employees (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, EmployeeNo varchar(100),  Occupation varchar(255),  MedicalAid varchar(255), TaxNo varchar(255), "

@@ -25,6 +25,11 @@ public class Session {
         
         if (settings.getDefaultBranch().equals("<None>") == false) {
             branch = database.getBranchByName(settings.getDefaultBranch());
+        } else {
+            branch = new Branch();
+            branch.setAddress("123 Paybuc Street");
+            branch.setId(0);
+            branch.setName("Demo Branch");
         }
     }
 

@@ -18,7 +18,7 @@ public class Transaction {
     private int employeeID;
     private int tableID;
     private int orderID;
-    private int orderNumber;
+    private String orderNumber;
     private int vat;
     private double Price;
     private double Tip;
@@ -99,13 +99,13 @@ public class Transaction {
         this.orderID = orderID;
     }
 
-    public int getOrderNumber() {
+    public String getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(int orderNumber) {
+    public void setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
-    }
+    } 
 
     public double getTip() {
         return Tip;
