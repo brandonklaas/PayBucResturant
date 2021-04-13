@@ -6,12 +6,10 @@
 package gui.services;
 
 import core.database.DatabaseAccessObject;
-import core.general.Account;
-import core.general.Occupation;
+import core.general.Account; 
 import core.utilities.Session;
 import gui.dialoguePanels.AccountDialogue;
-import gui.dialoguePanels.Dialogue;
-import gui.dialoguePanels.OccupationDialogue;
+import gui.dialoguePanels.Dialogue; 
 import gui.dialoguePanels.OkayDialogue;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -26,6 +24,8 @@ public class AccountsManagementPanel extends javax.swing.JPanel {
     private DatabaseAccessObject database;
     private DefaultTableModel tableModel;
     private ArrayList<Account> array;
+    
+    private Dialogue diag;
     
     /**
      * Creates new form Services
@@ -153,7 +153,7 @@ public class AccountsManagementPanel extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 707, Short.MAX_VALUE)
         );
 
         main.add(jPanel1, java.awt.BorderLayout.LINE_END);
@@ -169,7 +169,7 @@ public class AccountsManagementPanel extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 610, Short.MAX_VALUE)
+            .addGap(0, 707, Short.MAX_VALUE)
         );
 
         main.add(jPanel2, java.awt.BorderLayout.LINE_START);
@@ -188,7 +188,7 @@ public class AccountsManagementPanel extends javax.swing.JPanel {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(815, Short.MAX_VALUE))
+                .addContainerGap(529, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -243,4 +243,8 @@ public class AccountsManagementPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel main;
     // End of variables declaration//GEN-END:variables
+
+    public void setDialogue(Dialogue aThis) {
+        this.diag = aThis;
+    }
 }

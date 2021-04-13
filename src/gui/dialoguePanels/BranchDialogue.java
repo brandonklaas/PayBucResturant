@@ -189,9 +189,11 @@ public class BranchDialogue extends javax.swing.JPanel {
             branch.setAddress(address.getText());
             
             if(database.insert(branch)){
-                new OkayDialogue(null, true, "Branch saved successfully");
                 clearPanels();
                 panel.refreshTable();
+                diag.setVisible(false);
+                new OkayDialogue(null, true, "Branch saved successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to save Branch");
             }
@@ -215,7 +217,9 @@ public class BranchDialogue extends javax.swing.JPanel {
             if(database.update(branch)){
                 diag.dispose();
                 panel.refreshTable();
+                diag.setVisible(false);
                 new OkayDialogue(null, true, "Branch updated successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to update Branch");
             }

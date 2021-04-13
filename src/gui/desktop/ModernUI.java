@@ -12,9 +12,12 @@ import core.general.OrderedProducts;
 import core.general.Product;
 import core.utilities.Session;
 import gui.cards.FoodCard; 
+import gui.dialoguePanels.BranchDialogue;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OrderDialogue;
 import gui.dialoguePanels.SettingsManagement;
+import gui.services.AccountsManagementPanel;
+import gui.services.BranchManagementPanel;
 import gui.services.EmployeesManagementPanel;
 import gui.services.OrdersManagementPanel;
 import gui.services.ProductManagementPanel;
@@ -249,6 +252,8 @@ public class ModernUI extends javax.swing.JFrame {
         headerLeftPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         headerRightPanel = new javax.swing.JPanel();
+        accountsBtn = new javax.swing.JButton();
+        branchBtn = new javax.swing.JButton();
         headerCenterMain = new javax.swing.JPanel();
         panelSearchPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -313,27 +318,33 @@ public class ModernUI extends javax.swing.JFrame {
         MainHeader.setLayout(new java.awt.BorderLayout());
 
         headerLeftPanel.setBackground(new java.awt.Color(52, 188, 183));
-        headerLeftPanel.setPreferredSize(new java.awt.Dimension(300, 78));
+        headerLeftPanel.setPreferredSize(new java.awt.Dimension(370, 78));
         headerLeftPanel.setLayout(new java.awt.BorderLayout());
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/header.png"))); // NOI18N
+        jLabel7.setPreferredSize(new java.awt.Dimension(330, 78));
         headerLeftPanel.add(jLabel7, java.awt.BorderLayout.CENTER);
 
         MainHeader.add(headerLeftPanel, java.awt.BorderLayout.LINE_START);
 
         headerRightPanel.setBackground(new java.awt.Color(52, 188, 183));
-        headerRightPanel.setPreferredSize(new java.awt.Dimension(380, 78));
+        headerRightPanel.setPreferredSize(new java.awt.Dimension(400, 78));
 
-        javax.swing.GroupLayout headerRightPanelLayout = new javax.swing.GroupLayout(headerRightPanel);
-        headerRightPanel.setLayout(headerRightPanelLayout);
-        headerRightPanelLayout.setHorizontalGroup(
-            headerRightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
-        );
-        headerRightPanelLayout.setVerticalGroup(
-            headerRightPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 78, Short.MAX_VALUE)
-        );
+        accountsBtn.setText("Accounts");
+        accountsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accountsBtnActionPerformed(evt);
+            }
+        });
+        headerRightPanel.add(accountsBtn);
+
+        branchBtn.setText("Branches");
+        branchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                branchBtnActionPerformed(evt);
+            }
+        });
+        headerRightPanel.add(branchBtn);
 
         MainHeader.add(headerRightPanel, java.awt.BorderLayout.LINE_END);
 
@@ -860,6 +871,20 @@ public class ModernUI extends javax.swing.JFrame {
         clearReceipt();
     }//GEN-LAST:event_cancelBtnActionPerformed
 
+    private void accountsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountsBtnActionPerformed
+        // TODO add your handling code here:
+        dim(true);
+        new Dialogue(this, true, new AccountsManagementPanel(session), "Accounts Management");
+        dim(false);
+    }//GEN-LAST:event_accountsBtnActionPerformed
+
+    private void branchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_branchBtnActionPerformed
+        // TODO add your handling code here:
+        dim(true);
+        new Dialogue(this, true, new BranchManagementPanel(session), "Branch Management");
+        dim(false);
+    }//GEN-LAST:event_branchBtnActionPerformed
+
     public void clearReceipt(){
         clearTable();
         products = new ArrayList<>();
@@ -906,8 +931,10 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JPanel MainHeader;
     private javax.swing.JPanel MainLeftPanel;
     private javax.swing.JPanel QuickPanelHeader;
+    private javax.swing.JButton accountsBtn;
     private javax.swing.JButton addToTableBtn;
     private javax.swing.JPanel bottomButtons;
+    private javax.swing.JButton branchBtn;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JPanel centerPanel;
     private javax.swing.JPanel centerRightPanel;

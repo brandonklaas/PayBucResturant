@@ -25,6 +25,8 @@ public class BranchManagementPanel extends javax.swing.JPanel {
     private DefaultTableModel tableModel;
     private ArrayList<Branch> array;
     
+    private Dialogue diag;
+    
     /**
      * Creates new form Services
      */
@@ -230,6 +232,10 @@ public class BranchManagementPanel extends javax.swing.JPanel {
         
     }//GEN-LAST:event_editBtnActionPerformed
 
+    
+    public void setDialogue(Dialogue aThis) {
+        this.diag = aThis;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

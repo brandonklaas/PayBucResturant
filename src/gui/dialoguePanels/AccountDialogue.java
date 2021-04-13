@@ -270,9 +270,11 @@ public class AccountDialogue extends javax.swing.JPanel {
             
 
             if (database.insert(account)) {
-                new OkayDialogue(null, true, "Account saved successfully");
                 clearPanels();
                 panel.refreshTable();
+                diag.setVisible(false);
+                new OkayDialogue(null, true, "Account saved successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to save Account");
             }
@@ -300,9 +302,10 @@ public class AccountDialogue extends javax.swing.JPanel {
             
 
             if (database.update(account)) {
-                diag.dispose();
                 panel.refreshTable();
+                diag.setVisible(false);
                 new OkayDialogue(null, true, "Account updated successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to update Account");
             }

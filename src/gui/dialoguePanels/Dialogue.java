@@ -5,6 +5,7 @@
  */
 package gui.dialoguePanels;
 
+import gui.services.AccountsManagementPanel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -74,9 +75,16 @@ public class Dialogue extends javax.swing.JDialog {
         } else if (panel instanceof TransactionDialogue) {
             ((TransactionDialogue) panel).setDialogue(this);
             
-        }   else if (panel instanceof FilterDialogue) {
+        } else if (panel instanceof FilterDialogue) {
             ((FilterDialogue) panel).setDialogue(this);
-        }  
+            
+        } else if (panel instanceof SettingsManagement) {
+            ((SettingsManagement) panel).setDialogue(this);
+            
+        } else if (panel instanceof AccountsManagementPanel) {
+            ((AccountsManagementPanel) panel).setDialogue(this);
+        }   
+ 
 
         jLabel1.setText(title);
 
