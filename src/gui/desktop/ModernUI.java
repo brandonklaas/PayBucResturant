@@ -59,6 +59,7 @@ public class ModernUI extends javax.swing.JFrame {
     
     private ArrayList<Product> searchedProducts;
     private ArrayList<OrderedProducts> orderedProducts = new ArrayList<>();
+    private int tax;
     
     /**
      * Creates new form ModernUI
@@ -66,6 +67,7 @@ public class ModernUI extends javax.swing.JFrame {
     public ModernUI() {
         this.session = new Session();
         this.database = session.getDatabase();
+        this.tax = Integer.parseInt(session.getSettings().getTax());
         this.setIconImage(new ImageIcon(getClass().getResource("/icons/round-logo.png")).getImage());
         
         initComponents();
@@ -228,8 +230,8 @@ public class ModernUI extends javax.swing.JFrame {
         }
         
         subTotal.setText("R "+ df2.format(tempTotal));
-        taxInRandsLbl.setText("R "+ df2.format((tempTotal * 15) / 100));
-        totalLbl.setText("R "+ df2.format(( (tempTotal * 15) / 100) + tempTotal)  ) ;
+        taxInRandsLbl.setText("R "+ df2.format((tempTotal * tax) / 100));
+        totalLbl.setText("R "+ df2.format(( (tempTotal * tax) / 100) + tempTotal)  ) ;
     }
     
     

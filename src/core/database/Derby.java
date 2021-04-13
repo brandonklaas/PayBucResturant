@@ -80,7 +80,7 @@ public class Derby {
     
     public static final String UPDATE_SERVICES     = "UPDATE Services  SET Name = ?,  Description = ?, Price = ?, Taxable = ? WHERE id = ?";
     
-    public static final String UPDATE_TRANSACTIONS = "UPDATE Transactions SET Site = ?, EmployeeID = ?, TableID = ?, OrderID = ?, OrderNumber = ?, Price = ? , Tip = ? , PaymentType = ?, Date = ? WHERE id = ?";
+    public static final String UPDATE_TRANSACTIONS = "UPDATE Transactions SET Site = ?, EmployeeID = ?, TableID = ?, OrderID = ?, OrderNumber = ?, Vat = ?, Price = ? , Tip = ? , PaymentType = ?, Date = ? WHERE id = ?";
                 
     public static final String UPDATE_EMPLOYEE     = "UPDATE Employees SET EmployeeNo = ?,  Occupation = ?,  MedicalAid = ?, TaxNo = ?, IDNumber = ?, Firstname = ?, Surname = ?, Email = ?, CellNo = ?, Address = ?, Race = ?, Gender = ? WHERE id = ?";
     
@@ -105,7 +105,7 @@ public class Derby {
     
     public static final String INSERT_SERVICES     = "INSERT INTO Services (Name,  Description, Price, Taxable) VALUES (?,?,?,?)";
     
-    public static final String INSERT_TRANSACTIONS = "INSERT INTO Transactions (Site ,EmployeeID, TableID, OrderID, OrderNumber, Price , Tip , PaymentType, Date) VALUES (?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_TRANSACTIONS = "INSERT INTO Transactions (Site ,EmployeeID, TableID, OrderID, OrderNumber, Vat, Price , Tip , PaymentType, Date) VALUES (?,?,?,?,?,?,?,?,?,?)";
                 
     public static final String INSERT_EMPLOYEE     = "INSERT INTO Employees (EmployeeNo,  Occupation,  MedicalAid, TaxNo, IDNumber, Firstname,   Surname,  Email, CellNo, Address, Race, Gender) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
     

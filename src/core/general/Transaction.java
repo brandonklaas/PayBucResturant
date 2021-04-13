@@ -19,6 +19,7 @@ public class Transaction {
     private int tableID;
     private int orderID;
     private int orderNumber;
+    private int vat;
     private double Price;
     private double Tip;
     private PaymentType Payment;
@@ -38,6 +39,14 @@ public class Transaction {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getVat() {
+        return vat;
+    }
+
+    public void setVat(int vat) {
+        this.vat = vat;
     }
 
 

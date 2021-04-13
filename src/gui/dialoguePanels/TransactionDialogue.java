@@ -5,6 +5,7 @@
  */
 package gui.dialoguePanels;
 
+import com.sun.glass.events.KeyEvent;
 import core.database.DatabaseAccessObject;
 import core.enums.ProductStatus;
 import core.general.Employee;
@@ -14,8 +15,10 @@ import core.general.Product;
 import core.general.Table;
 import core.utilities.Session;
 import gui.desktop.ModernUI;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList; 
+import java.util.Calendar;
 import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 
@@ -39,11 +42,19 @@ public class TransactionDialogue extends javax.swing.JPanel {
     
     private DefaultTableModel tableModel = new DefaultTableModel(); 
     private ModernUI desktop;
+     
+    private static DecimalFormat df2 = new DecimalFormat("#.00");
     
     private Order currentOrder;
 //    private ComboBoxModel optionalModel;
 //    private ComboBoxModel sidesModel;
 //    private ComboBoxModel drinksModel;
+    
+    
+    private double subTotal = 0.00;
+    private double grandTotal = 0.00;
+    private double tipTotal = 0.00;
+    private int vat;
     
     /**
      * Creates new form TransactionDialogue
@@ -60,6 +71,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
         this.desktop = desktop;
         this.products = order.getProducts();
         this.currentOrder = order;
+        this.vat = Integer.parseInt(session.getSettings().getTax());
         
         initComponents(); 
         searchDatabase();
@@ -73,7 +85,15 @@ public class TransactionDialogue extends javax.swing.JPanel {
         Employee temp = getEmployee(currentOrder.getEmployeeID());
         waiterCB.setSelectedItem(temp.getFirstname()+" , "+temp.getLastname());
         tableCB.setSelectedItem(getTable(currentOrder.getTableID()));
-
+        
+        for(OrderedProducts prod : products){
+            subTotal+=prod.getProductPrice();
+        }
+        subTotalTf.setText(df2.format(subTotal));
+        vatTf.setText(vat+" %");
+        tipTF.setText("0.00");
+        grandTotalTF.setText(""+((vat > 0) ? df2.format(( (subTotal * vat) / 100) + subTotal) : df2.format(subTotal)));
+        
     }
     
     public void fillTable(){
@@ -197,6 +217,9 @@ public class TransactionDialogue extends javax.swing.JPanel {
         tipTF = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         grandTotalTF = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser(Calendar.getInstance().getTime());
+        timeTF = new lu.tudor.santec.jtimechooser.JTimeChooser();
         buttonsPanel = new javax.swing.JPanel();
         payBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
@@ -296,6 +319,11 @@ public class TransactionDialogue extends javax.swing.JPanel {
 
         tipTF.setBackground(new java.awt.Color(255, 255, 255));
         tipTF.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(204, 204, 204)));
+        tipTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tipTFKeyTyped(evt);
+            }
+        });
 
         jLabel20.setForeground(new java.awt.Color(0, 0, 0));
         jLabel20.setText("Grand Total :");
@@ -303,6 +331,11 @@ public class TransactionDialogue extends javax.swing.JPanel {
         grandTotalTF.setEditable(false);
         grandTotalTF.setBackground(new java.awt.Color(255, 255, 255));
         grandTotalTF.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(204, 204, 204)));
+
+        jLabel21.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel21.setText("Date :");
+
+        timeTF.setTime(Calendar.getInstance().getTime());
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -316,11 +349,6 @@ public class TransactionDialogue extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 680, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(orderNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -371,17 +399,42 @@ public class TransactionDialogue extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(grandTotalTF, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(71, 71, 71))
+                                .addComponent(grandTotalTF, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(timeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(orderNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel11)
-                .addGap(4, 4, 4)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(4, 4, 4)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(jLabel21))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(timeTF, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
                     .addComponent(orderNumberTF, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -468,6 +521,22 @@ public class TransactionDialogue extends javax.swing.JPanel {
         
     }//GEN-LAST:event_preCartTableMouseClicked
 
+    private void tipTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tipTFKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyCode() != KeyEvent.VK_0 && evt.getKeyCode() != KeyEvent.VK_1 && evt.getKeyCode() != KeyEvent.VK_2 && evt.getKeyCode() != KeyEvent.VK_3 && 
+           evt.getKeyCode() != KeyEvent.VK_4 && evt.getKeyCode() != KeyEvent.VK_5 && evt.getKeyCode() != KeyEvent.VK_6 && evt.getKeyCode() != KeyEvent.VK_7 && 
+           evt.getKeyCode() != KeyEvent.VK_8 && evt.getKeyCode() != KeyEvent.VK_9 && evt.getKeyCode() != KeyEvent.VK_PERIOD && evt.getKeyCode() != KeyEvent.VK_BACKSPACE &&
+           evt.getKeyCode() != KeyEvent.VK_DELETE){
+            if(tipTF.getText().length() > 0){
+                tipTF.setText(tipTF.getText().substring(0, tipTF.getText().length()-1));
+            }
+            new OkayDialogue(desktop, true, "Only Digits and '.' allowed.");
+        } else {
+            subTotalTf.setText(df2.format(subTotal)); 
+            grandTotalTF.setText("" + ((vat > 0) ? df2.format((((subTotal * vat) / 100) + subTotal)+Double.parseDouble(tipTF.getText())) : df2.format(subTotal+Double.parseDouble(tipTF.getText()))));
+        }
+    }//GEN-LAST:event_tipTFKeyTyped
+
     public int getProductID(String productName){
         
         for(int i = 0; i < searchedProducts.size(); i++){
@@ -476,6 +545,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
             }
         }
         return -1;
+        
     }
     
     public String getProductName(int productID){
@@ -493,6 +563,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
     private javax.swing.JToggleButton cardBtn;
     private javax.swing.JToggleButton cashBtn;
     private javax.swing.JTextField grandTotalTF;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -504,6 +575,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator3;
@@ -514,6 +586,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
     private javax.swing.JTable preCartTable;
     private javax.swing.JTextField subTotalTf;
     private javax.swing.JComboBox<String> tableCB;
+    private lu.tudor.santec.jtimechooser.JTimeChooser timeTF;
     private javax.swing.JTextField tipTF;
     private javax.swing.JTextField vatTf;
     private javax.swing.JComboBox<String> waiterCB;
