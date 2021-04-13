@@ -139,7 +139,10 @@ public class Dialogue extends javax.swing.JDialog {
         
         } else if (panel instanceof FilterDialogue) {
             ((FilterDialogue) panel).setDialogue(this);
-        }  
+            
+        } else if (panel instanceof SettingsManagement) {
+            ((SettingsManagement) panel).setDialogue(this);
+        }   
 
         jLabel1.setText(title);
 

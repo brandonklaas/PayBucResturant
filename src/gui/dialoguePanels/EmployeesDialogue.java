@@ -319,7 +319,9 @@ public class EmployeesDialogue extends javax.swing.JPanel {
             if (database.insert(employee)) {
                 clearPanels();
                 panel.refreshTable();
+                diag.setVisible(false);
                 new OkayDialogue(null, true, "Employee saved successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to save Employee");
             }

@@ -174,9 +174,11 @@ public class TablesDialogue extends javax.swing.JPanel {
             table.setTableStatus((TableStatus) tableStatus.getSelectedItem()); 
             
             if(database.insert(table)){
-                new OkayDialogue(null, true, "Table saved successfully");
                 clearPanels();
                 panel.refreshTable();
+                diag.setVisible(false);
+                new OkayDialogue(null, true, "Table saved successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to save Table");
             }

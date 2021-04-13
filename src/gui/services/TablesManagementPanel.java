@@ -8,9 +8,11 @@ package gui.services;
 import core.database.DatabaseAccessObject;
 import core.general.Table;
 import core.utilities.Session;
+import gui.desktop.ModernUI;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OkayDialogue; 
 import gui.dialoguePanels.TablesDialogue;
+import java.awt.Desktop;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,12 +26,14 @@ public class TablesManagementPanel extends javax.swing.JPanel {
     private DatabaseAccessObject database;
     private DefaultTableModel tableModel;
     private ArrayList<Table> array;
+    private  ModernUI desktop;
     
     /**
      * Creates new form Services
      */
-    public TablesManagementPanel(Session session) {
+    public TablesManagementPanel(Session session, ModernUI desktop) {
         this.session = session;
+        this.desktop = desktop;
         this.database = session.getDatabase();
         
         initComponents();
@@ -196,7 +200,9 @@ public class TablesManagementPanel extends javax.swing.JPanel {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
+        desktop.dim(true);
         new Dialogue(null, true, new TablesDialogue(session, this), "Tables Management");
+        desktop.dim(false);
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed

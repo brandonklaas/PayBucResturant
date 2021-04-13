@@ -280,9 +280,11 @@ public class ProductDialogue extends javax.swing.JPanel {
             product.setType(ProductType.fromString(productTypeCB.getSelectedItem().toString()));
             
             if(database.insert(product)){
-                new OkayDialogue(null, true, "Product saved successfully");
                 clearPanels();
                 panel.refreshTable();
+                diag.setVisible(false);
+                new OkayDialogue(null, true, "Product saved successfully");
+                diag.dispose();
             } else {
                 new OkayDialogue(null, true, "Failed to save Product");
             }

@@ -14,10 +14,12 @@ import core.utilities.Session;
 import gui.cards.FoodCard; 
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OrderDialogue;
+import gui.dialoguePanels.SettingsManagement;
 import gui.services.EmployeesManagementPanel;
 import gui.services.OrdersManagementPanel;
 import gui.services.ProductManagementPanel;
 import gui.services.ServiceManagementPanel;
+import gui.services.SettingsManagementPanel;
 import gui.services.TablesManagementPanel;
 import gui.services.TransactionsManagementPanel;
 import java.awt.Color;
@@ -201,7 +203,6 @@ public class ModernUI extends javax.swing.JFrame {
         tableModel.addColumn("Price");
         
         receiptTable.setModel(tableModel);
-        
         
         int[] columnsWidth = {
             140, 33, 60
@@ -500,6 +501,11 @@ public class ModernUI extends javax.swing.JFrame {
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
         jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/settings-pressed.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         MainLeftPanel.add(jButton2);
 
         mainPanel.add(MainLeftPanel, java.awt.BorderLayout.LINE_START);
@@ -609,6 +615,11 @@ public class ModernUI extends javax.swing.JFrame {
         cancelBtn.setBorderPainted(false);
         cancelBtn.setContentAreaFilled(false);
         cancelBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancelReceipt-pressed.png"))); // NOI18N
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
         jPanel1.add(cancelBtn);
 
         centerRightPanel.add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -837,6 +848,23 @@ public class ModernUI extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_ordersBtnActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        dim(true);
+        new Dialogue(this, true, new SettingsManagement(session), "Settings");
+        dim(false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        // TODO add your handling code here:
+        clearReceipt();
+    }//GEN-LAST:event_cancelBtnActionPerformed
+
+    public void clearReceipt(){
+        clearTable();
+        products = new ArrayList<>();
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -5,12 +5,11 @@
  */
 package gui.dialoguePanels;
 
-import gui.desktop.DesktopFrame;
 import gui.desktop.LoginFrame;
+import gui.desktop.ModernUI;
 import gui.services.TransactionsManagementPanel;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import javax.swing.JFrame;
 
 /**
  *
@@ -20,10 +19,10 @@ public class YesNoDialogue extends javax.swing.JDialog {
  
     private static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private String function;
-    private DesktopFrame frame;
+    private ModernUI frame;
     private TransactionsManagementPanel panel;
 
-    public YesNoDialogue(DesktopFrame parent, boolean modal, String title, String function) {
+    public YesNoDialogue(ModernUI parent, boolean modal, String title, String function) {
         super(parent, modal);
         this.frame = parent;
         
@@ -36,7 +35,7 @@ public class YesNoDialogue extends javax.swing.JDialog {
         this.setVisible(true);
     }
     
-     public YesNoDialogue(DesktopFrame parent, boolean modal, String title, String function, TransactionsManagementPanel panel) {
+     public YesNoDialogue(ModernUI parent, boolean modal, String title, String function, TransactionsManagementPanel panel) {
         super(parent, modal);
         this.frame = parent;
         this.panel = panel;

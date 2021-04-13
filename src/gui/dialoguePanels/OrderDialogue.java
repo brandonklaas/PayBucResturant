@@ -564,6 +564,7 @@ public class OrderDialogue extends javax.swing.JPanel {
             }
             
             if(database.insert(currentOrder)){
+                desktop.clearReceipt();
                 new OkayDialogue(desktop, true, "Order recored successfully");
                 diag.dispose();
             } else {
