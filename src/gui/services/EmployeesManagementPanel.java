@@ -8,6 +8,7 @@ package gui.services;
 import core.database.DatabaseAccessObject;
 import core.general.Employee;
 import core.utilities.Session;
+import gui.desktop.ModernUI;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.EmployeesDialogue;
 import gui.dialoguePanels.OkayDialogue;
@@ -24,12 +25,14 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
     private DefaultTableModel tableModel;
     private ArrayList<Employee> array;
     private DatabaseAccessObject database;
+    private  ModernUI desktop;
     
     /**
      * Creates new form Services
      */
-    public EmployeesManagementPanel(Session session) {
+    public EmployeesManagementPanel(Session session, ModernUI desktop) {
         this.session = session;
+        this.desktop = desktop;
         this.database = session.getDatabase();
         initComponents();
         refreshTable();
@@ -113,7 +116,9 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
             }
         ));
         employeeTable.setGridColor(new java.awt.Color(204, 204, 204));
-        employeeTable.setOpaque(false);
+        employeeTable.setRowHeight(30);
+        employeeTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
+        employeeTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(employeeTable);
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -171,7 +176,9 @@ public class EmployeesManagementPanel extends javax.swing.JPanel {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
+        desktop.dim(true);
         new Dialogue(null, true, new EmployeesDialogue(session, this), "Employee Management");
+        desktop.dim(false);
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed

@@ -38,7 +38,7 @@ public class Settings {
 
                 properties.setProperty("DefaultBranch"          , "<None>");
                 properties.setProperty("PayBucAccount"          , "");
-                properties.setProperty("Tax"                    , "");
+                properties.setProperty("Tax"                    , "0");
                 properties.setProperty("FilterBranches"         , "<Show All>");
 
                 // save properties to project root folder

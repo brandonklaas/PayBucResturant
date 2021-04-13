@@ -12,11 +12,10 @@ import core.general.Table;
 import core.general.Transaction;
 import core.pdf.TransactionReportPDF;
 import core.utilities.Session;
+import gui.desktop.ModernUI;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.FilterDialogue;
 import gui.dialoguePanels.OkayDialogue;
-import gui.dialoguePanels.ProductsTransactionDialogue;
-import gui.dialoguePanels.ServiceTransactionDialogue;
 import gui.dialoguePanels.YesNoDialogue;
 import java.awt.Desktop;
 import java.io.File;
@@ -46,15 +45,18 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
     private String filtrationStr = null;
     
     private boolean showAll = true;
+    private  ModernUI desktop;
     
     /**
      * Creates new form Services
      */
-    public TransactionsManagementPanel(Session session) {
+    public TransactionsManagementPanel(Session session, ModernUI desktop) {
         this.session = session;
+        this.desktop = desktop;
         this.database = session.getDatabase();
         
         initComponents();
+        searchDatabase();
         refreshTable();
         setDefaults();
     }
@@ -169,8 +171,11 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
                 "Title", "Description", "Employee", "Client Name", "Client Cell", "Payment", "Price"
             }
         ));
+        transactionsTable.setFillsViewportHeight(true);
         transactionsTable.setGridColor(new java.awt.Color(204, 204, 204));
-        transactionsTable.setOpaque(false);
+        transactionsTable.setRowHeight(30);
+        transactionsTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
+        transactionsTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(transactionsTable);
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -228,7 +233,9 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
     private void filterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterBtnActionPerformed
         // TODO add your handling code here:
+        desktop.dim(true);
         new Dialogue(null, true, new FilterDialogue(session, this), "Filter");
+        desktop.dim(false);
     }//GEN-LAST:event_filterBtnActionPerformed
 
     private void reportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBtnActionPerformed

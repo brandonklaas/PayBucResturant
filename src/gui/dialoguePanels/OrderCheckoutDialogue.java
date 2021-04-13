@@ -81,7 +81,6 @@ public class OrderCheckoutDialogue extends javax.swing.JPanel {
     
     public void fillTable(){
         for(int i = 0; i < products.size(); i++){  
-            System.out.println("OD ID : " + products.get(i).getId());
             
             tableModel.insertRow(tableModel.getRowCount(), new Object[]{products.get(i).getProductName(), (products.get(i).getSide() != -1) ? getProductName(products.get(i).getSide()) : "<None>", 
                 (products.get(i).getOptional() != -1) ? getProductName(products.get(i).getOptional()) : "<None>",
@@ -268,6 +267,7 @@ public class OrderCheckoutDialogue extends javax.swing.JPanel {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Order Details");
 
+        preCartTable.setBackground(new java.awt.Color(255, 255, 255));
         preCartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -282,7 +282,7 @@ public class OrderCheckoutDialogue extends javax.swing.JPanel {
         preCartTable.setFillsViewportHeight(true);
         preCartTable.setGridColor(new java.awt.Color(102, 102, 102));
         preCartTable.setMaximumSize(new java.awt.Dimension(1000, 64));
-        preCartTable.setRowHeight(20);
+        preCartTable.setRowHeight(30);
         preCartTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
         preCartTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         preCartTable.setShowVerticalLines(false);

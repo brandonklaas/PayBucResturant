@@ -127,7 +127,7 @@ public class DatabaseAccessObject {
                         array.add(transaction);
 
                     } else if (card) { 
-                        if (rs.getString("Payment").equalsIgnoreCase("Card")) {
+                        if (rs.getString("PaymentType").equalsIgnoreCase("Card")) {
                             Transaction transaction = new Transaction();
                             transaction.setId(rs.getInt("id"));
                             transaction.setSite(rs.getInt("Site"));
@@ -145,7 +145,7 @@ public class DatabaseAccessObject {
                         
                     } else if (cash) {
                         
-                        if (rs.getString("Payment").equalsIgnoreCase("Cash")) {
+                        if (rs.getString("PaymentType").equalsIgnoreCase("Cash")) {
                             Transaction transaction = new Transaction();
                             transaction.setId(rs.getInt("id"));
                             transaction.setSite(rs.getInt("Site"));
@@ -192,7 +192,7 @@ public class DatabaseAccessObject {
                             array.add(transaction);
 
                     } else if (card) {
-                        if (rs.getString("Payment").equalsIgnoreCase("Card")) {
+                        if (rs.getString("PaymentType").equalsIgnoreCase("Card")) {
                             Transaction transaction = new Transaction();
                             transaction.setId(rs.getInt("id"));
                             transaction.setSite(rs.getInt("Site"));
@@ -209,7 +209,7 @@ public class DatabaseAccessObject {
                         }
 
                     } else if (cash) {
-                        if (rs.getString("Payment").equalsIgnoreCase("Cash")) {
+                        if (rs.getString("PaymentType").equalsIgnoreCase("Cash")) {
                             Transaction transaction = new Transaction();
                             transaction.setId(rs.getInt("id"));
                             transaction.setSite(rs.getInt("Site"));

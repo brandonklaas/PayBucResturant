@@ -74,12 +74,11 @@ public class ModernUI extends javax.swing.JFrame {
         defaults();
         createGlassPanel();
         
-        
-        servicePanel = new ServiceManagementPanel(session);
-        productsPanel = new ProductManagementPanel(session);
-        transactionsPanel = new TransactionsManagementPanel(session);
-        employeesPanel = new EmployeesManagementPanel(session); 
-        tablesPanel = new TablesManagementPanel(session);
+         
+        productsPanel = new ProductManagementPanel(session, this);
+        transactionsPanel = new TransactionsManagementPanel(session, this);
+        employeesPanel = new EmployeesManagementPanel(session, this); 
+        tablesPanel = new TablesManagementPanel(session, this);
         ordersPanel = new OrdersManagementPanel(session, this);
         
         foodBtnActionPerformed(null);
@@ -95,12 +94,11 @@ public class ModernUI extends javax.swing.JFrame {
         initComponents();
         defaults();
         createGlassPanel();
-        
-        servicePanel = new ServiceManagementPanel(session);
-        productsPanel = new ProductManagementPanel(session);
-        transactionsPanel = new TransactionsManagementPanel(session);
-        employeesPanel = new EmployeesManagementPanel(session); 
-        tablesPanel = new TablesManagementPanel(session);
+         
+        productsPanel = new ProductManagementPanel(session, this);
+        transactionsPanel = new TransactionsManagementPanel(session, this);
+        employeesPanel = new EmployeesManagementPanel(session, this); 
+        tablesPanel = new TablesManagementPanel(session, this);
         ordersPanel = new OrdersManagementPanel(session,this);
         
         foodBtnActionPerformed(null);
@@ -142,6 +140,7 @@ public class ModernUI extends javax.swing.JFrame {
         
         receiptTable.setModel(tableModel);
         
+        taxLbl.setText(tax+"");        
         
         int[] columnsWidth = {
             140, 33, 60
@@ -230,8 +229,8 @@ public class ModernUI extends javax.swing.JFrame {
         }
         
         subTotal.setText("R "+ df2.format(tempTotal));
-        taxInRandsLbl.setText("R "+ df2.format((tempTotal * tax) / 100));
-        totalLbl.setText("R "+ df2.format(( (tempTotal * tax) / 100) + tempTotal)  ) ;
+        taxInRandsLbl.setText( (tax == 0) ? "R 0.00" : "R "+ df2.format((tempTotal * tax) / 100));
+        totalLbl.setText((tax == 0) ? df2.format(tempTotal) : "R "+ df2.format(( (tempTotal * tax) / 100) + tempTotal)  ) ;
     }
     
     
@@ -273,7 +272,7 @@ public class ModernUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         subTotal = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        taxLbl1 = new javax.swing.JLabel();
+        taxLbl = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         taxInRandsLbl = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -289,6 +288,7 @@ public class ModernUI extends javax.swing.JFrame {
         receiptTable = new javax.swing.JTable();
         centerPanel = new javax.swing.JPanel();
         bottomButtons = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
         quickOrderPanel = new javax.swing.JPanel();
         quickOrderScroll = new javax.swing.JScrollPane();
         scrollOrderJPanel = new javax.swing.JPanel();
@@ -542,12 +542,12 @@ public class ModernUI extends javax.swing.JFrame {
         jLabel9.setPreferredSize(new java.awt.Dimension(110, 20));
         jPanel1.add(jLabel9);
 
-        taxLbl1.setFont(new java.awt.Font("Poppins Light", 1, 14)); // NOI18N
-        taxLbl1.setForeground(new java.awt.Color(0, 0, 0));
-        taxLbl1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        taxLbl1.setText("15");
-        taxLbl1.setPreferredSize(new java.awt.Dimension(110, 20));
-        jPanel1.add(taxLbl1);
+        taxLbl.setFont(new java.awt.Font("Poppins Light", 1, 14)); // NOI18N
+        taxLbl.setForeground(new java.awt.Color(0, 0, 0));
+        taxLbl.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        taxLbl.setText("15");
+        taxLbl.setPreferredSize(new java.awt.Dimension(110, 20));
+        jPanel1.add(taxLbl);
 
         jLabel8.setFont(new java.awt.Font("Poppins Light", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
@@ -659,20 +659,15 @@ public class ModernUI extends javax.swing.JFrame {
         centerPanel.setPreferredSize(new java.awt.Dimension(1920, 185));
         centerPanel.setLayout(new java.awt.BorderLayout());
 
-        bottomButtons.setBackground(new java.awt.Color(255, 255, 255));
+        bottomButtons.setBackground(new java.awt.Color(247, 249, 249));
         bottomButtons.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(204, 204, 204)));
-        bottomButtons.setPreferredSize(new java.awt.Dimension(1516, 2));
+        bottomButtons.setPreferredSize(new java.awt.Dimension(1516, 30));
+        bottomButtons.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 10));
 
-        javax.swing.GroupLayout bottomButtonsLayout = new javax.swing.GroupLayout(bottomButtons);
-        bottomButtons.setLayout(bottomButtonsLayout);
-        bottomButtonsLayout.setHorizontalGroup(
-            bottomButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 893, Short.MAX_VALUE)
-        );
-        bottomButtonsLayout.setVerticalGroup(
-            bottomButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1, Short.MAX_VALUE)
-        );
+        jLabel10.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(204, 204, 204));
+        jLabel10.setText("<html><center>Copyright © 2021 PayBuc (PTY) Ltd. All rights reserved\n</center><html>");
+        bottomButtons.add(jLabel10);
 
         centerPanel.add(bottomButtons, java.awt.BorderLayout.PAGE_END);
 
@@ -728,6 +723,7 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.remove(1);
             centerPanel.add(productsPanel, 1);
             rightPanel.setVisible(false);
+            bottomButtons.setVisible(false);
             centerPanel.validate();
             centerPanel.repaint();
         }
@@ -739,7 +735,9 @@ public class ModernUI extends javax.swing.JFrame {
             quickHeaderLbl.setText("Reports Management");
             centerPanel.remove(1);
             centerPanel.add(transactionsPanel, 1);
+            transactionsPanel.refreshTable();
             rightPanel.setVisible(false);
+            bottomButtons.setVisible(false);
             centerPanel.validate();
             centerPanel.repaint();
         }
@@ -752,6 +750,7 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.remove(1);
             centerPanel.add(employeesPanel, 1);
             rightPanel.setVisible(false);
+            bottomButtons.setVisible(false);
             centerPanel.validate();
             centerPanel.repaint();
         }
@@ -766,6 +765,7 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.remove(1);
             centerPanel.add(tablesPanel, 1);
             rightPanel.setVisible(false);
+            bottomButtons.setVisible(false);
             centerPanel.validate();
             centerPanel.repaint();
         }
@@ -779,6 +779,7 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.add(quickOrderPanel, 1);
             fillProductDash(ProductType.SINGLE);
             rightPanel.setVisible(true);
+            bottomButtons.setVisible(true);
             centerPanel.validate();
             centerPanel.repaint();
         }
@@ -793,6 +794,7 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.add(quickOrderPanel, 1);
             fillProductDash(ProductType.DRINK);
             rightPanel.setVisible(true);
+            bottomButtons.setVisible(true);
             centerPanel.validate();
             centerPanel.repaint();
         } 
@@ -806,6 +808,7 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.add(quickOrderPanel, 1);
             fillProductDash(ProductType.DESSERT);
             rightPanel.setVisible(true);
+            bottomButtons.setVisible(true);
             centerPanel.validate();
             centerPanel.repaint();
         } 
@@ -827,7 +830,8 @@ public class ModernUI extends javax.swing.JFrame {
             centerPanel.remove(1);
             centerPanel.add(ordersPanel, 1);
             ordersPanel.refreshTable();
-            rightPanel.setVisible(true);
+            rightPanel.setVisible(false);
+            bottomButtons.setVisible(false);
             centerPanel.validate();
             centerPanel.repaint();
         } 
@@ -889,6 +893,7 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -917,7 +922,7 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JLabel subTotal;
     private javax.swing.JToggleButton tableBtn;
     private javax.swing.JLabel taxInRandsLbl;
-    private javax.swing.JLabel taxLbl1;
+    private javax.swing.JLabel taxLbl;
     private javax.swing.JPanel textboxCenterPanel;
     private javax.swing.JLabel totalLbl;
     private javax.swing.JTextField universalSearchTf;

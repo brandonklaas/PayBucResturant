@@ -73,6 +73,9 @@ public class Dialogue extends javax.swing.JDialog {
          
         } else if (panel instanceof TransactionDialogue) {
             ((TransactionDialogue) panel).setDialogue(this);
+            
+        }   else if (panel instanceof FilterDialogue) {
+            ((FilterDialogue) panel).setDialogue(this);
         }  
 
         jLabel1.setText(title);
@@ -133,6 +136,9 @@ public class Dialogue extends javax.swing.JDialog {
           
         } else if (panel instanceof TransactionDialogue) {
             ((TransactionDialogue) panel).setDialogue(this);
+        
+        } else if (panel instanceof FilterDialogue) {
+            ((FilterDialogue) panel).setDialogue(this);
         }  
 
         jLabel1.setText(title);

@@ -168,8 +168,12 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
                 "Name", "Description", "Price"
             }
         ));
+        ordersTable.setFillsViewportHeight(true);
         ordersTable.setGridColor(new java.awt.Color(204, 204, 204));
         ordersTable.setOpaque(false);
+        ordersTable.setRowHeight(30);
+        ordersTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
+        ordersTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         ordersTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ordersTableMouseClicked(evt);
@@ -250,27 +254,40 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
             desktop.dim(true);
             new Dialogue(null, true, new OrderCheckoutDialogue(desktop, searchedOrders.get(ordersTable.getSelectedRow()), session), "Order Management", "");
             refreshTable();
+            enabledState(false);
             desktop.dim(false);
+        } else {
+            new OkayDialogue(desktop, true, "Select Order to Edit.");
         }
         
     }//GEN-LAST:event_editBtnActionPerformed
 
+    public void enabledState(boolean state){
+        deleteBtn.setEnabled(state);
+        payBtn.setEnabled(state);
+        editBtn.setEnabled(state);
+    }
+    
     private void payBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payBtnActionPerformed
         // TODO add your handling code here:
         if(ordersTable.getSelectedRow() > -1){
-            desktop.dim(true);
-            new Dialogue(null, true, new TransactionDialogue(desktop, searchedOrders.get(ordersTable.getSelectedRow()), session), "Transaction Management", "");
-            refreshTable();
-            desktop.dim(false);
+            if (allServedItems(searchedOrders.get(ordersTable.getSelectedRow()))) {
+                desktop.dim(true);
+                new Dialogue(null, true, new TransactionDialogue(desktop, searchedOrders.get(ordersTable.getSelectedRow()), session), "Transaction Management", "");
+                refreshTable();
+                desktop.dim(false);
+            } else {
+                new OkayDialogue(desktop, true, "Not all meals on order have been served yet.");
+            }
+        } else {
+            new OkayDialogue(desktop, true, "Select Order to Pay");
         }
     }//GEN-LAST:event_payBtnActionPerformed
 
     private void ordersTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordersTableMouseClicked
         // TODO add your handling code here:
         if(ordersTable.getSelectedRow() > -1) {
-            editBtn.setEnabled(true);
-            deleteBtn.setEnabled(true);
-            payBtn.setEnabled(true);
+            enabledState(true);
         }
     }//GEN-LAST:event_ordersTableMouseClicked
 
@@ -311,6 +328,17 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
             } 
         }
         return served+"/"+order.getProducts().size();
+    }
+    
+    
+    public boolean allServedItems(Order order){
+        int served = 0;
+        for(OrderedProducts product : order.getProducts()){
+            if(ProductStatus.fromId(product.getProductStatus()) == ProductStatus.SERVED){
+                served++;
+            } 
+        }
+        return (served==order.getProducts().size()) ? true : false; 
     }
     
     public String getProductName(int productID){

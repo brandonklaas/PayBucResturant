@@ -237,6 +237,7 @@ public class OrderDialogue extends javax.swing.JPanel {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Order Details");
 
+        preCartTable.setBackground(new java.awt.Color(255, 255, 255));
         preCartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -251,7 +252,7 @@ public class OrderDialogue extends javax.swing.JPanel {
         preCartTable.setFillsViewportHeight(true);
         preCartTable.setGridColor(new java.awt.Color(102, 102, 102));
         preCartTable.setMaximumSize(new java.awt.Dimension(1000, 64));
-        preCartTable.setRowHeight(20);
+        preCartTable.setRowHeight(30);
         preCartTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
         preCartTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         preCartTable.setShowVerticalLines(false);

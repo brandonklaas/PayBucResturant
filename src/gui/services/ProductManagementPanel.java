@@ -8,6 +8,7 @@ package gui.services;
 import core.database.DatabaseAccessObject;
 import core.general.Product;
 import core.utilities.Session;
+import gui.desktop.ModernUI;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OkayDialogue;
 import gui.dialoguePanels.ProductDialogue;
@@ -24,12 +25,14 @@ public class ProductManagementPanel extends javax.swing.JPanel {
     private DatabaseAccessObject database;
     private DefaultTableModel tableModel;
     private ArrayList<Product> array;
+    private  ModernUI desktop;
     
     /**
      * Creates new form Services
      */
-    public ProductManagementPanel(Session session) {
+    public ProductManagementPanel(Session session, ModernUI desktop) {
         this.session = session;
+        this.desktop = desktop;
         this.database = session.getDatabase();
         
         initComponents();
@@ -122,6 +125,8 @@ public class ProductManagementPanel extends javax.swing.JPanel {
 
         main.add(bottomButtonsPanel, java.awt.BorderLayout.PAGE_END);
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
         productsTb.setBackground(new java.awt.Color(255, 255, 255));
         productsTb.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         productsTb.setForeground(new java.awt.Color(51, 51, 51));
@@ -134,7 +139,8 @@ public class ProductManagementPanel extends javax.swing.JPanel {
             }
         ));
         productsTb.setGridColor(new java.awt.Color(204, 204, 204));
-        productsTb.setOpaque(false);
+        productsTb.setRowHeight(30);
+        productsTb.setSelectionBackground(new java.awt.Color(0, 204, 204));
         jScrollPane1.setViewportView(productsTb);
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -192,7 +198,9 @@ public class ProductManagementPanel extends javax.swing.JPanel {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
+        desktop.dim(true);
         new Dialogue(null, true, new ProductDialogue(session, this), "Products Management");
+        desktop.dim(false);
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed

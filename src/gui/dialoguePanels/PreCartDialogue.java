@@ -61,6 +61,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
             ordered.setProductDescription(product.getDescription());
             ordered.setProductPrice(product.getPrice()); 
             ordered.setTaxable(product.isTaxable());
+            ordered.setType(product.getType());
             ordered.setProductStatus(ProductStatus.PENDING.getID()); 
             ordered.setOptional(-1);
             ordered.setSide(-1);
@@ -182,6 +183,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
         jLabel10.setForeground(new java.awt.Color(0, 0, 0));
         jLabel10.setText("Order Data");
 
+        preCartTable.setBackground(new java.awt.Color(255, 255, 255));
         preCartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -194,7 +196,7 @@ public class PreCartDialogue extends javax.swing.JPanel {
             }
         ));
         preCartTable.setFillsViewportHeight(true);
-        preCartTable.setRowHeight(20);
+        preCartTable.setRowHeight(30);
         preCartTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
         preCartTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         preCartTable.setShowVerticalLines(false);

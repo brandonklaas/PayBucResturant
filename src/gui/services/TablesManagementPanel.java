@@ -122,6 +122,8 @@ public class TablesManagementPanel extends javax.swing.JPanel {
 
         main.add(bottomButtonsPanel, java.awt.BorderLayout.PAGE_END);
 
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+
         tablesTable.setBackground(new java.awt.Color(255, 255, 255));
         tablesTable.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         tablesTable.setForeground(new java.awt.Color(51, 51, 51));
@@ -134,7 +136,9 @@ public class TablesManagementPanel extends javax.swing.JPanel {
             }
         ));
         tablesTable.setGridColor(new java.awt.Color(204, 204, 204));
-        tablesTable.setOpaque(false);
+        tablesTable.setRowHeight(30);
+        tablesTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
+        tablesTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(tablesTable);
 
         main.add(jScrollPane1, java.awt.BorderLayout.CENTER);

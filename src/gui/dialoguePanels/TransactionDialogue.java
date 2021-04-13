@@ -7,6 +7,7 @@ package gui.dialoguePanels;
 
 import com.sun.glass.events.KeyEvent;
 import core.database.DatabaseAccessObject;
+import core.enums.OrderStatus;
 import core.enums.PaymentType;
 import core.enums.ProductStatus;
 import core.general.Employee;
@@ -86,7 +87,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
         orderNumberTF.setText(currentOrder.getOrderNumber());
         Employee temp = getEmployee(currentOrder.getEmployeeID());
         waiterCB.setSelectedItem(temp.getFirstname()+" , "+temp.getLastname());
-        tableCB.setSelectedItem(getTable(currentOrder.getTableID()));
+        tableCB.setSelectedItem(getTable(currentOrder.getTableID()).getTableName());
         
         for(OrderedProducts prod : products){
             subTotal+=prod.getProductPrice();
@@ -147,6 +148,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
     
     public void updateTable(){
         clearTable();
+        searchDatabase();
         for (OrderedProducts product : products) {
             tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getProductName(), (product.getSide() != -1) ? getProductName(product.getSide()) : "<None>", 
                 (product.getOptional() != -1) ? getProductName(product.getOptional()) : "<None>",
@@ -258,6 +260,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
         jLabel13.setForeground(new java.awt.Color(0, 0, 0));
         jLabel13.setText("Order Details");
 
+        preCartTable.setBackground(new java.awt.Color(255, 255, 255));
         preCartTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -272,7 +275,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
         preCartTable.setFillsViewportHeight(true);
         preCartTable.setGridColor(new java.awt.Color(102, 102, 102));
         preCartTable.setMaximumSize(new java.awt.Dimension(1000, 64));
-        preCartTable.setRowHeight(20);
+        preCartTable.setRowHeight(30);
         preCartTable.setSelectionBackground(new java.awt.Color(0, 204, 204));
         preCartTable.setSelectionForeground(new java.awt.Color(255, 255, 255));
         preCartTable.setShowVerticalLines(false);
@@ -553,13 +556,16 @@ public class TransactionDialogue extends javax.swing.JPanel {
         transaction.setOrderNumber(currentOrder.getOrderNumber());
         transaction.setPayment((cashBtn.isSelected()) ? PaymentType.CASH : PaymentType.CARD );
         transaction.setPrice(Double.parseDouble(grandTotalTF.getText()));
-        transaction.setSite(session.getBranch().getId());
+        transaction.setSite((session.getBranch() != null) ? session.getBranch().getId() : -1);
         transaction.setTableID(currentOrder.getTableID());
         transaction.setTip(Double.parseDouble(tipTF.getText()));
         transaction.setVat(vat);
         
-        if(database.insert(transaction)){
+        currentOrder.setOrderStatus(OrderStatus.PAID);
+        
+        if(database.insert(transaction) && database.update(currentOrder)){ 
             new OkayDialogue(desktop, true, "Transaction saved Succesfully");
+            updateTable();
             diag.dispose();
         } else {
             new OkayDialogue(desktop, true, "Failed to save Transaction");
