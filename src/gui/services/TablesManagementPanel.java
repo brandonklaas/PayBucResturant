@@ -208,11 +208,15 @@ public class TablesManagementPanel extends javax.swing.JPanel {
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         // TODO add your handling code here:
         if(tablesTable.getSelectedRow() > -1){
-            if(database.delete(array.get(tablesTable.getSelectedRow()))){
-                new OkayDialogue(null, true, "Occupation Deleleted Successfully");
-                refreshTable();
+            if(tablesTable.getSelectedRow() == 0){
+                new OkayDialogue(desktop, true, "Cannot delete default Table");
             } else {
-                new OkayDialogue(null, true, "Failed to Occupation");
+                if (database.delete(array.get(tablesTable.getSelectedRow()))) {
+                    new OkayDialogue(null, true, "Occupation Deleleted Successfully");
+                    refreshTable();
+                } else {
+                    new OkayDialogue(null, true, "Failed to Occupation");
+                }
             }
         } else {
             new OkayDialogue(null, true, "Select Occupation to delete");
@@ -222,7 +226,13 @@ public class TablesManagementPanel extends javax.swing.JPanel {
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
         // TODO add your handling code here:
         if(tablesTable.getSelectedRow() > -1){
-            new Dialogue(null, true, new TablesDialogue(session, this, array.get(tablesTable.getSelectedRow())), "Tables Management");
+            if(tablesTable.getSelectedRow() == 0) {
+                new OkayDialogue(desktop, true, "Cannot Edit default Table");
+            } else {
+                desktop.dim(true);
+                new Dialogue(null, true, new TablesDialogue(session, this, array.get(tablesTable.getSelectedRow())), "Tables Management");
+                desktop.dim(false);
+            }
         }
         
     }//GEN-LAST:event_editBtnActionPerformed

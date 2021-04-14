@@ -165,7 +165,6 @@ public class TransactionDialogue extends javax.swing.JPanel {
         clearTable();
         
         waiterCB.addItem("<Select Waiter/Waitress>");
-        tableCB.addItem("<Select Table>");
       
        
         for (Employee employee : searchedEmployees) {

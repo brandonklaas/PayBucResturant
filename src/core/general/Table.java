@@ -16,6 +16,16 @@ public class Table {
     private String tableName;
     private TableStatus tableStatus;
 
+    
+    public Table(String name, TableStatus status){
+        setTableName(name);
+        setTableStatus(status);
+    }
+    
+    public Table(){
+        
+    }
+    
     public int getId() {
         return id;
     }

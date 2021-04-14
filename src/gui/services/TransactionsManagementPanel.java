@@ -314,6 +314,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         tableModel.addColumn("Tip");
         tableModel.addColumn("Total Price");
 
+        searchDatabase();
         array = database.getTransactions(); 
         
         if (array.size() > 0) {

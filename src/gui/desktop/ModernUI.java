@@ -10,9 +10,9 @@ import core.enums.ProductType;
 import core.general.Order; 
 import core.general.OrderedProducts;
 import core.general.Product;
+import core.utilities.ComponentResizer;
 import core.utilities.Session;
 import gui.cards.FoodCard; 
-import gui.dialoguePanels.BranchDialogue;
 import gui.dialoguePanels.Dialogue;
 import gui.dialoguePanels.OrderDialogue;
 import gui.dialoguePanels.SettingsManagement;
@@ -22,7 +22,6 @@ import gui.services.EmployeesManagementPanel;
 import gui.services.OrdersManagementPanel;
 import gui.services.ProductManagementPanel;
 import gui.services.ServiceManagementPanel;
-import gui.services.SettingsManagementPanel;
 import gui.services.TablesManagementPanel;
 import gui.services.TransactionsManagementPanel;
 import java.awt.Color;
@@ -32,6 +31,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer; 
 import javax.swing.table.DefaultTableModel;
@@ -68,35 +68,26 @@ public class ModernUI extends javax.swing.JFrame {
     
     /**
      * Creates new form ModernUI
-     */
-    public ModernUI() {
-        this.session = new Session();
-        this.database = session.getDatabase();
-        this.tax = Integer.parseInt(session.getSettings().getTax());
-        this.setIconImage(new ImageIcon(getClass().getResource("/icons/round-logo.png")).getImage());
-        
-        initComponents();
-        defaults();
-        createGlassPanel();
-        
-         
-        productsPanel = new ProductManagementPanel(session, this);
-        transactionsPanel = new TransactionsManagementPanel(session, this);
-        employeesPanel = new EmployeesManagementPanel(session, this); 
-        tablesPanel = new TablesManagementPanel(session, this);
-        ordersPanel = new OrdersManagementPanel(session, this);
-        
-        foodBtnActionPerformed(null);
-    }
-    
+     */    
     
     public ModernUI(Dimension dimension, Session session) {
         this.dim = dimension; 
         this.session = session;
         this.database = session.getDatabase();
-        this.setVisible(false);
+        
+        setUndecorated(Boolean.parseBoolean(session.getSettings().getFillScreen())); 
+        if(Boolean.parseBoolean(session.getSettings().getFillScreen())){
+            setResizableAndMove();
+        }
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         initComponents();
+         
+        fullscreenBtn.setVisible((Boolean.parseBoolean(session.getSettings().getFillScreen())) ? true : false);
+        fullscreenBtn.setSelected(Boolean.parseBoolean(session.getSettings().getFillScreen()));
+        
+        this.setVisible(false); 
+        
         defaults();
         createGlassPanel();
          
@@ -106,7 +97,15 @@ public class ModernUI extends javax.swing.JFrame {
         tablesPanel = new TablesManagementPanel(session, this);
         ordersPanel = new OrdersManagementPanel(session,this);
         
-        foodBtnActionPerformed(null);
+        foodBtnActionPerformed(null); 
+    }
+    
+    public void setResizableAndMove(){
+        ComponentResizer cr = new ComponentResizer();
+        cr.registerComponent(this);
+        cr.setSnapSize(new Dimension(10, 10));
+        cr.setMaximumSize(new Dimension(3840, 2160));
+        cr.setMinimumSize(new Dimension(1366, 768));
     }
     
     public void fillProductDash(ProductType type){
@@ -119,6 +118,8 @@ public class ModernUI extends javax.swing.JFrame {
             }
         }
     }
+    
+    
     
     public void defaults() {
         
@@ -254,6 +255,7 @@ public class ModernUI extends javax.swing.JFrame {
         headerRightPanel = new javax.swing.JPanel();
         accountsBtn = new javax.swing.JButton();
         branchBtn = new javax.swing.JButton();
+        fullscreenBtn = new javax.swing.JToggleButton();
         headerCenterMain = new javax.swing.JPanel();
         panelSearchPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
@@ -285,9 +287,9 @@ public class ModernUI extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         totalLbl = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        payBillBtn = new javax.swing.JButton();
         addToTableBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
+        logOutBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -329,8 +331,14 @@ public class ModernUI extends javax.swing.JFrame {
 
         headerRightPanel.setBackground(new java.awt.Color(52, 188, 183));
         headerRightPanel.setPreferredSize(new java.awt.Dimension(400, 78));
+        headerRightPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 13, 13));
 
-        accountsBtn.setText("Accounts");
+        accountsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/accounts.png"))); // NOI18N
+        accountsBtn.setBorder(null);
+        accountsBtn.setBorderPainted(false);
+        accountsBtn.setContentAreaFilled(false);
+        accountsBtn.setPreferredSize(new java.awt.Dimension(48, 48));
+        accountsBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/accounts-pressed.png"))); // NOI18N
         accountsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 accountsBtnActionPerformed(evt);
@@ -338,13 +346,32 @@ public class ModernUI extends javax.swing.JFrame {
         });
         headerRightPanel.add(accountsBtn);
 
-        branchBtn.setText("Branches");
+        branchBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/branch.png"))); // NOI18N
+        branchBtn.setBorder(null);
+        branchBtn.setBorderPainted(false);
+        branchBtn.setContentAreaFilled(false);
+        branchBtn.setPreferredSize(new java.awt.Dimension(48, 48));
+        branchBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/branch-pressed.png"))); // NOI18N
         branchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 branchBtnActionPerformed(evt);
             }
         });
         headerRightPanel.add(branchBtn);
+
+        fullscreenBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/maximize.png"))); // NOI18N
+        fullscreenBtn.setBorder(null);
+        fullscreenBtn.setBorderPainted(false);
+        fullscreenBtn.setContentAreaFilled(false);
+        fullscreenBtn.setPreferredSize(new java.awt.Dimension(48, 48));
+        fullscreenBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/minim.png"))); // NOI18N
+        fullscreenBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/minim.png"))); // NOI18N
+        fullscreenBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fullscreenBtnActionPerformed(evt);
+            }
+        });
+        headerRightPanel.add(fullscreenBtn);
 
         MainHeader.add(headerRightPanel, java.awt.BorderLayout.LINE_END);
 
@@ -602,18 +629,11 @@ public class ModernUI extends javax.swing.JFrame {
         jLabel6.setPreferredSize(new java.awt.Dimension(200, 55));
         jPanel1.add(jLabel6);
 
-        payBillBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payBill.png"))); // NOI18N
-        payBillBtn.setBorder(null);
-        payBillBtn.setBorderPainted(false);
-        payBillBtn.setContentAreaFilled(false);
-        payBillBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/payBill-pressed.png"))); // NOI18N
-        jPanel1.add(payBillBtn);
-
-        addToTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add2table.png"))); // NOI18N
+        addToTableBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/addOrder.png"))); // NOI18N
         addToTableBtn.setBorder(null);
         addToTableBtn.setBorderPainted(false);
         addToTableBtn.setContentAreaFilled(false);
-        addToTableBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add2table-pressed.png"))); // NOI18N
+        addToTableBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/addOrder-pressed.png"))); // NOI18N
         addToTableBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addToTableBtnActionPerformed(evt);
@@ -632,6 +652,17 @@ public class ModernUI extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelBtn);
+
+        logOutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logoutD.png"))); // NOI18N
+        logOutBtn.setBorder(null);
+        logOutBtn.setBorderPainted(false);
+        logOutBtn.setContentAreaFilled(false);
+        logOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutBtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(logOutBtn);
 
         centerRightPanel.add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
@@ -885,47 +916,30 @@ public class ModernUI extends javax.swing.JFrame {
         dim(false);
     }//GEN-LAST:event_branchBtnActionPerformed
 
+    private void fullscreenBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullscreenBtnActionPerformed
+        // TODO add your handling code here:
+       if(fullscreenBtn.isSelected()){ 
+           this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+           
+       } else {
+           Dimension dim = new Dimension(1366, 768);
+           setSize(dim);
+           this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+           
+       }
+    }//GEN-LAST:event_fullscreenBtnActionPerformed
+
+    private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new LoginFrame();
+    }//GEN-LAST:event_logOutBtnActionPerformed
+
     public void clearReceipt(){
         clearTable();
         products = new ArrayList<>();
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModernUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModernUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModernUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModernUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new ModernUI().setVisible(true);
-//            }
-//        });
-//        
-        new ModernUI().setVisible(true);
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainHeader;
@@ -942,6 +956,7 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JToggleButton drinksBtn;
     private javax.swing.JToggleButton employeesBtn;
     private javax.swing.JToggleButton foodBtn;
+    private javax.swing.JToggleButton fullscreenBtn;
     private javax.swing.JPanel headerCenterMain;
     private javax.swing.JPanel headerLeftPanel;
     private javax.swing.JPanel headerRightPanel;
@@ -962,10 +977,10 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton logOutBtn;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JToggleButton ordersBtn;
     private javax.swing.JPanel panelSearchPanel;
-    private javax.swing.JButton payBillBtn;
     private javax.swing.JToggleButton productsBtn;
     private javax.swing.JLabel quickHeaderLbl;
     private javax.swing.JPanel quickOrderPanel;

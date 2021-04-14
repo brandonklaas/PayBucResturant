@@ -40,6 +40,7 @@ public class Settings {
                 properties.setProperty("PayBucAccount"          , "");
                 properties.setProperty("Tax"                    , "0");
                 properties.setProperty("FilterBranches"         , "<Show All>");
+                properties.setProperty("FillScreen"             , "false");
 
                 // save properties to project root folder
                 properties.store(output, null);
@@ -97,6 +98,10 @@ public class Settings {
     public String getFilterBranches(){
         return properties.getProperty("FilterBranches");
     }
+    
+    public String getFillScreen(){
+        return properties.getProperty("FillScreen");
+    }
 
     // ================ SETTER METHODS ========================
     public void setDefaultBranch(String value){
@@ -116,4 +121,8 @@ public class Settings {
         properties.setProperty("FilterBranches", value);
     }
 
+    public void setFillScreen(String value){
+        properties.setProperty("FillScreen", value);
+    }
+    
 }

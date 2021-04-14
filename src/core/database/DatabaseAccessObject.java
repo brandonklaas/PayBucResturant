@@ -74,6 +74,8 @@ public class DatabaseAccessObject {
             insert(new Occupation("Cashier", ""));
             insert(new Occupation("Manager", ""));
             
+            insert(new Table("<Take Away>", TableStatus.OPEN));
+            
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseAccessObject.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -562,6 +564,7 @@ public class DatabaseAccessObject {
                 account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
                 account.setGuest((rs.getInt("Guest") == 1) ? true : false);
                 account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
+                account.setDeleteTransactions((rs.getInt("DeleteTransaction") == 1) ? true : false);
                 account.setServices((rs.getInt("Services") == 1) ? true : false);
                 account.setProducts((rs.getInt("Products") == 1) ? true : false);
                 account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
@@ -599,7 +602,7 @@ public class DatabaseAccessObject {
                 account.setAdmin((rs.getInt("Admin") == 1) ? true : false);
                 account.setGuest((rs.getInt("Guest") == 1) ? true : false);
                 account.setTransactions((rs.getInt("Transactions") == 1) ? true : false);
-                account.setTransactions((rs.getInt("DeleteTransaction") == 1) ? true : false);
+                account.setDeleteTransactions((rs.getInt("DeleteTransaction") == 1) ? true : false);
                 account.setServices((rs.getInt("Services") == 1) ? true : false);
                 account.setProducts((rs.getInt("Products") == 1) ? true : false);
                 account.setEmployees((rs.getInt("Employees") == 1) ? true : false);
@@ -826,11 +829,12 @@ public class DatabaseAccessObject {
                 pstmt.setInt(3, (((Account) object).isAdmin()) ? 1 : 0);
                 pstmt.setInt(4, (((Account) object).isGuest()) ? 1 : 0);
                 pstmt.setInt(5, (((Account) object).isTransactions()) ? 1 : 0);
-                pstmt.setInt(6, (((Account) object).isServices()) ? 1 : 0);
-                pstmt.setInt(7, (((Account) object).isProducts()) ? 1 : 0);
-                pstmt.setInt(8, (((Account) object).isEmployees()) ? 1 : 0);
-                pstmt.setInt(9, (((Account) object).isSettings()) ? 1 : 0);
-                pstmt.setInt(10, (((Account) object).isAccounts()) ? 1 : 0);
+                pstmt.setInt(6, (((Account) object).isDeleteTransactions()) ? 1 : 0);
+                pstmt.setInt(7, (((Account) object).isServices()) ? 1 : 0);
+                pstmt.setInt(8, (((Account) object).isProducts()) ? 1 : 0);
+                pstmt.setInt(9, (((Account) object).isEmployees()) ? 1 : 0);
+                pstmt.setInt(10, (((Account) object).isSettings()) ? 1 : 0);
+                pstmt.setInt(11, (((Account) object).isAccounts()) ? 1 : 0);
                 pstmt.executeUpdate(); 
 
             } else if (object instanceof Branch) {
@@ -967,12 +971,13 @@ public class DatabaseAccessObject {
                 pstmt.setInt(3, (((Account) object).isAdmin()) ? 1 : 0);
                 pstmt.setInt(4, (((Account) object).isGuest()) ? 1 : 0);
                 pstmt.setInt(5, (((Account) object).isTransactions()) ? 1 : 0);
-                pstmt.setInt(6, (((Account) object).isServices()) ? 1 : 0);
-                pstmt.setInt(7, (((Account) object).isProducts()) ? 1 : 0);
-                pstmt.setInt(8, (((Account) object).isEmployees()) ? 1 : 0);
-                pstmt.setInt(9, (((Account) object).isSettings()) ? 1 : 0);
-                pstmt.setInt(10, (((Account) object).isAccounts()) ? 1 : 0);
-                pstmt.setInt(11, ((Account) object).getId());
+                pstmt.setInt(6, (((Account) object).isDeleteTransactions()) ? 1 : 0);
+                pstmt.setInt(7, (((Account) object).isServices()) ? 1 : 0);
+                pstmt.setInt(8, (((Account) object).isProducts()) ? 1 : 0);
+                pstmt.setInt(9, (((Account) object).isEmployees()) ? 1 : 0);
+                pstmt.setInt(10, (((Account) object).isSettings()) ? 1 : 0);
+                pstmt.setInt(11, (((Account) object).isAccounts()) ? 1 : 0);
+                pstmt.setInt(12, ((Account) object).getId());
                 pstmt.executeUpdate();
 
             } else if (object instanceof Branch) {
@@ -1155,7 +1160,7 @@ public class DatabaseAccessObject {
 
                 PreparedStatement pstmt = connection.prepareStatement(DELETE_ORDER);
                 pstmt.setInt(1, ((Order) object).getId());
-                pstmt.executeUpdate();
+                 pstmt.executeUpdate();
                 
                 pstmt = connection.prepareStatement(DELETE_ORDERED_PRODUCTS_WITH_ORDERNUM);
                 pstmt.setString(1, ((Order) object).getOrderNumber());

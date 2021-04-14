@@ -52,11 +52,13 @@ public class SettingsManagement extends javax.swing.JPanel {
             payBucAccountTf.setText(settings.getPayBucAccount());
             taxTf.setText(settings.getTax());
             filterByBranchCB.setSelectedItem(settings.getFilterBranches());
+            fillScreen.setSelected(Boolean.parseBoolean(settings.getFillScreen()));
         } else {
             branchesCB.setSelectedItem(settings.getDefaultBranch());
             payBucAccountTf.setText(settings.getPayBucAccount());
             taxTf.setText(settings.getTax());
             filterByBranchCB.setSelectedItem(settings.getFilterBranches());
+            fillScreen.setSelected(Boolean.parseBoolean(settings.getFillScreen()));
         }
     }
 
@@ -87,11 +89,11 @@ public class SettingsManagement extends javax.swing.JPanel {
             }
             
         } else {
-            Object[] tmp = new Object[]{"Show All"};
-            branchesModel = new DefaultComboBoxModel(tmp);
-            branchesCB.setModel(branchesModel);
-            branchesCB.repaint();
-            branchesCB.validate();
+            Object[] tmp = new Object[]{"<Show All>"};
+            filteredBranchesModel = new DefaultComboBoxModel(tmp);
+            filterByBranchCB.setModel(filteredBranchesModel);
+            filterByBranchCB.repaint();
+            filterByBranchCB.validate();
         }
     }
 
@@ -129,6 +131,7 @@ public class SettingsManagement extends javax.swing.JPanel {
         payBucAccountTf.setEnabled(state);
         taxTf.setEnabled(state);
         filterByBranchCB.setEnabled(state);
+        fillScreen.setEnabled(state);
     }
 
     /**
@@ -151,6 +154,8 @@ public class SettingsManagement extends javax.swing.JPanel {
         filterByBranchCB = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel9 = new javax.swing.JLabel();
+        fillScreen = new javax.swing.JCheckBox();
         buttonsPanel = new javax.swing.JPanel();
         saveBtn = new javax.swing.JButton();
         editBtn = new javax.swing.JButton();
@@ -182,10 +187,12 @@ public class SettingsManagement extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("Filter By Branch :");
 
-        filterByBranchCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Software Settings");
+
+        jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel9.setText("Fill Screen :");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -214,9 +221,15 @@ public class SettingsManagement extends javax.swing.JPanel {
                 .addComponent(taxTf, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filterByBranchCB, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fillScreen))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filterByBranchCB, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -240,7 +253,12 @@ public class SettingsManagement extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filterByBranchCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)))
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(fillScreen))
+                .addContainerGap())
         );
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -293,6 +311,7 @@ public class SettingsManagement extends javax.swing.JPanel {
         settings.setDefaultBranch(branchesCB.getSelectedItem().toString());
         settings.setTax(taxTf.getText());
         settings.setFilterBranches(filterByBranchCB.getSelectedItem().toString());
+        settings.setFillScreen(fillScreen.isSelected()+"");
         settings.saveSettings();
         
         enabledState(false);
@@ -319,12 +338,14 @@ public class SettingsManagement extends javax.swing.JPanel {
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton editBtn;
+    private javax.swing.JCheckBox fillScreen;
     private javax.swing.JComboBox<String> filterByBranchCB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField payBucAccountTf;

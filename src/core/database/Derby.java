@@ -86,7 +86,7 @@ public class Derby {
     
     public static final String UPDATE_PRODUCT      = "UPDATE Products SET Name = ?, Description = ?, ImagePath = ? , Price = ?, Tax = ?, Type = ? WHERE id = ?";
         
-    public static final String UPDATE_ACCOUNT      = "UPDATE Accounts SET Username = ?,  Password = ?,  Admin = ?, Guest = ?, Transactions = ?, Services = ?, Products = ?, Employees = ?, Settings = ?, Accounts = ? WHERE id = ?";
+    public static final String UPDATE_ACCOUNT      = "UPDATE Accounts SET Username = ?,  Password = ?,  Admin = ?, Guest = ?, Transactions = ?, DeleteTransaction = ?, Services = ?, Products = ?, Employees = ?, Settings = ?, Accounts = ? WHERE id = ?";
     
     public static final String UPDATE_OCCUPATION      = "UPDATE Occupation SET Title = ?, Responsibilities = ? WHERE id = ?";
     
@@ -111,7 +111,7 @@ public class Derby {
     
     public static final String INSERT_PRODUCT      = "INSERT INTO Products (Name,  Description, ImagePath, Price,  Tax, Type) VALUES (?,?,?,?,?,?)";
     
-    public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,?,?,?,?,?,?,?)";
+    public static final String INSERT_ACCOUNT      = "INSERT INTO Accounts (Username,  Password,  Admin, Guest, Transactions, DeleteTransaction, Services, Products, Employees, Settings, Accounts) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
     
     public static final String INSERT_OCCUPATION   = "INSERT INTO Occupation (Title,  Responsibilities) VALUES (?,?)";
     
@@ -139,8 +139,8 @@ public class Derby {
     
     public static final String CREATE_PRODUCT  = "CREATE TABLE Products (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Name varchar(255),  Description varchar(255), ImagePath varchar(255) , Price decimal(18,2),  Tax int, Type int)";
     
-    public static final String CREATE_ACCOUNT  = "CREATE TABLE Accounts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, Services int, Products int,"
-                                               + "Employees int, Settings int, Accounts int)";
+    public static final String CREATE_ACCOUNT      = "CREATE TABLE Accounts (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, Username varchar(255), Password varchar(255), Admin int, Guest int, Transactions int, DeleteTransaction int, Services int, Products int,"
+                                                    + "Employees int, Settings int, Accounts int)";
     
     public static final String CREATE_TABLE   = "CREATE TABLE TableData (id int NOT NULL GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1) PRIMARY KEY, TableName varchar(255),  TableStatus int)";
     

@@ -162,7 +162,6 @@ public class OrderCheckoutDialogue extends javax.swing.JPanel {
         sideCB.addItem("<Select Side>");
         optionsCB.addItem("<Select Option>");
         waiterCB.addItem("<Select Waiter/Waitress>");
-        tableCB.addItem("<Select Table>");
 
         for (Product product : searchedProducts) {
             switch (product.getType()) { 
@@ -600,7 +599,7 @@ public class OrderCheckoutDialogue extends javax.swing.JPanel {
         // TODO add your handling code here:
         if(products.size() > 0 && waiterCB.getSelectedIndex() > 0){
             currentOrder.setEmployeeID(searchedEmployees.get(waiterCB.getSelectedIndex()-1).getId());
-            currentOrder.setTableID(searchedTables.get(tableCB.getSelectedIndex()-1).getId());
+            currentOrder.setTableID(searchedTables.get(tableCB.getSelectedIndex()).getId());
             currentOrder.setProducts(products);
                         
             if(database.update(currentOrder)){
