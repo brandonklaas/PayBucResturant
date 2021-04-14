@@ -13,6 +13,9 @@ import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter; 
+import core.general.Employee;
+import core.general.Order;
+import core.general.Table;
 import core.general.Transaction;
 import core.utilities.Session;
 import java.io.File;
@@ -43,17 +46,24 @@ public final class TransactionReportPDF {
     private String timePath;
     private Session session;
     private ArrayList<Transaction> transactions;
+    private ArrayList<Order> orders;
+    private ArrayList<Table> tables;
+    private ArrayList<Employee> employees;
+    
     private boolean showAll = true;
     
     private double totalSum = 0.00;
 
-    public TransactionReportPDF(String filterdate, ArrayList<Transaction> transactions, Session session, boolean showAll) {
+    public TransactionReportPDF(String filterdate, ArrayList<Transaction> transactions, ArrayList<Employee> employees, Session session, boolean showAll) {
         Document document = new Document();
         this.session = session;
         this.showAll = showAll;
         this.transactions = transactions;
+        this.orders = orders;
+        this.tables = tables;
+        this.employees = employees;
         
-        emptyFolders();
+//        emptyFolders();
         String clinicLogo = "Bin\\logo.png";
         try {
             timePath = "Bin\\Print\\Transactions"+simpleFileDateFormat.format(LocalDateTime.now())+".pdf";
@@ -68,6 +78,35 @@ public final class TransactionReportPDF {
             e.printStackTrace();
         }
     }
+    
+    public String getOrderNumber(int id){
+        for(Order order : orders){
+            if(order.getId() == id){
+                return order.getOrderNumber();
+            }
+        }
+        return "void";
+    }
+    
+    
+    public String getTableName(int id){
+        for(Table table : tables){
+            if(table.getId() == id){
+                return table.getTableName();
+            }
+        }
+        return "void";
+    }
+    
+    public String getWaiterName(int id){
+        for(Employee employee : employees){
+            if(employee.getId() == id){
+                return employee.getFirstname()+" "+employee.getLastname();
+            }
+        }
+        return "void";
+    }
+    
 
     public void emptyFolders() {
         try {
@@ -162,7 +201,7 @@ public final class TransactionReportPDF {
     public void records(Document document) {
         try {
             //====================================================
-            PdfPTable table = new PdfPTable(8); // 3 columns.
+            PdfPTable table = new PdfPTable(7); // 3 columns.
             table.setWidthPercentage(105); //Width 100%
             table.setSpacingBefore(5f); //Space before table
             table.setSpacingAfter(10f); //Space after table
@@ -175,40 +214,35 @@ public final class TransactionReportPDF {
             h1.setHorizontalAlignment(Element.ALIGN_LEFT);
             h1.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
 
-            PdfPCell h2 = new PdfPCell(new Paragraph("Description", smallBlackBold));
+            PdfPCell h2 = new PdfPCell(new Paragraph("Order #", smallBlackBold));
             h2.setBorder(0);
             h2.setHorizontalAlignment(Element.ALIGN_CENTER);
             h2.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
 
-            PdfPCell h3 = new PdfPCell(new Paragraph("Type", smallBlackBold));
+            PdfPCell h3 = new PdfPCell(new Paragraph("Table", smallBlackBold));
             h3.setBorder(0);
             h3.setHorizontalAlignment(Element.ALIGN_CENTER);
             h3.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
 
-            PdfPCell h4 = new PdfPCell(new Paragraph("Payment", smallBlackBold));
+            PdfPCell h4 = new PdfPCell(new Paragraph("Waiter", smallBlackBold));
             h4.setBorder(0);
             h4.setHorizontalAlignment(Element.ALIGN_CENTER);
             h4.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
 
-            PdfPCell h5 = new PdfPCell(new Paragraph("Customer", smallBlackBold));
+            PdfPCell h5 = new PdfPCell(new Paragraph("Payment", smallBlackBold));
             h5.setBorder(0);
             h5.setHorizontalAlignment(Element.ALIGN_CENTER);
             h5.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
 
-            PdfPCell h6 = new PdfPCell(new Paragraph("Customer Cell", smallBlackBold));
+            PdfPCell h6 = new PdfPCell(new Paragraph("Tip", smallBlackBold));
             h6.setBorder(0);
             h6.setHorizontalAlignment(Element.ALIGN_CENTER);
-            h6.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
-
-            PdfPCell h7 = new PdfPCell(new Paragraph("Employee", smallBlackBold));
+            h6.setBackgroundColor(new CMYKColor(13, 6, 6, 0)); 
+            
+            PdfPCell h7 = new PdfPCell(new Paragraph("Price", smallBlackBold));
             h7.setBorder(0);
-            h7.setHorizontalAlignment(Element.ALIGN_CENTER);
+            h7.setHorizontalAlignment(Element.ALIGN_RIGHT);
             h7.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
-
-            PdfPCell h8 = new PdfPCell(new Paragraph("Price", smallBlackBold));
-            h8.setBorder(0);
-            h8.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            h8.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
 
             table.addCell(h1);
             table.addCell(h2);
@@ -217,7 +251,6 @@ public final class TransactionReportPDF {
             table.addCell(h5);
             table.addCell(h6);
             table.addCell(h7);
-            table.addCell(h8);
             
             for(Transaction trans : transactions) {
                 PdfPCell cell = new PdfPCell(new Paragraph(new String(simpleDateFormat.format(trans.getDate())), smallBlackPlain));
@@ -226,42 +259,30 @@ public final class TransactionReportPDF {
                 cell.setBorder(Rectangle.BOTTOM);
                 table.addCell(cell);
 
-                cell = new PdfPCell(new Paragraph(trans.getTitle(), smallBlackPlain));
+                cell = new PdfPCell(new Paragraph(trans.getOrderNumber(), smallBlackPlain));
                 cell.setBorder(Rectangle.BOTTOM);
                 cell.setBorderColor(BaseColor.LIGHT_GRAY);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
-                cell = new PdfPCell(new Paragraph(trans.getType(), smallBlackPlain));
+                cell = new PdfPCell(new Paragraph(getWaiterName(trans.getEmployeeID()) , smallBlackPlain));
                 cell.setBorder(Rectangle.BOTTOM);
                 cell.setBorderColor(BaseColor.LIGHT_GRAY);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
-                cell = new PdfPCell(new Paragraph(trans.getPayment(), smallBlackPlain));
+                cell = new PdfPCell(new Paragraph(trans.getPayment().toString(), smallBlackPlain));
                 cell.setBorder(Rectangle.BOTTOM);
                 cell.setBorderColor(BaseColor.LIGHT_GRAY);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
-                cell = new PdfPCell(new Paragraph(trans.getCustomerName(), smallBlackPlain));
+                cell = new PdfPCell(new Paragraph(df2.format(trans.getTip()), smallBlackPlain));
                 cell.setBorder(Rectangle.BOTTOM);
                 cell.setBorderColor(BaseColor.LIGHT_GRAY);
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                cell = new PdfPCell(new Paragraph(trans.getCustomerNumber(), smallBlackPlain));
-                cell.setBorder(Rectangle.BOTTOM);
-                cell.setBorderColor(BaseColor.LIGHT_GRAY);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
-                cell = new PdfPCell(new Paragraph(trans.getEmployee(), smallBlackPlain));
-                cell.setBorder(Rectangle.BOTTOM);
-                cell.setBorderColor(BaseColor.LIGHT_GRAY);
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cell);
-
+                table.addCell(cell); 
+                
                 cell = new PdfPCell(new Paragraph("R " + df2.format(trans.getPrice()), smallBlackPlain));
                 cell.setBorder(Rectangle.BOTTOM);
                 cell.setBorderColor(BaseColor.LIGHT_GRAY);

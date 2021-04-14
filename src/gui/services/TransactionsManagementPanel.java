@@ -240,7 +240,9 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
 
     private void reportBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportBtnActionPerformed
         // TODO add your handling code here:
-        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, array, session, showAll);
+//        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, array, session, showAll);
+
+        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, array, searchedEmployees, session, showAll);
 
         if (Desktop.isDesktopSupported()) {
             try {
@@ -301,7 +303,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
     public void searchDatabase(){
         searchedEmployees = database.getEmployees();
         searchedTables = database.getTables();
-        searchedProducts = database.getProducts();
+        searchedProducts = database.getProducts(); 
     }
     
     public void refreshTable() {

@@ -47,7 +47,7 @@ public class ModernUI extends javax.swing.JFrame {
     private Order currentOrder;
     private DefaultTableModel tableModel = new DefaultTableModel();
     private ArrayList<OrderedProducts> products = new ArrayList<>();
-    private static DecimalFormat df2 = new DecimalFormat("#.00");
+    private static DecimalFormat df2 = new DecimalFormat("0.00");
     
     private static final int ALPHA = 175; // how much see-thru. 0 to 255
     private static final Color GP_BG = new Color(0, 0, 0, ALPHA);
@@ -253,6 +253,7 @@ public class ModernUI extends javax.swing.JFrame {
         headerLeftPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         headerRightPanel = new javax.swing.JPanel();
+        loggedInUser = new javax.swing.JLabel();
         accountsBtn = new javax.swing.JButton();
         branchBtn = new javax.swing.JButton();
         fullscreenBtn = new javax.swing.JToggleButton();
@@ -333,11 +334,15 @@ public class ModernUI extends javax.swing.JFrame {
         headerRightPanel.setPreferredSize(new java.awt.Dimension(400, 78));
         headerRightPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 13, 13));
 
+        loggedInUser.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        loggedInUser.setForeground(new java.awt.Color(255, 255, 255));
+        loggedInUser.setText("Admin ");
+        headerRightPanel.add(loggedInUser);
+
         accountsBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/accounts.png"))); // NOI18N
         accountsBtn.setBorder(null);
         accountsBtn.setBorderPainted(false);
         accountsBtn.setContentAreaFilled(false);
-        accountsBtn.setPreferredSize(new java.awt.Dimension(48, 48));
         accountsBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/accounts-pressed.png"))); // NOI18N
         accountsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -350,7 +355,6 @@ public class ModernUI extends javax.swing.JFrame {
         branchBtn.setBorder(null);
         branchBtn.setBorderPainted(false);
         branchBtn.setContentAreaFilled(false);
-        branchBtn.setPreferredSize(new java.awt.Dimension(48, 48));
         branchBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/branch-pressed.png"))); // NOI18N
         branchBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -363,7 +367,6 @@ public class ModernUI extends javax.swing.JFrame {
         fullscreenBtn.setBorder(null);
         fullscreenBtn.setBorderPainted(false);
         fullscreenBtn.setContentAreaFilled(false);
-        fullscreenBtn.setPreferredSize(new java.awt.Dimension(48, 48));
         fullscreenBtn.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/minim.png"))); // NOI18N
         fullscreenBtn.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/minim.png"))); // NOI18N
         fullscreenBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -978,6 +981,7 @@ public class ModernUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton logOutBtn;
+    private javax.swing.JLabel loggedInUser;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JToggleButton ordersBtn;
     private javax.swing.JPanel panelSearchPanel;

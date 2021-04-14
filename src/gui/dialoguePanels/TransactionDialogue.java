@@ -46,7 +46,7 @@ public class TransactionDialogue extends javax.swing.JPanel {
     private DefaultTableModel tableModel = new DefaultTableModel(); 
     private ModernUI desktop;
      
-    private static DecimalFormat df2 = new DecimalFormat("#.00");
+    private static DecimalFormat df2 = new DecimalFormat("0.00");
     
     private Order currentOrder;
 //    private ComboBoxModel optionalModel;
