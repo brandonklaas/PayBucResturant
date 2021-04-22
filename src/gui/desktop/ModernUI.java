@@ -188,12 +188,17 @@ public class ModernUI extends javax.swing.JFrame {
     
     public void addToOrder(ArrayList<OrderedProducts> product){
         
-        tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.get(0).getProductName(), product.size(),
-                             df2.format(product.size()*product.get(0).getProductPrice()) });
+        double total = 0.0;
         
         for(OrderedProducts prod : product){
             products.add(prod);
+            total+=prod.getProductPrice()+((prod.getSide()!= -1) ? getProduct(prod.getSide()).getPrice() : 0)
+                 +((prod.getOptional()!= -1) ? getProduct(prod.getOptional()).getPrice() : 0);
         }
+        
+        tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.get(0).getProductName(), product.size(),
+                             df2.format(total) });
+        
         
         calculateTotal();
         
@@ -230,7 +235,8 @@ public class ModernUI extends javax.swing.JFrame {
         double tempTotal = 0.0; 
         
         for(int i = 0; i < products.size(); i++){
-            tempTotal = tempTotal + products.get(i).getProductPrice();
+            tempTotal = tempTotal + products.get(i).getProductPrice() + ((products.get(i).getSide()!= -1) ? getProduct(products.get(i).getSide()).getPrice() : 0)
+                 +((products.get(i).getOptional()!= -1) ? getProduct(products.get(i).getOptional()).getPrice() : 0);
         }
         
         subTotal.setText("R "+ df2.format(tempTotal));
@@ -903,6 +909,10 @@ public class ModernUI extends javax.swing.JFrame {
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         // TODO add your handling code here:
         clearReceipt();
+        taxInRandsLbl.setText("R 0.00");
+        taxLbl.setText(""+tax);
+        subTotal.setText("R 0.00");
+        totalLbl.setText("R 0.00");
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void accountsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accountsBtnActionPerformed
@@ -932,6 +942,16 @@ public class ModernUI extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_fullscreenBtnActionPerformed
 
+    
+    public Product getProduct(int productID){
+        for(Product product : searchedProducts){
+            if(product.getId() == productID){
+                return product;
+            } 
+        }
+        return null;
+    }
+    
     private void logOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutBtnActionPerformed
         // TODO add your handling code here:
         this.dispose();

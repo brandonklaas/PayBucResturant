@@ -242,7 +242,7 @@ public class TransactionsManagementPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
 //        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, array, session, showAll);
 
-        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, array, searchedEmployees, session, showAll);
+        TransactionReportPDF reportPDF = new TransactionReportPDF((showAll) ? "" : filtrationStr, searchedTables, array, searchedEmployees, session, showAll);
 
         if (Desktop.isDesktopSupported()) {
             try {

@@ -327,6 +327,10 @@ public class OrdersManagementPanel extends javax.swing.JPanel {
                 served++;
             } 
         }
+        
+        for(OrderedProducts pro : order.getProducts()){
+            System.out.println("ID : " + pro.getId());
+        }
         return served+"/"+order.getProducts().size();
     }
     

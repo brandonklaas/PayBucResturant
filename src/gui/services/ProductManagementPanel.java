@@ -43,12 +43,13 @@ public class ProductManagementPanel extends javax.swing.JPanel {
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Name");
         tableModel.addColumn("Description");
+        tableModel.addColumn("Category / Type");
         tableModel.addColumn("Price");
         
         array = database.getProducts();
         if(array.size() > 0){
             for(Product product : array){
-                tableModel.addRow(new Object[]{product.getName(), product.getDescription(), product.getPrice()});
+                tableModel.addRow(new Object[]{product.getName(), product.getDescription(),product.getType().toString() , product.getPrice()});
             }
         }
         

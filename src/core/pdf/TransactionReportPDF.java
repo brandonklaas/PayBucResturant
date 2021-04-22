@@ -54,7 +54,7 @@ public final class TransactionReportPDF {
     
     private double totalSum = 0.00;
 
-    public TransactionReportPDF(String filterdate, ArrayList<Transaction> transactions, ArrayList<Employee> employees, Session session, boolean showAll) {
+    public TransactionReportPDF(String filterdate, ArrayList<Table> tables, ArrayList<Transaction> transactions, ArrayList<Employee> employees, Session session, boolean showAll) {
         Document document = new Document();
         this.session = session;
         this.showAll = showAll;
@@ -265,6 +265,12 @@ public final class TransactionReportPDF {
                 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 table.addCell(cell);
 
+                cell = new PdfPCell(new Paragraph(getTableName(trans.getTableID()) , smallBlackPlain));
+                cell.setBorder(Rectangle.BOTTOM);
+                cell.setBorderColor(BaseColor.LIGHT_GRAY);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+
                 cell = new PdfPCell(new Paragraph(getWaiterName(trans.getEmployeeID()) , smallBlackPlain));
                 cell.setBorder(Rectangle.BOTTOM);
                 cell.setBorderColor(BaseColor.LIGHT_GRAY);
@@ -310,7 +316,6 @@ public final class TransactionReportPDF {
             sum.setVerticalAlignment(Element.ALIGN_CENTER);
             sum.setBackgroundColor(new CMYKColor(13, 6, 6, 0));
             
-            table.addCell(empty);
             table.addCell(empty);
             table.addCell(empty);
             table.addCell(empty);

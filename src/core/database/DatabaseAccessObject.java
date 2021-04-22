@@ -817,6 +817,8 @@ public class DatabaseAccessObject {
             return null;
         }
     }
+    
+   
 
     public boolean insert(Object object) {
 
@@ -922,9 +924,10 @@ public class DatabaseAccessObject {
                 
                 //===================== BATCH ADD ======================
                 pstmt = connection.prepareStatement(INSERT_ORDERED_PRODUCTS);
+                
                 for(OrderedProducts product : ((Order) object).getProducts()) {
                     pstmt.setString(1, product.getOrderNumber());
-                    pstmt.setInt(2, product.getId());
+                    pstmt.setInt(2, product.getProductID());
                     pstmt.setString(3, product.getProductName());
                     pstmt.setString(4, product.getProductDescription());
                     pstmt.setDouble(5, product.getProductPrice());

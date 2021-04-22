@@ -106,9 +106,9 @@ public class PreCartDialogue extends javax.swing.JPanel {
     public void updateTable(){
         clearTable();
         for (OrderedProducts product : products) {
-            tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getProductName(), (product.getSide() != -1) ? getProductName(product.getSide()) : "<None>",
-                (product.getOptional() != -1) ? getProductName(product.getOptional()) : "<None>",
-                product.getNotes(), product.getProductPrice()});
+            tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getProductName(), (product.getSide() != -1) ? getProduct(product.getSide()).getName() : "<None>",
+                (product.getOptional() != -1) ? getProduct(product.getOptional()).getName() : "<None>",
+                product.getNotes(), product.getProductPrice()+((product.getOptional() != -1) ? getProduct(product.getOptional()).getPrice() : 0)+((product.getSide()!= -1) ? getProduct(product.getSide()).getPrice() : 0)});
         }
         clearPanel();
     }
@@ -406,9 +406,9 @@ public class PreCartDialogue extends javax.swing.JPanel {
             productDescTF.setText(products.get(preCartTable.getSelectedRow()).getProductDescription());
             notesTf.setText(products.get(preCartTable.getSelectedRow()).getNotes()); 
             sideCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getSide()> -1) ? 
-                                     getProductName(products.get(preCartTable.getSelectedRow()).getSide()) : "<Select Side>");
+                                     getProduct(products.get(preCartTable.getSelectedRow()).getSide()).getName() : "<Select Side>");
             optionsCB.setSelectedItem((products.get(preCartTable.getSelectedRow()).getOptional() > -1) ?
-                                      getProductName(products.get(preCartTable.getSelectedRow()).getOptional()) : "<Select Option>");
+                                      getProduct(products.get(preCartTable.getSelectedRow()).getOptional()).getName() : "<Select Option>");
             enabledState(true);
         } else {
             new OkayDialogue(desktop, true, "Select Product");
@@ -455,13 +455,13 @@ public class PreCartDialogue extends javax.swing.JPanel {
         return -1;
     }
     
-    public String getProductName(int productID){
+    public Product getProduct(int productID){
         for(Product product : searchedProducts){
             if(product.getId() == productID){
-                return product.getName();
+                return product;
             } 
         }
-        return "<None>";
+        return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

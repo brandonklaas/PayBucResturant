@@ -6,15 +6,13 @@
             <file>file:/A:/Documents/PayBucResturant/src/core/general/Order.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/gui/desktop/LoginFrame.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/gui/services/TransactionsManagementPanel.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/Dialogue.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/gui/desktop/ModernUI.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/core/pdf/TransactionReportPDF.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/TransactionDialogue.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/core/database/Derby.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/OrderDialogue.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/core/general/OrderedProducts.java</file>
             <file>file:/A:/Documents/PayBucResturant/src/core/database/DatabaseAccessObject.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/core/general/Table.java</file>
-            <file>file:/A:/Documents/PayBucResturant/src/gui/dialoguePanels/FilterDialogue.java</file>
+            <file>file:/A:/Documents/PayBucResturant/src/gui/services/OrdersManagementPanel.java</file>
         </group>
     </open-files>
 </project-private>

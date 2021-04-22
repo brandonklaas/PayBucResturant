@@ -89,8 +89,8 @@ public class TransactionDialogue extends javax.swing.JPanel {
         waiterCB.setSelectedItem(temp.getFirstname()+" , "+temp.getLastname());
         tableCB.setSelectedItem(getTable(currentOrder.getTableID()).getTableName());
         
-        for(OrderedProducts prod : products){
-            subTotal+=prod.getProductPrice();
+        for(OrderedProducts product : products){
+            subTotal+=product.getProductPrice()+((product.getOptional() != -1) ? getProduct(product.getOptional()).getPrice() : 0)+((product.getSide()!= -1) ? getProduct(product.getSide()).getPrice() : 0);
         }
         subTotalTf.setText(df2.format(subTotal));
         vatTf.setText(vat+" %");
@@ -101,9 +101,9 @@ public class TransactionDialogue extends javax.swing.JPanel {
     
     public void fillTable(){
         for(int i = 0; i < products.size(); i++){  
-            tableModel.insertRow(tableModel.getRowCount(), new Object[]{products.get(i).getProductName(), (products.get(i).getSide() != -1) ? getProductName(products.get(i).getSide()) : "<None>", 
-                (products.get(i).getOptional() != -1) ? getProductName(products.get(i).getOptional()) : "<None>",
-                 products.get(i).getProductPrice(), ProductStatus.fromId(products.get(i).getProductStatus()) });
+            tableModel.insertRow(tableModel.getRowCount(), new Object[]{products.get(i).getProductName(), (products.get(i).getSide() != -1) ? getProduct(products.get(i).getSide()).getName() : "<None>", 
+                (products.get(i).getOptional() != -1) ? getProduct(products.get(i).getOptional()).getName() : "<None>",
+                products.get(i).getNotes(),  products.get(i).getProductPrice()+((products.get(i).getOptional() != -1) ? getProduct(products.get(i).getOptional()).getPrice() : 0)+((products.get(i).getSide()!= -1) ? getProduct(products.get(i).getSide()).getPrice() : 0)});
         }
     }
     
@@ -150,9 +150,9 @@ public class TransactionDialogue extends javax.swing.JPanel {
         clearTable();
         searchDatabase();
         for (OrderedProducts product : products) {
-            tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getProductName(), (product.getSide() != -1) ? getProductName(product.getSide()) : "<None>", 
-                (product.getOptional() != -1) ? getProductName(product.getOptional()) : "<None>",
-                 product.getProductPrice(), ProductStatus.fromId(product.getProductStatus())});
+            tableModel.insertRow(tableModel.getRowCount(), new Object[]{product.getProductName(), (product.getSide() != -1) ? getProduct(product.getSide()).getName() : "<None>", 
+                (product.getOptional() != -1) ? getProduct(product.getOptional()).getName() : "<None>",
+                 product.getProductPrice()+((product.getOptional() != -1) ? getProduct(product.getOptional()).getPrice() : 0)+((product.getSide()!= -1) ? getProduct(product.getSide()).getPrice() : 0), ProductStatus.fromId(product.getProductStatus())});
         }
         clearPanel();
     }
@@ -532,17 +532,13 @@ public class TransactionDialogue extends javax.swing.JPanel {
 
     private void tipTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tipTFKeyTyped
         // TODO add your handling code here:
-        if(evt.getKeyCode() != KeyEvent.VK_0 && evt.getKeyCode() != KeyEvent.VK_1 && evt.getKeyCode() != KeyEvent.VK_2 && evt.getKeyCode() != KeyEvent.VK_3 && 
-           evt.getKeyCode() != KeyEvent.VK_4 && evt.getKeyCode() != KeyEvent.VK_5 && evt.getKeyCode() != KeyEvent.VK_6 && evt.getKeyCode() != KeyEvent.VK_7 && 
-           evt.getKeyCode() != KeyEvent.VK_8 && evt.getKeyCode() != KeyEvent.VK_9 && evt.getKeyCode() != KeyEvent.VK_PERIOD && evt.getKeyCode() != KeyEvent.VK_BACKSPACE &&
-           evt.getKeyCode() != KeyEvent.VK_DELETE){
-            if(tipTF.getText().length() > 0){
-                tipTF.setText(tipTF.getText().substring(0, tipTF.getText().length()-1));
+        if(tipTF.getText().isEmpty() == false) {
+            try {
+                Double.parseDouble(tipTF.getText());
+            } catch (NumberFormatException e) {
+                tipTF.setText(tipTF.getText().substring(0, tipTF.getText().length()));
+                new OkayDialogue(desktop, true, "Field must contain digits only.");
             }
-            new OkayDialogue(desktop, true, "Only Digits and '.' allowed.");
-        } else {
-            subTotalTf.setText(df2.format(subTotal)); 
-            grandTotalTF.setText("" + ((vat > 0) ? df2.format((((subTotal * vat) / 100) + subTotal)+Double.parseDouble(tipTF.getText())) : df2.format(subTotal+Double.parseDouble(tipTF.getText()))));
         }
     }//GEN-LAST:event_tipTFKeyTyped
 
@@ -582,14 +578,25 @@ public class TransactionDialogue extends javax.swing.JPanel {
         
     }
     
-    public String getProductName(int productID){
+//    public String getProductName(int productID){
+//        for(Product product : searchedProducts){
+//            if(product.getId() == productID){
+//                return product.getName();
+//            } 
+//        }
+//        return "<None>";
+//    }
+    
+    
+    public Product getProduct(int productID){
         for(Product product : searchedProducts){
             if(product.getId() == productID){
-                return product.getName();
+                return product;
             } 
         }
-        return "<None>";
+        return null;
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
